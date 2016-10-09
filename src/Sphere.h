@@ -9,14 +9,14 @@
 
 namespace ztrace {
     class Sphere : public Traceable {
+        using MaterialPtr = std::shared_ptr<Material>;
     public:
-        Sphere()
-                : center_(), radius_(0.) {}
+        Sphere() = delete;
 
-        Sphere(Vector const &center, Real const &radius)
-                : center_(center), radius_(radius) {}
+        Sphere(Vector const &center, Real const &radius, MaterialPtr material )
+                : center_(center), radius_(radius), material_(material) {}
 
-        static bool checkHitInterval(Real const &positionOnRay, Real const &intervalLower, Real const &intervalUpper) {
+        static bool checkHitInterval(Real const &positionOnRay, Real const &intervalLower, Real const &intervalUpper ) {
             if (positionOnRay < intervalLower or positionOnRay > intervalUpper) {
                 return false;
             }
@@ -42,6 +42,7 @@ namespace ztrace {
             traceData.point = ray.positionLength(traceData.positionOnRay);
             traceData.normal = traceData.point - center_;
             traceData.normal.makeUnitVector();
+            traceData.material = material_;
             return true;
         }
 
@@ -52,6 +53,7 @@ namespace ztrace {
     private:
         Vector center_;
         Real radius_;
+        MaterialPtr material_;
     };
 }
 

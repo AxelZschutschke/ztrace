@@ -9,10 +9,15 @@
 
 namespace ztrace {
 
+    class Material;
+
     struct TraceData {
+        using MaterialPtr = std::shared_ptr<Material>;
+
         Real positionOnRay;
         Vector point;
         Vector normal;
+        MaterialPtr material;
     };
 
     class Traceable {

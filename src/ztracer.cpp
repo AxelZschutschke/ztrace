@@ -6,6 +6,7 @@
 #include "Sphere.h"
 #include "Ray.h"
 #include "Camera.h"
+#include "Material.h"
 #include "PPMWriter.h"
 #include <stdlib.h>
 
@@ -21,22 +22,23 @@ using TraceableList = ztrace::TraceableList;
 using TraceData = ztrace::TraceData;
 using Sphere = ztrace::Sphere;
 using Camera = ztrace::Camera;
+using Lambertian = ztrace::Lambertian;
+using Metal = ztrace::Metal;
 
-Vector const selectRandomInSphere( ){
-  Vector result;
-  Vector unit{1.,1.,1.};
-  do {
-      result = 2. * Vector{drand48(), drand48(), drand48()} - unit;
-  } while( result.len() > 1. );
-  return result;
-}
 
-Colour const rayColour( Ray const & ray, TraceableList & traceable  ){
+Colour const rayColour( Ray const & ray, TraceableList & traceable, Int depth = 0  ){
+    static Int const maxDepth = 40;
+
     Colour colour;
     TraceData traceData;
-    bool hitSomething = traceable.hit( ray, 1e-2, 1000., traceData );
-    if ( hitSomething ){
-        colour = 0.5 * rayColour( Ray{ traceData.point, traceData.normal * 0.8 + selectRandomInSphere() }, traceable ).vector();
+    if ( traceable.hit( ray, 1e-2, 1000., traceData ) ){
+        Vector attenuation;
+        Ray scatteredRay;
+        if( depth < maxDepth && traceData.material->scatter( ray, traceData, attenuation, scatteredRay )) {
+            colour = attenuation * rayColour( scatteredRay, traceable, ++depth ).vector();
+        } else {
+            colour = Vector{0.,0.,0.};
+        }
     } else {
         Vector unit_direction = ray.direction();
         unit_direction.makeUnitVector();
@@ -48,7 +50,7 @@ Colour const rayColour( Ray const & ray, TraceableList & traceable  ){
     return colour;
 }
 
-Real const position( Int const & x, Int const & screenWidth ) {
+Real position( Int const & x, Int const & screenWidth ) {
     return ((Real) x + (drand48() - 0.5) ) / ((Real) screenWidth);
 }
 
@@ -62,9 +64,9 @@ int main()
     Image image( width, height );
 
     TraceableList traceables{};
-    traceables.add( std::make_shared<Sphere>(Vector{1.,   1.,-3.5}, 0.25 ));
-    traceables.add( std::make_shared<Sphere>(Vector{0.,   1.,-3.5}, 0.75 ));
-    traceables.add( std::make_shared<Sphere>(Vector{0.,-101.,-1.5}, 100.5 ));
+    traceables.add( std::make_shared<Sphere>(Vector{1.,   1.,-3.5}, 0.25, std::make_shared<Metal>(Vector{0.1,0.8,0.12})  ));
+    traceables.add( std::make_shared<Sphere>(Vector{0.,   1.,-3.5}, 0.75, std::make_shared<Lambertian>(Vector{0.8,0.1,0.12})  ));
+    traceables.add( std::make_shared<Sphere>(Vector{0.,-101.,-1.5}, 100.5, std::make_shared<Lambertian>(Vector{0.1,0.8,0.12}) ));
 
     Camera cam{};
 
