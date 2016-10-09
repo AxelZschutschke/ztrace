@@ -43,8 +43,7 @@ enable_testing()
 include( CTest )
 
 set( TESTS
-    Component
-    Colour
+    ColourConverter
     Image
     Vector
     Ray

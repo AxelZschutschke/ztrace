@@ -46,7 +46,7 @@ namespace ztrace {
         }
 
         Ray const emitRay( Real const & screenX, Real const & screenY ){
-            return Ray{ position_, (pointingNormalX_ * screenX + pointingNormalY_ * screenY ) + pointingDirection_ };
+            return Ray{ position_, (pointingNormalX_ * ( screenX - 0.5 ) + pointingNormalY_ * ( 0.5 - screenY ) ) + pointingDirection_ };
         }
 
     private:

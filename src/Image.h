@@ -30,7 +30,7 @@ namespace ztrace {
         Size width() const { return  width_; }
         Size height() const { return  height_; }
         Size size() const { return imageData_.size(); }
-        static Int getRange() { return Colour::getRange(); }
+        static Int getRange() { return Colour::range(); }
 
         friend std::ostream & operator<<( std::ostream & out, Image const & image ) {
             Size counter = 0;

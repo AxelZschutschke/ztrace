@@ -49,10 +49,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3ae349af-5d0b-46fa-85fe-29cc86abb368" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Camera.h" afterPath="$PROJECT_DIR$/src/Camera.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Colour.h" afterPath="$PROJECT_DIR$/src/Colour.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Vector.h" afterPath="$PROJECT_DIR$/src/Vector.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ztracer.cpp" afterPath="$PROJECT_DIR$/src/ztracer.cpp" />
     </list>
     <ignored path="raytrace.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -99,11 +96,14 @@
       <file leaf-file-name="Colour.h" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Colour.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+            <state relative-caret-position="225">
+              <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
               <folding>
-                <element signature="e#487#499#0" expanded="true" />
-                <element signature="e#1866#1883#0" expanded="true" />
+                <element signature="e#226#253#0" expanded="true" />
+                <element signature="e#799#816#0" expanded="true" />
+                <element signature="e#908#925#0" expanded="true" />
+                <element signature="e#1043#1055#0" expanded="true" />
+                <element signature="e#2422#2439#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -696,12 +696,12 @@
       <option name="presentableId" value="Default" />
       <updated>1475915089200</updated>
       <workItem from="1475915092005" duration="48236000" />
-      <workItem from="1476003609487" duration="9281000" />
+      <workItem from="1476003609487" duration="9853000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="57517000" />
+    <option name="totallyTimeSpent" value="58089000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1060,11 +1060,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Colour.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+        <state relative-caret-position="225">
+          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
           <folding>
-            <element signature="e#487#499#0" expanded="true" />
-            <element signature="e#1866#1883#0" expanded="true" />
+            <element signature="e#226#253#0" expanded="true" />
+            <element signature="e#799#816#0" expanded="true" />
+            <element signature="e#908#925#0" expanded="true" />
+            <element signature="e#1043#1055#0" expanded="true" />
+            <element signature="e#2422#2439#0" expanded="true" />
           </folding>
         </state>
       </provider>

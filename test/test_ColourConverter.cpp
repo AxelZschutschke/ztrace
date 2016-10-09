@@ -2,7 +2,7 @@
 // Created by Axel Zschutschke on 10/8/16.
 //
 
-#include "Colour.h"
+#include "ColourConverter.h"
 #include <iostream>
 #include <gtest/gtest.h>
 
@@ -10,20 +10,20 @@ using ztrace::Int;
 using ztrace::Real;
 
 template<Int colourRange>
-using Colour = ztrace::Colour<colourRange>;
+using ColourConverter = ztrace::ColourConverter<colourRange>;
 
 TEST( Colour_test, constructor_real )
 {
-    Colour<128> test{ };
+    ColourConverter<128> test{ };
     test.setRGB( 0.5, 1.5, -0.5 );
-    EXPECT_EQ( test.redValue().getInt(), 64 );
-    EXPECT_EQ( test.greenValue().getInt(), 128 );
-    EXPECT_EQ( test.blueValue().getInt(), 0 );
+    EXPECT_EQ( test.red(), 64 );
+    EXPECT_EQ( test.green(), 128 );
+    EXPECT_EQ( test.blue(), 0 );
 }
 
 TEST( Colour_test, toStdout )
 {
-    Colour<64> test{ };
+    ColourConverter<64> test{ };
     test.setRGB( 0.25, 0.5, 0.75 );
     testing::internal::CaptureStdout();
     std::cout << test;

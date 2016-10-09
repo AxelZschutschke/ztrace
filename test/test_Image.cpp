@@ -3,7 +3,7 @@
 //
 
 #include "Image.h"
-#include "Colour.h"
+#include "ColourConverter.h"
 #include <iostream>
 #include <gtest/gtest.h>
 
@@ -12,7 +12,7 @@ using ztrace::Real;
 using ztrace::Size;
 
 template<Int colourRange>
-using Colour = ztrace::Colour<colourRange>;
+using Colour = ztrace::ColourConverter<colourRange>;
 
 template<Int colourRange>
 using Image = ztrace::Image<Colour<colourRange>>;
