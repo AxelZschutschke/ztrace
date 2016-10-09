@@ -49,6 +49,7 @@ set( TESTS
     Vector
     Ray
     Sphere
+    TraceableList
     )
 
 foreach( TEST ${TESTS} )

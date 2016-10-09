@@ -8,7 +8,7 @@
 #include "Traceable.h"
 
 namespace ztrace {
-    class Sphere : Traceable {
+    class Sphere : public Traceable {
     public:
         Sphere()
                 : center_(), radius_(0.) {}
@@ -23,7 +23,7 @@ namespace ztrace {
             return true;
         }
 
-        bool hit(Ray const &ray, Real const &intervalLower, Real const &intervalUpper, TraceData &traceData) {
+        bool hit(Ray const &ray, Real const &intervalLower, Real const &intervalUpper, TraceData &traceData) const {
             Vector oc = ray.origin() - center_;
             Real a = dot(ray.direction(), ray.direction());
             Real b = 2.0 * dot(oc, ray.direction());

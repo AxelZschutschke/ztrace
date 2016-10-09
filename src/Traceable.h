@@ -17,7 +17,7 @@ namespace ztrace {
 
     class Traceable {
     public:
-        virtual bool hit( Ray const & ray, Real const & intervalLower, Real const & intervalUpper, TraceData & traceData ) = 0;
+        virtual bool hit( Ray const & ray, Real const & intervalLower, Real const & intervalUpper, TraceData & traceData ) const = 0;
     };
 }
 
