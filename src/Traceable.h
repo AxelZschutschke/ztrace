@@ -5,10 +5,19 @@
 #ifndef ZTRACER_TRACEABLE_H
 #define ZTRACER_TRACEABLE_H
 
-namespace ztrace {
-    
-    class Hittable {
+#include "Ray.h"
 
+namespace ztrace {
+
+    struct TraceData {
+        Real positionOnRay;
+        Vector point;
+        Vector normal;
+    };
+
+    class Traceable {
+    public:
+        virtual bool hit( Ray const & ray, Real const & intervalLower, Real const & intervalUpper, TraceData & traceData ) = 0;
     };
 }
 

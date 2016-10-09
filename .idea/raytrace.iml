@@ -4,11 +4,12 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/ztracer.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test/test_Ray.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test/test_Image.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test/test_Sphere.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test/test_Vector.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/test_Component.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/test_Colour.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/test/test_Vector.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/test/test_Image.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/test/test_Ray.cpp" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">

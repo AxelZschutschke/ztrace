@@ -31,10 +31,6 @@ Colour const setBGColour( Ray const & ray ){
     Vector center( 0.0, 0.0, -1. );
     Real length = hitSphere( center, 0.4, ray );
     if ( length > 0.0 ){
-        Vector normal = ray.positionLength( length ) - center;
-        normal.makeUnitVector();
-        normal = 0.5 * ( normal + 1.0 );
-        colour.setRGB(normal.x(), normal.y()+normal.x(), normal.x() );
     } else {
         Vector unit_direction = ray.direction();
         unit_direction.makeUnitVector();

@@ -48,6 +48,7 @@ set( TESTS
     Image
     Vector
     Ray
+    Sphere
     )
 
 foreach( TEST ${TESTS} )
