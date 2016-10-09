@@ -65,9 +65,9 @@ int main()
                 xPos = position( x, width );
                 yPos = position( y, height);
                 Ray    ray = cam.emitRay( xPos, yPos );
-                colour = colour + ( setBGColour(ray, traceables) * 0.5 );
+                colour += setBGColour(ray, traceables) / antiAliasing;
             }
-            image.setPixel( x, y, setBGColour( ray, traceables ));
+            image.setPixel( x, y, colour);
         }
     }
     PPMWriter writer;

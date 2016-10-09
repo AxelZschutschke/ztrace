@@ -19,6 +19,7 @@ namespace ztrace
 
     template<Int colourRange>
     class Colour {
+        using Component = Component<colourRange>;
     public:
         Colour( );
 
@@ -27,14 +28,14 @@ namespace ztrace
 
         friend std::ostream & operator<< <colourRange>( std::ostream &, Colour<colourRange> const & );
 
-        Component<colourRange> redValue() const { return red_; }
-        Component<colourRange> greenValue() const { return green_; }
-        Component<colourRange> blueValue() const { return blue_; }
+        Component red() const { return red_; }
+        Component green() const { return green_; }
+        Component blue() const { return blue_; }
 
         Colour const & operator+=( Colour const & rhs ) {
             red_ += rhs.red_;
             green_ += rhs.green_;
-            blue_ += rhs_.blue_;
+            blue_ += rhs.blue_;
             return *this;
         }
         Colour const operator+( Colour const & rhs ) const {
@@ -48,6 +49,7 @@ namespace ztrace
         Colour const operator/( Real const & decrement ) const {
             return Colour{ decrement * red_, decrement * green_, decrement * blue_ };
         }
+
         Colour const & invert() {
             red_.invert();
             green_.invert();
@@ -58,9 +60,9 @@ namespace ztrace
         static Int getRange() { return colourRange; }
 
     private:
-        Component<colourRange> red_;
-        Component<colourRange> green_;
-        Component<colourRange> blue_;
+        Component red_;
+        Component green_;
+        Component blue_;
     };
 }
 

@@ -18,8 +18,8 @@ namespace ztrace {
         Camera()
                 : position_()
                 , pointingDirection_(0.,0.,-1.)
-                , pointingNormalX(1.,0.,0.)
-                , pointingNormalY(0.,1.,0.)
+                , pointingNormalX_(1.,0.,0.)
+                , pointingNormalY_(0.,1.,0.)
                 , width_(1.6)
                 , height_(0.9)
         {}
@@ -27,8 +27,8 @@ namespace ztrace {
         Camera( Vector const & position, Vector const & pointingDirection, Real const & width = 1.6, Real const & height = 0.9 )
                 : position_(position)
                 , pointingDirection_(pointingDirection)
-                , pointingNormalX()
-                , pointingNormalY()
+                , pointingNormalX_()
+                , pointingNormalY_()
                 , width_(width)
                 , height_(height)
         {
@@ -37,8 +37,10 @@ namespace ztrace {
 
         void updateState() {
             pointingDirection_.makeUnitVector();
-            pointingNormalX_ = cross( pointingDirection_, earthNormal ).makeUnitVector();
-            pointingNormalY_ = cross( pointingDirection_, pointingNormalX_).makeUnitVector();
+            pointingNormalX_ = cross( pointingDirection_, earthNormal );
+            pointingNormalY_ = cross( pointingDirection_, pointingNormalX_);
+            pointingNormalX_.makeUnitVector();
+            pointingNormalY_.makeUnitVector();
             pointingNormalX_ *= width_;
             pointingNormalY_ *= height_;
         }
