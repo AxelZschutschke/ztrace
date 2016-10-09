@@ -3,16 +3,16 @@
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" assignedExecutableTargets="true" buildAllGenerated="true">
     <generated>
       <config projectName="ztracer" targetName="Nightly" />
-      <config projectName="ztracer" targetName="ContinuousConfigure" />
       <config projectName="ztracer" targetName="ExperimentalMemCheck" />
+      <config projectName="ztracer" targetName="ContinuousConfigure" />
       <config projectName="ztracer" targetName="ExperimentalUpdate" />
       <config projectName="ztracer" targetName="ExperimentalCoverage" />
       <config projectName="ztracer" targetName="NightlyUpdate" />
       <config projectName="ztracer" targetName="test_TraceableList.x" />
       <config projectName="ztracer" targetName="NightlyMemoryCheck" />
       <config projectName="ztracer" targetName="Continuous" />
-      <config projectName="ztracer" targetName="ContinuousTest" />
       <config projectName="ztracer" targetName="ztrace" />
+      <config projectName="ztracer" targetName="ContinuousTest" />
       <config projectName="ztracer" targetName="NightlyStart" />
       <config projectName="ztracer" targetName="test_Image.x" />
       <config projectName="ztracer" targetName="ContinuousStart" />
@@ -20,25 +20,25 @@
       <config projectName="ztracer" targetName="test_Sphere.x" />
       <config projectName="ztracer" targetName="test_Vector.x" />
       <config projectName="ztracer" targetName="ContinuousSubmit" />
-      <config projectName="ztracer" targetName="ExperimentalConfigure" />
       <config projectName="ztracer" targetName="test_fileIO.x" />
+      <config projectName="ztracer" targetName="ExperimentalConfigure" />
       <config projectName="ztracer" targetName="ExperimentalTest" />
       <config projectName="ztracer" targetName="ContinuousMemCheck" />
       <config projectName="ztracer" targetName="ExperimentalBuild" />
       <config projectName="ztracer" targetName="ztracer.x" />
-      <config projectName="ztracer" targetName="ExperimentalSubmit" />
       <config projectName="ztracer" targetName="NightlySubmit" />
+      <config projectName="ztracer" targetName="ExperimentalSubmit" />
       <config projectName="ztracer" targetName="test_Colour.x" />
-      <config projectName="ztracer" targetName="ContinuousUpdate" />
       <config projectName="ztracer" targetName="ExperimentalStart" />
+      <config projectName="ztracer" targetName="ContinuousUpdate" />
       <config projectName="ztracer" targetName="NightlyBuild" />
       <config projectName="ztracer" targetName="test_Component.x" />
       <config projectName="ztracer" targetName="NightlyMemCheck" />
       <config projectName="ztracer" targetName="NightlyConfigure" />
-      <config projectName="ztracer" targetName="ContinuousBuild" />
+      <config projectName="ztracer" targetName="NightlyTest" />
       <config projectName="ztracer" targetName="ContinuousCoverage" />
       <config projectName="ztracer" targetName="Experimental" />
-      <config projectName="ztracer" targetName="NightlyTest" />
+      <config projectName="ztracer" targetName="ContinuousBuild" />
       <config projectName="ztracer" targetName="test_Ray.x" />
     </generated>
   </component>
@@ -48,7 +48,9 @@
     </ADDITIONAL_GENERATION_ENVIRONMENT>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3ae349af-5d0b-46fa-85fe-29cc86abb368" name="Default" comment="" />
+    <list default="true" id="3ae349af-5d0b-46fa-85fe-29cc86abb368" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/test_TraceableList.cpp" afterPath="$PROJECT_DIR$/test/test_TraceableList.cpp" />
+    </list>
     <ignored path="raytrace.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -66,11 +68,11 @@
     <favorites_list name="raytrace" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="ztracer.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ztracer.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="258">
+            <state relative-caret-position="300">
               <caret line="20" column="15" selection-start-line="20" selection-start-column="15" selection-end-line="20" selection-end-column="15" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
@@ -82,7 +84,7 @@
       <file leaf-file-name="TraceableList.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/TraceableList.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
+            <state relative-caret-position="690">
               <caret line="46" column="32" selection-start-line="46" selection-start-column="32" selection-end-line="46" selection-end-column="32" />
               <folding>
                 <element signature="e#115#132#0" expanded="true" />
@@ -124,7 +126,7 @@
       <file leaf-file-name="test_Sphere.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/test_Sphere.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
+            <state relative-caret-position="720">
               <caret line="48" column="52" selection-start-line="0" selection-start-column="0" selection-end-line="90" selection-end-column="1" />
               <folding>
                 <element signature="e#50#69#0" expanded="true" />
@@ -138,8 +140,8 @@
       <file leaf-file-name="test_TraceableList.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/test_TraceableList.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="123">
-              <caret line="34" column="40" selection-start-line="34" selection-start-column="40" selection-end-line="34" selection-end-column="40" />
+            <state relative-caret-position="648">
+              <caret line="120" column="28" selection-start-line="120" selection-start-column="28" selection-end-line="120" selection-end-column="28" />
               <folding>
                 <element signature="e#50#69#0" expanded="true" />
               </folding>
@@ -150,7 +152,7 @@
       <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="543">
+            <state relative-caret-position="765">
               <caret line="51" column="16" selection-start-line="51" selection-start-column="16" selection-end-line="51" selection-end-column="16" />
               <folding />
             </state>
@@ -180,6 +182,9 @@
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -358,6 +363,12 @@
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.npm" factoryName="npm">
@@ -681,11 +692,12 @@
       <option name="presentableId" value="Default" />
       <updated>1475915089200</updated>
       <workItem from="1475915092005" duration="48236000" />
+      <workItem from="1476003609487" duration="360000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="48236000" />
+    <option name="totallyTimeSpent" value="48596000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -702,21 +714,21 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24954791" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -758,31 +770,104 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/fileIO.h">
+    <entry file="file://$PROJECT_DIR$/src/ztracer.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+        <state relative-caret-position="300">
+          <caret line="20" column="15" selection-start-line="20" selection-start-column="15" selection-end-line="20" selection-end-column="15" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/TraceableList.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="690">
+          <caret line="46" column="32" selection-start-line="46" selection-start-column="32" selection-end-line="46" selection-end-column="32" />
+          <folding>
+            <element signature="e#115#132#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Traceable.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="10" selection-start-line="18" selection-start-column="10" selection-end-line="18" selection-end-column="10" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/fileHandler.h">
+    <entry file="file://$PROJECT_DIR$/src/Sphere.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="42" selection-start-line="27" selection-start-column="42" selection-end-line="27" selection-end-column="42" />
+        <state relative-caret-position="225">
+          <caret line="15" column="30" selection-start-line="15" selection-start-column="30" selection-end-line="15" selection-end-column="30" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Ray.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="33" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_Sphere.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="720">
+          <caret line="48" column="52" selection-start-line="0" selection-start-column="0" selection-end-line="90" selection-end-column="1" />
+          <folding>
+            <element signature="e#50#69#0" expanded="true" />
+            <marker date="1476000430000" expanded="true" signature="1428:1841" ph="{...}" />
+            <marker date="1476000430000" expanded="true" signature="1879:2292" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_TraceableList.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#50#69#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="765">
+          <caret line="51" column="16" selection-start-line="51" selection-start-column="16" selection-end-line="51" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_Ray.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#50#66#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Types.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fileIO.h" />
+    <entry file="file://$PROJECT_DIR$/src/fileHandler.h" />
     <entry file="file://$PROJECT_DIR$/test/test_Image.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
           <caret line="30" column="11" selection-start-line="30" selection-start-column="11" selection-end-line="30" selection-end-column="11" />
-          <folding>
-            <element signature="e#50#68#0" expanded="false" />
-            <element signature="e#203#220#0" expanded="false" />
-            <element signature="e#274#291#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -790,7 +875,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
           <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -798,13 +882,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="528">
           <caret line="109" column="30" selection-start-line="109" selection-start-column="30" selection-end-line="109" selection-end-column="30" />
-          <folding>
-            <element signature="e#50#69#0" expanded="false" />
-            <marker date="1475954766000" expanded="true" signature="1488:1683" ph="{...}" />
-            <marker date="1475954766000" expanded="true" signature="1717:1915" ph="{...}" />
-            <marker date="1475954766000" expanded="true" signature="1949:2147" ph="{...}" />
-            <marker date="1475954766000" expanded="true" signature="2181:2385" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -812,10 +889,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding>
-            <element signature="e#50#69#0" expanded="false" />
-            <element signature="e#164#181#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -823,10 +896,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
           <caret line="24" column="22" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
-          <folding>
-            <element signature="e#107#124#0" expanded="false" />
-            <element signature="e#195#208#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -834,10 +903,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
           <caret line="23" column="112" selection-start-line="23" selection-start-column="112" selection-end-line="23" selection-end-column="112" />
-          <folding>
-            <element signature="e#99#116#0" expanded="false" />
-            <element signature="e#189#203#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -845,11 +910,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="765">
           <caret line="51" column="52" selection-start-line="51" selection-start-column="52" selection-end-line="51" selection-end-column="52" />
-          <folding>
-            <element signature="e#107#125#0" expanded="false" />
-            <element signature="e#177#194#0" expanded="false" />
-            <element signature="e#245#257#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -857,14 +917,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="510">
           <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
-          <folding>
-            <element signature="e#101#119#0" expanded="false" />
-            <element signature="e#352#369#0" expanded="false" />
-            <element signature="e#437#449#0" expanded="false" />
-            <element signature="e#1081#1098#0" expanded="false" />
-            <element signature="e#1213#1230#0" expanded="false" />
-            <element signature="e#1239#1251#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -872,9 +924,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="825">
           <caret line="55" column="54" selection-start-line="55" selection-start-column="54" selection-end-line="55" selection-end-column="54" />
-          <folding>
-            <element signature="e#101#119#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -906,7 +955,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ztracer.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="258">
+        <state relative-caret-position="300">
           <caret line="20" column="15" selection-start-line="20" selection-start-column="15" selection-end-line="20" selection-end-column="15" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
@@ -916,7 +965,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/test_Sphere.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
+        <state relative-caret-position="720">
           <caret line="48" column="52" selection-start-line="0" selection-start-column="0" selection-end-line="90" selection-end-column="1" />
           <folding>
             <element signature="e#50#69#0" expanded="true" />
@@ -928,7 +977,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="543">
+        <state relative-caret-position="765">
           <caret line="51" column="16" selection-start-line="51" selection-start-column="16" selection-end-line="51" selection-end-column="16" />
           <folding />
         </state>
@@ -936,7 +985,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/TraceableList.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
+        <state relative-caret-position="690">
           <caret line="46" column="32" selection-start-line="46" selection-start-column="32" selection-end-line="46" selection-end-column="32" />
           <folding>
             <element signature="e#115#132#0" expanded="true" />
@@ -962,8 +1011,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/test_TraceableList.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="34" column="40" selection-start-line="34" selection-start-column="40" selection-end-line="34" selection-end-column="40" />
+        <state relative-caret-position="648">
+          <caret line="120" column="28" selection-start-line="120" selection-start-column="28" selection-end-line="120" selection-end-column="28" />
           <folding>
             <element signature="e#50#69#0" expanded="true" />
           </folding>
