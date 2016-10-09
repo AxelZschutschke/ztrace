@@ -13,17 +13,17 @@ namespace ztrace {
 
     class Material {
     public:
-        Ray const randomScatter( Vector const & point, Vector const & normal ) const {
+        Vector const randomScatter( Vector const & normal ) const {
           Vector result;
           Vector unit{1.,1.,1.};
           do {
               result = 2. * Vector{drand48(), drand48(), drand48()} - unit;
           } while( result.len() > 1. );
 
-          return Ray{ point, normal * 1.1 + result };
+          return Vector{ normal * 1.1 + result };
         }
-        Ray const reflect( Vector const & point, Vector const & normal, Vector const & rayIn ) const {
-            return Ray{ point, rayIn - 2 * dot( rayIn, normal ) * normal };
+        Vector const reflect( Vector const & normal, Vector const & rayIn ) const {
+            return Vector{ rayIn - 2 * dot( rayIn, normal ) * normal };
         }
 
         virtual bool scatter( Ray const & rayIn, TraceData & traceData, Vector & attenuation, Ray & scattered ) const = 0;
@@ -40,7 +40,7 @@ namespace ztrace {
         {}
 
         virtual bool scatter( Ray const & rayIn __attribute__((unused)), TraceData & traceData, Vector & attenuation, Ray & scattered ) const {
-            scattered = randomScatter( traceData.point, traceData.normal );
+            scattered = Ray{ traceData.point, randomScatter( traceData.normal ) };
             attenuation = albedo_;
             return true;
         }
@@ -53,18 +53,24 @@ namespace ztrace {
     public:
         Metal( ) 
             : albedo_(1.,1.,1.)
+            , fuzz_(0.)
         {}
-        Metal( Vector const & albedo )
+        Metal( Vector const & albedo, Real fuzz = 0. )
             : albedo_( albedo )
-        {}
+            , fuzz_(fuzz)
+        {
+           fuzz_ = fuzz_ < 0. ? 0. : fuzz_;
+           fuzz_ = fuzz_ > 1. ? 1. : fuzz_;
+        }
 
         bool scatter( Ray const & rayIn, TraceData & traceData, Vector & attenuation, Ray & scattered ) const {
-            scattered = reflect( traceData.point, traceData.normal, rayIn.direction() );
+            scattered = Ray{ traceData.point, reflect( traceData.normal, rayIn.direction() ) + fuzz_ * randomScatter( traceData.normal ) };
             attenuation = albedo_;
             return dot( scattered.direction(), traceData.normal ) > 0.;
         }
     private:
         Vector albedo_; // Colour
+        Real   fuzz_;   // How much scattering
     };
 }
 

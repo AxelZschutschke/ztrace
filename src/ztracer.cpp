@@ -64,11 +64,11 @@ int main()
     Image image( width, height );
 
     TraceableList traceables{};
-    traceables.add( std::make_shared<Sphere>(Vector{1.,   1.,-3.5}, 0.25, std::make_shared<Metal>(Vector{0.1,0.8,0.12})  ));
-    traceables.add( std::make_shared<Sphere>(Vector{0.,   1.,-3.5}, 0.75, std::make_shared<Lambertian>(Vector{0.8,0.1,0.12})  ));
-    traceables.add( std::make_shared<Sphere>(Vector{0.,-101.,-1.5}, 100.5, std::make_shared<Lambertian>(Vector{0.1,0.8,0.12}) ));
+    traceables.add( std::make_shared<Sphere>(Vector{1.,   1.,-6.5}, 0.5, std::make_shared<Metal>(Vector{0.8,0.8,0.8}, 0.0 )  ));
+    traceables.add( std::make_shared<Sphere>(Vector{0.,   1.,-6.5}, 0.75, std::make_shared<Metal>(Vector{0.8,0.1,0.12}, 0.2 )  ));
+    traceables.add( std::make_shared<Sphere>(Vector{0.,-101.,-10.}, 100.5, std::make_shared<Metal>(Vector{0.1,0.8,0.12}, 0.5) ));
 
-    Camera cam{};
+    Camera cam({0.,0.,0.},{0.,0.,-1.},1.,.5625);
 
     for( Int y = 0; y < height; ++y ){
         for( Int x = 0; x < width; ++x ){
@@ -78,7 +78,7 @@ int main()
                 xPos = position( x, width );
                 yPos = position( y, height);
                 Ray    ray = cam.emitRay( xPos, yPos );
-                colour += rayColour(ray, traceables).vector() / antiAliasing;
+                colour += rayColour(ray, traceables).vector() / (Real) antiAliasing;
             }
             image.setPixel( x, y, colour);
         }

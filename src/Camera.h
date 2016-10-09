@@ -37,8 +37,8 @@ namespace ztrace {
 
         void updateState() {
             pointingDirection_.makeUnitVector();
-            pointingNormalX_ = cross( pointingDirection_, earthNormal );
-            pointingNormalY_ = cross( pointingDirection_, pointingNormalX_);
+            pointingNormalX_ = -cross( pointingDirection_, earthNormal );
+            pointingNormalY_ = -cross( pointingDirection_, pointingNormalX_);
             pointingNormalX_.makeUnitVector();
             pointingNormalY_.makeUnitVector();
             pointingNormalX_ *= width_;
