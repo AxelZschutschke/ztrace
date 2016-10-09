@@ -64,7 +64,12 @@ namespace ztrace {
         Real z_;
     };
 
-    Real const dot( Vector const & a, Vector const & b ){ return ( a * b ).sum(); }
+    Real const dot( Vector const & a, Vector const & b ){
+        return ( a * b ).sum();
+    }
+    Vector const cross( Vector const & a, Vector const & b ){
+        return Vector{ a.y() * b.z() - a.z() * b.y(), a.z() * b.x() - a.x() * b.z(), a.x() * b.y() - a.y() * b.z() };
+    }
 
     Vector const operator+( Real const & lhs, Vector const & rhs ){ return rhs + lhs; }
     Vector const operator*( Real const & lhs, Vector const & rhs ){ return rhs * lhs; }

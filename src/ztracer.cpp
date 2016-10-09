@@ -2,35 +2,30 @@
 #include "Colour.h"
 #include "Image.h"
 #include "Vector.h"
+#include "TraceableList.h"
+#include "Sphere.h"
 #include "Ray.h"
+#include "Camera.h"
 #include "PPMWriter.h"
+#include <stdlib.h>
+
 
 using Vector = ztrace::Vector;
 using Ray = ztrace::Ray;
 using Colour = ztrace::Colour<80>;
 using Image = ztrace::Image<Colour>;
 using PPMWriter = ztrace::PPMWriter<Image>;
+using TraceableList = ztrace::TraceableList;
+using TraceData = ztrace::TraceData;
+using Sphere = ztrace::Sphere;
+using Camera = ztrace::Camera;
 
-Real hitSphere( Vector const & center, Real const & radius, Ray const & ray ){
-    Vector oc = ray.origin() - center;
-    Real a = dot( ray.direction(), ray.direction() );
-    Real b = 2.0 * dot( oc, ray.direction() );
-    Real c = dot( oc, oc ) - radius * radius;
-    Real discriminant = (b * b - 4. * a * c );
-    Real result;
-    if (discriminant <= 0.) {
-        result = -1.0;
-    } else {
-        result = (-b - sqrt(discriminant)) / (2.0 * a);
-    }
-    return result;
-
-}
-Colour const setBGColour( Ray const & ray ){
+Colour const setBGColour( Ray const & ray, TraceableList & traceable  ){
     Colour colour;
-    Vector center( 0.0, 0.0, -1. );
-    Real length = hitSphere( center, 0.4, ray );
-    if ( length > 0.0 ){
+    TraceData traceData;
+    bool hitSomething = traceable.hit( ray, 0., 100., traceData );
+    if ( hitSomething ){
+        colour.setRGB( 1., 0., 0. );
     } else {
         Vector unit_direction = ray.direction();
         unit_direction.makeUnitVector();
@@ -42,24 +37,37 @@ Colour const setBGColour( Ray const & ray ){
     return colour;
 }
 
+Real const position( Int const & x, Int const & screenWidth ) {
+    return ((Real) x + (drand48() - 0.5) ) / ((Real) screenWidth);
+}
+
 int main()
 {
 
-    Int width  = 800;
-    Int height = 400;
-
-    Vector upperLeftCorner( -2.0, 1.0, -1.0 );
-    Vector horizontal( 4.0, 0.0, 0.0 );
-    Vector vertical( 0.0, -2.0, 0.0 );
-    Vector origin( 0.0, 0.0, 0.0 );
+    Int width  = 900;
+    Int height = 450;
+    Int antiAliasing = 4;
 
     Image image( width, height );
-    for( int y = 0; y < height; ++y ){
-        for( int x = 0; x < width; ++x ){
-            Vector xPos = (Real) x / (Real) width * horizontal;
-            Vector yPos = (Real) y / (Real) height * vertical;
-            Ray    ray( origin, upperLeftCorner + xPos + yPos );
-            image.setPixel( x, y, setBGColour( ray ));
+
+    TraceableList traceables{};
+    traceables.add( std::make_shared<Sphere>(Vector{1.,1.,-1.5}, 0.25 ));
+    traceables.add( std::make_shared<Sphere>(Vector{0.0,1.,-1.5}, 0.75 ));
+    traceables.add( std::make_shared<Sphere>(Vector{0.,-101.,-1.5}, 100.5 ));
+
+    Camera cam{};
+
+    for( Int y = 0; y < height; ++y ){
+        for( Int x = 0; x < width; ++x ){
+            Real xPos, yPos;
+            Colour colour;
+            for( Int a = 0; a < antiAliasing; ++a ) {
+                xPos = position( x, width );
+                yPos = position( y, height);
+                Ray    ray = cam.emitRay( xPos, yPos );
+                colour = colour + ( setBGColour(ray, traceables) * 0.5 );
+            }
+            image.setPixel( x, y, setBGColour( ray, traceables ));
         }
     }
     PPMWriter writer;

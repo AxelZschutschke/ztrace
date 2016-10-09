@@ -31,6 +31,30 @@ namespace ztrace
         Component<colourRange> greenValue() const { return green_; }
         Component<colourRange> blueValue() const { return blue_; }
 
+        Colour const & operator+=( Colour const & rhs ) {
+            red_ += rhs.red_;
+            green_ += rhs.green_;
+            blue_ += rhs_.blue_;
+            return *this;
+        }
+        Colour const operator+( Colour const & rhs ) const {
+            Colour result = rhs;
+            result += *this;
+            return result;
+        }
+        Colour const operator*( Real const & increment ) const {
+            return Colour{ increment * red_, increment * green_, increment * blue_ };
+        }
+        Colour const operator/( Real const & decrement ) const {
+            return Colour{ decrement * red_, decrement * green_, decrement * blue_ };
+        }
+        Colour const & invert() {
+            red_.invert();
+            green_.invert();
+            blue_.invert();
+            return *this;
+        }
+
         static Int getRange() { return colourRange; }
 
     private:

@@ -110,6 +110,29 @@ TEST( Vector_test, abs )
     EXPECT_DOUBLE_EQ( c.y(),  2.0 );
     EXPECT_DOUBLE_EQ( c.z(),  3.0 );
 }
+TEST( Vector_test, dot_aligned )
+{
+    Vector a{ 2.0,  0.0,  0.0 };
+    Vector b{ 2.0,  0.0,  0.0 };
+    Real c = dot(a, b);
+    EXPECT_DOUBLE_EQ( c,  4.0 );
+}
+TEST( Vector_test, dot_notAligned )
+{
+    Vector a{ 2.0,  0.0,  0.0 };
+    Vector b{ 0.0,  2.0,  0.0 };
+    Real c = dot(a, b);
+    EXPECT_DOUBLE_EQ( c,  0.0 );
+}
+TEST( Vector_test, cross)
+{
+    Vector a{ 1.0,  0.0,  0.0 };
+    Vector b{ 0.0,  1.0,  0.0 };
+    Vector c = cross(a, b);
+    EXPECT_DOUBLE_EQ( c.x(),  0.0 );
+    EXPECT_DOUBLE_EQ( c.y(),  0.0 );
+    EXPECT_DOUBLE_EQ( c.z(),  1.0 );
+}
 
 TEST( Vector_test, toStdout )
 {

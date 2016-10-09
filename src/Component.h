@@ -45,8 +45,15 @@ namespace ztrace {
             return (Int) (value_ * colourRange);
         }
 
-        Component invert() const {
-            return Component(1.0 - value_);
+        Component const & invert(){
+            value_ = 1.0 - value_;
+            return *this;
+        }
+
+        Component const & operator+=( Component const & rhs ){
+            value_ += rhs.value_;
+            limitRange();
+            return *this;
         }
 
         static Int getRange() { return colourRange; }
