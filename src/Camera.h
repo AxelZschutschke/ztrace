@@ -22,15 +22,19 @@ namespace ztrace {
                 , pointingNormalY_(0.,1.,0.)
                 , width_(1.6)
                 , height_(0.9)
+                , focalLength_(1.0)
+                , aperture_(0.01)
         {}
 
-        Camera( Vector const & position, Vector const & pointingDirection, Real const & width = 1.6, Real const & height = 0.9 )
+        Camera( Vector const & position, Vector const & pointingDirection, Real const & width = 1.6, Real const & height = 0.9, Real const & focalLength = 1.0, Real const & aperture = 0.05 )
                 : position_(position)
                 , pointingDirection_(pointingDirection)
                 , pointingNormalX_()
                 , pointingNormalY_()
                 , width_(width)
                 , height_(height)
+                , focalLength_(focalLength)
+                , aperture_(aperture)
         {
             updateState();
         }
@@ -41,12 +45,22 @@ namespace ztrace {
             pointingNormalY_ = -cross( pointingDirection_, pointingNormalX_);
             pointingNormalX_.makeUnitVector();
             pointingNormalY_.makeUnitVector();
-            pointingNormalX_ *= width_;
-            pointingNormalY_ *= height_;
         }
 
+        Vector const randomOffsetAperture( ) {
+            Vector point;
+            static Vector unit(1.,1.,1.);
+            do {
+                point = 2. * ( drand48() * pointingNormalX_ + drand48() * pointingNormalY_ ) - pointingNormalX_ - pointingNormalY_;
+            } while( point.len() > 1. );
+            return point * aperture_;
+        }
         Ray const emitRay( Real const & screenX, Real const & screenY ){
-            return Ray{ position_, (pointingNormalX_ * ( screenX - 0.5 ) + pointingNormalY_ * ( 0.5 - screenY ) ) + pointingDirection_ };
+            Vector offset = randomOffsetAperture();
+            Vector target = pointingDirection_ * focalLength_; 
+            target += pointingNormalX_ * width_ * (screenX - 0.5 );
+            target += pointingNormalY_ * height_ * (0.5 - screenY );
+            return Ray{ position_ + offset, target - offset };
         }
 
     private:
@@ -56,6 +70,8 @@ namespace ztrace {
         Vector pointingNormalY_;
         Real width_;    // how much fisheye it is
         Real height_;
+        Real focalLength_;
+        Real aperture_;
     };
 }
 

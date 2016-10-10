@@ -7,13 +7,16 @@
 
 #include <vector>
 #include <iostream>
+#include <algorithm>
 #include "Types.h"
+#include "Vector.h"
+#include "ColourConverter.h"
 
 namespace ztrace {
 
-    template<class Colour>
+    template<class Vector,class Colour>
     class Image {
-        using ColourVector = std::vector<Colour>;
+        using ColourVector = std::vector<Vector>;
     public:
         Image(Size width, Size height)
                 : width_(width)
@@ -21,9 +24,9 @@ namespace ztrace {
                 , imageData_(width*height)
         { }
 
-        void setPixel( Size const & xPos, Size const & yPos, Colour const & color ) { imageData_[ yPos * width_ + xPos] = color; }
+        void setPixel( Size const & xPos, Size const & yPos, Vector const & color ) { imageData_[ yPos * width_ + xPos] = color; }
 
-        Colour & getPixel( Size const & xPos, Size const & yPos ){ return imageData_[yPos * width_ + xPos]; }
+        Vector & getPixel( Size const & xPos, Size const & yPos ){ return imageData_[yPos * width_ + xPos]; }
 
         ColourVector & getRawData() { return imageData_; }
 
@@ -36,7 +39,7 @@ namespace ztrace {
             Size counter = 0;
             for (Size y = 0; y < image.height_; ++y) {
                 for (Size x = 0; x < image.width_; ++x) {
-                    out << image.imageData_[counter] << " ";
+                    out << Colour{ image.imageData_[counter] } << " ";
                     ++counter;
                 }
                 out << std::endl;

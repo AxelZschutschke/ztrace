@@ -72,6 +72,75 @@ namespace ztrace {
         Vector albedo_; // Colour
         Real   fuzz_;   // How much scattering
     };
+
+    class Glass : public Material
+    {
+    public:
+        Glass( ) 
+            : albedo_(1.,1.,1.)
+            , fuzz_(0.)
+            , refractIndex_( 1.5 )
+        {}
+        Glass( Vector const & albedo, Real const & refractIndex = 1.5, Real const & fuzz = 0. )
+            : albedo_( albedo )
+            , fuzz_(fuzz)
+            , refractIndex_( refractIndex )
+        {
+           fuzz_ = fuzz_ < 0. ? 0. : fuzz_;
+           fuzz_ = fuzz_ > 1. ? 1. : fuzz_;
+        }
+
+        bool refract( Vector direction, Vector const & normal, Real const & refractIndex, Vector & refracted ) const {
+            direction.makeUnitVector();
+            Real steepness = dot( direction, normal );
+            Real discriminant = 1.0 - refractIndex * refractIndex * ( 1. - steepness * steepness );
+            if( discriminant > 0. ) {
+                refracted = refractIndex * ( direction - normal * steepness ) - normal * sqrt( discriminant );
+                return true;
+            }
+            return false;
+        }
+        Real  schlick( Real const & cosine, Real const & refractIndex ) const {
+            Real r0 = ( 1. - refractIndex ) / ( 1. + refractIndex );
+            r0 = r0 * r0;
+            return r0 + ( 1. - r0 ) * pow(( 1. - cosine ), 5 );
+        }
+        bool scatter( Ray const & rayIn, TraceData & traceData, Vector & attenuation, Ray & scattered ) const {
+            Vector outward_normal;
+            Real refractIndex;
+            Real reflectionProbability;
+            Real cosine;
+            Vector refracted;
+            if( dot( rayIn.direction(), traceData.normal ) > 0. ) { 
+                outward_normal = -traceData.normal;
+                refractIndex = refractIndex_;
+                cosine = refractIndex * dot( rayIn.direction(), traceData.normal ) / rayIn.direction().len();
+            }else{
+                outward_normal = traceData.normal;
+                refractIndex = 1. / refractIndex_;
+                cosine = -dot( rayIn.direction(), traceData.normal ) / rayIn.direction().len();
+            }
+            if( refract( rayIn.direction(), outward_normal, refractIndex, refracted ) ) {
+                reflectionProbability = schlick( cosine, refractIndex );
+            }else{
+                reflectionProbability = 1.0;
+            }
+            if( drand48() < reflectionProbability )
+            {
+                Vector reflected = reflect( rayIn.direction(), traceData.normal );
+                scattered = Ray( traceData.point, reflected );
+                attenuation = Vector{ 1., 1., 1. };
+            }else{
+                scattered = Ray( traceData.point, refracted );
+                attenuation = albedo_;
+            }
+            return true;
+        }
+    private:
+        Vector albedo_; // Colour
+        Real   fuzz_;   // How much scattering
+        Real   refractIndex_; // Refracting index
+    };
 }
 
 #endif //ZTRACER_MATERIAL_H
