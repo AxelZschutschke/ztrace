@@ -11,9 +11,9 @@ namespace ztrace {
     class Sphere : public Traceable {
         using MaterialPtr = std::shared_ptr<Material>;
     public:
-        Sphere() = delete;
+        Sphere() = default;
 
-        Sphere(Vector const &center, Real const &radius, MaterialPtr material )
+        Sphere(Vector const &center, Real const &radius, MaterialPtr material = nullptr )
                 : center_(center), radius_(radius), material_(material) {}
 
         static bool checkHitInterval(Real const &positionOnRay, Real const &intervalLower, Real const &intervalUpper ) {

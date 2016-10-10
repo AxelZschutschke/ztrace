@@ -26,7 +26,7 @@ namespace ztrace {
             return Vector{ rayIn - 2 * dot( rayIn, normal ) * normal };
         }
 
-        virtual bool scatter( Ray const & rayIn, TraceData & traceData, Vector & attenuation, Ray & scattered ) const = 0;
+        virtual bool scatter( Ray const & rayIn, TraceData const & traceData, Vector & attenuation, Ray & scattered ) const = 0;
     };
 
     class Lambertian : public Material
@@ -39,7 +39,7 @@ namespace ztrace {
             : albedo_( albedo )
         {}
 
-        virtual bool scatter( Ray const & rayIn __attribute__((unused)), TraceData & traceData, Vector & attenuation, Ray & scattered ) const {
+        virtual bool scatter( Ray const & rayIn __attribute__((unused)), TraceData const & traceData, Vector & attenuation, Ray & scattered ) const {
             scattered = Ray{ traceData.point, randomScatter( traceData.normal ) };
             attenuation = albedo_;
             return true;
@@ -63,7 +63,7 @@ namespace ztrace {
            fuzz_ = fuzz_ > 1. ? 1. : fuzz_;
         }
 
-        bool scatter( Ray const & rayIn, TraceData & traceData, Vector & attenuation, Ray & scattered ) const {
+        bool scatter( Ray const & rayIn, TraceData const & traceData, Vector & attenuation, Ray & scattered ) const {
             scattered = Ray{ traceData.point, reflect( traceData.normal, rayIn.direction() ) + fuzz_ * randomScatter( traceData.normal ) };
             attenuation = albedo_;
             return dot( scattered.direction(), traceData.normal ) > 0.;
@@ -105,7 +105,7 @@ namespace ztrace {
             r0 = r0 * r0;
             return r0 + ( 1. - r0 ) * pow(( 1. - cosine ), 5 );
         }
-        bool scatter( Ray const & rayIn, TraceData & traceData, Vector & attenuation, Ray & scattered ) const {
+        bool scatter( Ray const & rayIn, TraceData const & traceData, Vector & attenuation, Ray & scattered ) const {
             Vector outward_normal;
             Real refractIndex;
             Real reflectionProbability;

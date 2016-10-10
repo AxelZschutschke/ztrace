@@ -22,6 +22,12 @@ namespace ztrace
         ColourConverter()
             : colourRepresentation_(4)
         {};
+        ColourConverter( Real const & gray, Real const & alpha = 1. )
+            : colourRepresentation_(4)
+        {
+            Vector temp( gray, gray, gray );
+            setRGB( temp, alpha );
+        }
         ColourConverter( Int const & red, Int const & green, Int const & blue, Int alpha = colourRange )
             : colourRepresentation_(4)
         {

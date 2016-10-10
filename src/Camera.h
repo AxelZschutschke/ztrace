@@ -47,23 +47,24 @@ namespace ztrace {
             pointingNormalY_.makeUnitVector();
         }
 
-        Vector const randomOffsetAperture( ) {
-            Vector point;
-            static Vector unit(1.,1.,1.);
-            do {
-                point = 2. * ( drand48() * pointingNormalX_ + drand48() * pointingNormalY_ ) - pointingNormalX_ - pointingNormalY_;
-            } while( point.len() > 1. );
-            return point * aperture_;
-        }
-        Ray const emitRay( Real const & screenX, Real const & screenY ){
-            Vector offset = randomOffsetAperture();
-            Vector target = pointingDirection_ * focalLength_; 
-            target += pointingNormalX_ * width_ * (screenX - 0.5 );
-            target += pointingNormalY_ * height_ * (0.5 - screenY );
-            return Ray{ position_ + offset, target - offset };
+        Ray const emitRay( Real const & screenX, Real const & screenY ) const {
+            Vector offset_ = randomOffsetAperture();
+            Vector target_ = pointingDirection_ * focalLength_; 
+            target_ += pointingNormalX_ * width_ * (screenX - 0.5 );
+            target_ += pointingNormalY_ * height_ * (0.5 - screenY );
+            return Ray{ position_ + offset_, target_ - offset_ };
         }
 
     private:
+        Vector const randomOffsetAperture( ) const {
+            Vector offset_;
+            static Vector unit(1.,1.,1.);
+            do {
+                offset_ = 2. * ( drand48() * pointingNormalX_ + drand48() * pointingNormalY_ ) - pointingNormalX_ - pointingNormalY_;
+            } while( offset_.len() > 1. );
+            return offset_;
+        }
+
         Vector position_;
         Vector pointingDirection_;
         Vector pointingNormalX_;

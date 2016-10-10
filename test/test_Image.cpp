@@ -11,17 +11,18 @@ using ztrace::Int;
 using ztrace::Real;
 using ztrace::Size;
 
+using Vector = ztrace::Vector;
+
 template<Int colourRange>
 using Colour = ztrace::ColourConverter<colourRange>;
 
 template<Int colourRange>
-using Image = ztrace::Image<Colour<colourRange>>;
+using Image = ztrace::Image<Vector,Colour<colourRange>>;
 
 TEST( Image_test, constructor_real )
 {
     Image<128> test(1, 1);
-    Colour<128> colour{};
-    colour.setRGB( 0.5, 0.5, 0.5 );
+    Vector colour( 0.5, 0.5, 0.5 );
     test.setPixel( 0, 0, colour );
     EXPECT_EQ( test.size(), 1 );
     EXPECT_EQ( test.width(), 1 );
@@ -31,8 +32,7 @@ TEST( Image_test, constructor_real )
 TEST( Image_test, toStdout )
 {
     Image<128> test(1, 1);
-    Colour<128> colour{};
-    colour.setRGB( 0.5, 0.5, 0.5 );
+    Vector colour( 0.5, 0.5, 0.5 );
     test.setPixel( 0, 0, colour );
     testing::internal::CaptureStdout();
     std::cout << test;
