@@ -10,8 +10,6 @@
 
 namespace ztrace {
 
-    // earths normal (to level the camera)
-    static Vector earthNormal( 0., -1., 0. );
 
     class Camera {
     public:
@@ -36,10 +34,13 @@ namespace ztrace {
                 , focalLength_(focalLength)
                 , aperture_(aperture)
         {
+            std::cout << aperture_ << std::endl;
             updateState();
         }
 
         void updateState() {
+            // earths normal (to level the camera)
+            static Vector earthNormal( 0., -1., 0. );
             pointingDirection_.makeUnitVector();
             pointingNormalX_ = -cross( pointingDirection_, earthNormal );
             pointingNormalY_ = -cross( pointingDirection_, pointingNormalX_);
@@ -62,7 +63,7 @@ namespace ztrace {
             do {
                 offset_ = 2. * ( drand48() * pointingNormalX_ + drand48() * pointingNormalY_ ) - pointingNormalX_ - pointingNormalY_;
             } while( offset_.len() > 1. );
-            return offset_;
+            return offset_ * aperture_;
         }
 
         Vector position_;

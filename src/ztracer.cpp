@@ -3,6 +3,8 @@
 #include "Image.h"
 #include "Vector.h"
 #include "TraceableList.h"
+#include "LightList.h"
+#include "Light.h"
 #include "Sphere.h"
 #include "Ray.h"
 #include "Camera.h"
@@ -24,9 +26,35 @@ using Camera = ztrace::Camera;
 using Lambertian = ztrace::Lambertian;
 using Metal = ztrace::Metal;
 using Glass = ztrace::Glass;
+using PointLight = ztrace::LightPointSource;
+using LightList = ztrace::LightList;
+using Light = ztrace::Light;
+using LightPointSource = ztrace::LightPointSource;
 
 
-Vector const rayColour( Ray const & ray, TraceableList & traceable, Int antiAliasing = 1, Int depth = 0  ){
+Vector const lightIntensity( Ray const & rayIn, LightList const & lights, TraceableList const & traceable, TraceData const & traceData )
+{
+    static Real const tolerance = 1e-3;
+
+    Vector lightIntensityAllLights{0.,0.,0.};
+    TraceData traceDataShadow;
+    for( auto light: lights ) {
+        Vector materialAttenuation;
+        Vector lightIntensitySingle;
+        Ray    shadowRay;
+        if( light->getShadowRay( traceData.point, lightIntensitySingle, shadowRay ) ) {
+            traceable.hit( shadowRay, 1.e-3, 1000., traceDataShadow );
+            if( ( traceDataShadow.point - traceData.point ).len() < tolerance )
+            {
+                if( traceData.material->scatterLight( rayIn, shadowRay, traceData, materialAttenuation ) ) {
+                    lightIntensityAllLights += lightIntensitySingle * materialAttenuation;
+                }
+            }
+        }
+    }
+    return lightIntensityAllLights;
+}
+Vector const rayColour( Ray const & ray, TraceableList & traceable, LightList & lights, Int depth = 0  ){
     static Int const maxDepth = 40;
 
     Vector colour{0.,0.,0.};
@@ -34,12 +62,9 @@ Vector const rayColour( Ray const & ray, TraceableList & traceable, Int antiAlia
     if ( traceable.hit( ray, 1e-3, 1000., traceData ) ){
         Vector attenuation;
         Ray scatteredRay;
-        if( depth < maxDepth and traceData.material->scatter( ray, traceData, attenuation, scatteredRay )){
-            colour += attenuation * rayColour( scatteredRay, traceable, ( antiAliasing + 1 ) / 2, ++depth ) / (Real) antiAliasing;
-            for( Int a = 0; a < antiAliasing - 1; a++ ){
-                colour += attenuation * rayColour( scatteredRay, traceable, ( antiAliasing + 1 ) / 2, ++depth ) / (Real) antiAliasing;
-                traceData.material->scatter( ray, traceData, attenuation, scatteredRay );
-            }
+        if( depth < maxDepth and traceData.material->scatterView( ray, traceData, attenuation, scatteredRay )){
+            colour += attenuation * rayColour( scatteredRay, traceable, lights, ++depth );
+            colour += lightIntensity( ray, lights, traceable, traceData );
         } // else colour = black (which it is already)
     } else {
         Vector unit_direction = ray.direction();
@@ -59,13 +84,13 @@ int main()
 {
     srand48(  185922891234523452 );
 
-    Int width  = 354;   // 1778;
-    Int height = 200;   // 1000;
-    Int antiAliasing = 4;
+    //Int width  = 1778;
+    //Int height = 1000;
+    //Int antiAliasing = 20;
 
-    //Int width  = 711;
-    //Int height = 400;
-    //Int antiAliasing = 1;
+    Int width  = 711;
+    Int height = 400;
+    Int antiAliasing = 20;
 
     Image image( width, height );
 
@@ -81,8 +106,11 @@ int main()
     traceables.add( std::make_shared<Sphere>(Vector{-1.0,  0.74, -8.5},  -0.7, std::make_shared<Glass>(Vector{0.99,0.9,0.9}, 1.5 )  ));
     traceables.add( std::make_shared<Sphere>(Vector{ 1.8,  0.56,-19.5},   0.6, std::make_shared<Metal>(Vector{0.8,0.8,0.8}, 0.0 )  ));
     traceables.add( std::make_shared<Sphere>(Vector{ 00.,-1001.0,-10.}, 1001.0, std::make_shared<Metal>(Vector{0.1,0.9,0.5}, 0.6) ));
+    
+    LightList lights{};
+    lights.add( std::make_shared<LightPointSource>(Vector{2.,2.,2.},Vector{1.,1.,1.}, 20. ) );
 
-    Camera cam({0.,1.0,1.},{0.,-0.1,-1.}, 5.333333333, 3.0, 8.5, 0.015 );
+    Camera cam({0.,1.0,1.},{0.,-0.1,-1.}, 5.333333333, 3.0, 9.5, 0.025 );
 
     Vector colour;
     for( Int y = 0; y < height; ++y ){
@@ -93,7 +121,7 @@ int main()
                 xPos = jitter( x, width );
                 yPos = jitter( y, height);
                 Ray    ray = cam.emitRay( xPos, yPos );
-                colour += rayColour(ray, traceables, antiAliasing/2) / (Real) antiAliasing;
+                colour += rayColour(ray, traceables, lights) / (Real) antiAliasing;
             }
             image.setPixel( x, y, colour);
         }

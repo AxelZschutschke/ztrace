@@ -20,13 +20,14 @@ namespace ztrace {
               result = 2. * Vector{drand48(), drand48(), drand48()} - unit;
           } while( result.len() > 1. );
 
-          return Vector{ normal * 1.1 + result };
+          return Vector{ normal + result };
         }
         Vector const reflect( Vector const & normal, Vector const & rayIn ) const {
             return Vector{ rayIn - 2 * dot( rayIn, normal ) * normal };
         }
 
-        virtual bool scatter( Ray const & rayIn, TraceData const & traceData, Vector & attenuation, Ray & scattered ) const = 0;
+        virtual bool scatterView( Ray const & rayIn, TraceData const & traceData, Vector & attenuation, Ray & scattered ) const = 0;
+        virtual bool scatterLight( Ray const & viewRayIn, Ray const & lightRayIn, TraceData const & traceData, Vector & attenuation ) const = 0;
     };
 
     class Lambertian : public Material
@@ -39,8 +40,12 @@ namespace ztrace {
             : albedo_( albedo )
         {}
 
-        virtual bool scatter( Ray const & rayIn __attribute__((unused)), TraceData const & traceData, Vector & attenuation, Ray & scattered ) const {
+        virtual bool scatterView( Ray const & rayIn __attribute__((unused)), TraceData const & traceData, Vector & attenuation, Ray & scattered ) const {
             scattered = Ray{ traceData.point, randomScatter( traceData.normal ) };
+            attenuation = albedo_;
+            return true;
+        }
+        virtual bool scatterLight( Ray const & viewRayIn, Ray const & lightRayIn, TraceData const & traceData, Vector & attenuation ) const {
             attenuation = albedo_;
             return true;
         }
@@ -63,10 +68,14 @@ namespace ztrace {
            fuzz_ = fuzz_ > 1. ? 1. : fuzz_;
         }
 
-        bool scatter( Ray const & rayIn, TraceData const & traceData, Vector & attenuation, Ray & scattered ) const {
+        bool scatterView( Ray const & rayIn, TraceData const & traceData, Vector & attenuation, Ray & scattered ) const {
             scattered = Ray{ traceData.point, reflect( traceData.normal, rayIn.direction() ) + fuzz_ * randomScatter( traceData.normal ) };
             attenuation = albedo_;
             return dot( scattered.direction(), traceData.normal ) > 0.;
+        }
+        bool scatterLight( Ray const & viewRayIn, Ray const & lightRayIn, TraceData const & traceData, Vector & attenuation ) const {
+            attenuation = albedo_;
+            return true;
         }
     private:
         Vector albedo_; // Colour
@@ -105,7 +114,7 @@ namespace ztrace {
             r0 = r0 * r0;
             return r0 + ( 1. - r0 ) * pow(( 1. - cosine ), 5 );
         }
-        bool scatter( Ray const & rayIn, TraceData const & traceData, Vector & attenuation, Ray & scattered ) const {
+        bool scatterView( Ray const & rayIn, TraceData const & traceData, Vector & attenuation, Ray & scattered ) const {
             Vector outward_normal;
             Real refractIndex;
             Real reflectionProbability;
@@ -135,6 +144,9 @@ namespace ztrace {
                 attenuation = albedo_;
             }
             return true;
+        }
+        virtual bool scatterLight( Ray const & viewRayIn, Ray const & lightRayIn, TraceData const & traceData, Vector & attenuation ) const {
+            return false;
         }
     private:
         Vector albedo_; // Colour

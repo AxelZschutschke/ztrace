@@ -22,7 +22,6 @@ namespace ztrace {
             }
             return true;
         }
-
         bool hit(Ray const &ray, Real const &intervalLower, Real const &intervalUpper, TraceData &traceData) const {
             Vector oc = ray.origin() - center_;
             Real a = dot(ray.direction(), ray.direction());
