@@ -20,7 +20,9 @@ namespace ztrace {
                 , B_(B)
         {}
 
+        Vector & origin() { return A_; }
         Vector const & origin() const { return A_; }
+        Vector & direction() { return B_; }
         Vector const & direction() const { return B_; }
         Vector const   positionLength( Real length ) const { return A_ + B_ * length; }
 
@@ -40,7 +42,8 @@ namespace ztrace {
                 , specular_(specular)
         {}
 
-        bool specular() { return specular_; }
+        bool & specular() { return specular_; }
+        bool const & specular() const { return specular_; }
 
     private:
         bool specular_;

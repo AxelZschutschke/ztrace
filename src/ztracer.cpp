@@ -30,7 +30,22 @@ Vector const lightIntensity( LightList const & lights, TraceableList const & tra
         Vector lightIntensitySingle;
         ShadowRay shadowRay;
         if( light->getShadowRay( traceData.point, lightIntensitySingle, shadowRay ) ) {
-            traceable.hit( shadowRay, 1.e-3, 1000., traceDataShadow );
+            bool hit;
+            hit = traceable.hit( shadowRay, tolerance, 1000., traceDataShadow );
+            if( hit and ( traceDataShadow.point - traceData.point ).len() > tolerance )
+            {
+                // we hit something in between, check whether transmissive, repeat until hitting something solid
+                ShadowRay retryShadowRay = shadowRay;
+                while( hit and 
+                        ( traceDataShadow.point - traceData.point ).len() > tolerance and 
+                        traceDataShadow.material != nullptr and 
+                        traceDataShadow.material->getGloss().hasTransmission() )
+                {
+                    retryShadowRay.origin() = traceDataShadow.point;
+                    lightIntensitySingle *= traceDataShadow.material->getGloss().transmissivity();
+                    hit = traceable.hit( retryShadowRay, tolerance, 1000., traceDataShadow );
+                }
+            }
             if( ( traceDataShadow.point - traceData.point ).len() < tolerance )
             {
                 if( traceData.material->scatterLight( shadowRay, traceData, materialAttenuation ) ) {
@@ -42,11 +57,12 @@ Vector const lightIntensity( LightList const & lights, TraceableList const & tra
     return lightIntensityAllLights;
 }
 Vector const rayColour( Ray const & ray, TraceableList & traceable, LightList & lights, Int depth = 0  ){
-    static Int const maxDepth = 40;
+    static Int const maxDepth = 10;
+    static Real const tolerance = 1e-3;
 
     Vector colour{0.,0.,0.};
     TraceData traceData;
-    if ( traceable.hit( ray, 1e-3, 1000., traceData ) ){
+    if ( traceable.hit( ray, tolerance, 100., traceData ) ){
         Vector attenuation;
         Ray scatteredRay;
         if( depth < maxDepth and traceData.material->scatterView( ray, traceData, attenuation, scatteredRay )){
@@ -58,7 +74,7 @@ Vector const rayColour( Ray const & ray, TraceableList & traceable, LightList & 
         unit_direction.makeUnitVector();
 
         Real t = 0.5 * (unit_direction.y() + 1.0);
-        //colour = (1.0 - t) * Vector(1., 1., 1.) + t * Vector(0.5, 0.7, 1.0);
+        colour = (1.0 - t) * Vector(0.5,0.5,0.6) + t * Vector(0.15, 0.25, 0.5);
     }
     return colour;
 }
@@ -77,39 +93,40 @@ int main()
 
     Int width  = 711;
     Int height = 400;
-    Int antiAliasing = 4;
+    Int antiAliasing = 2;
+    Int numberDynamicLights = 50; // maximum forward rays per source-light
 
     ImageType image( width, height );
 
-    Gloss diffusiveLightRed( true, false, false, {0.9,0.1,0.5} );
-    Gloss diffusiveLightGreen( true, false, false, {0.1,0.9,0.5} );
-    Gloss diffusiveLightBlue( true, false, false, {0.1,0.5,0.9} );
-    Gloss specularMetalGrey( true, true, false, {0.4,0.4,0.4}, {1.,1.,1.}, 100. );
-    Gloss specularWhiteGlass( false, true, true, {0.9,0.9,0.9}, {1.,1.,1.}, 200., {0.9,0.9,0.9});
+    Gloss diffusiveLightRed( true, false, false, {0.9,0.1,0.5}, 90. );
+    Gloss diffusiveLightGreen( true, false, false, {0.1,0.9,0.5}, 50. );
+    Gloss diffusiveLightBlue( true, false, false, {0.1,0.5,0.9}, 1. );
+    Gloss specularMetalGrey( true, true, false, {0.4,0.4,0.4}, 100., {0.9,0.9,0.9} );
+    Gloss specularWhiteGlass( false, true, true, {0.9,0.9,0.9}, 90., {1.,1.,1.}, {0.7,0.7,0.7});
 
     TraceableList traceables{};
-    traceables.add( std::make_shared<Sphere>(Vector{-0.5,  0.69,-14.0},   0.7, std::make_shared<Metal>(diffusiveLightBlue, 0.1 )  ));
-    traceables.add( std::make_shared<Sphere>(Vector{ 1.5,  0.69, -4.0},   0.7, std::make_shared<Metal>(diffusiveLightGreen, 0.4 )  ));
-    traceables.add( std::make_shared<Sphere>(Vector{ 0.3,  0.19, -5.5},   0.2, std::make_shared<Metal>(specularMetalGrey, 0.0 )  ));
-    traceables.add( std::make_shared<Sphere>(Vector{ 1.8,  0.56,-19.5},   0.6, std::make_shared<Metal>(diffusiveLightBlue, 0.0 )  ));
+    traceables.add( std::make_shared<Sphere>(Vector{-0.5,  0.69,-14.0},   0.7, std::make_shared<Metal>(diffusiveLightBlue )  ));
+    traceables.add( std::make_shared<Sphere>(Vector{ 1.5,  0.69, -4.0},   0.7, std::make_shared<Metal>(diffusiveLightGreen )  ));
+    traceables.add( std::make_shared<Sphere>(Vector{ 0.3,  0.19, -5.5},   0.2, std::make_shared<Metal>(specularMetalGrey )  ));
+    traceables.add( std::make_shared<Sphere>(Vector{ 1.8,  0.56,-19.5},   0.6, std::make_shared<Metal>(diffusiveLightBlue )  ));
     traceables.add( std::make_shared<Sphere>(Vector{-2.6,  0.35, -13.1},  0.36, std::make_shared<Lambertian>(diffusiveLightGreen)  ));
     traceables.add( std::make_shared<Sphere>(Vector{-1.1,  0.28, -3.1},   0.3, std::make_shared<Lambertian>(diffusiveLightRed)  ));
-    traceables.add( std::make_shared<Sphere>(Vector{ 0.0,  0.24, -5.0},  0.25, std::make_shared<Glass>(specularWhiteGlass, 1.5 )  ));
-    traceables.add( std::make_shared<Sphere>(Vector{ 0.0,  0.24, -5.0}, -0.21, std::make_shared<Glass>(specularWhiteGlass, 1.5 )  ));
-    traceables.add( std::make_shared<Sphere>(Vector{-1.0,  0.74, -8.5},  0.75, std::make_shared<Glass>(specularWhiteGlass, 1.5 )  ));
-    traceables.add( std::make_shared<Sphere>(Vector{-1.0,  0.74, -8.5},  -0.7, std::make_shared<Glass>(specularWhiteGlass, 1.5 )  ));
-    traceables.add( std::make_shared<Sphere>(Vector{ 00.,-1001.0,-10.}, 1001.0, std::make_shared<Metal>(diffusiveLightGreen, 0.6) ));
+    traceables.add( std::make_shared<Sphere>(Vector{ 0.0,  0.24, -5.0},  0.25, std::make_shared<Glass>(specularWhiteGlass)  ));
+    traceables.add( std::make_shared<Sphere>(Vector{ 0.0,  0.24, -5.0}, -0.21, std::make_shared<Glass>(specularWhiteGlass)  ));
+    traceables.add( std::make_shared<Sphere>(Vector{-1.0,  0.75, -8.5},  0.75, std::make_shared<Glass>(specularWhiteGlass)  ));
+    traceables.add( std::make_shared<Sphere>(Vector{-1.0,  0.75, -8.5},  -0.7, std::make_shared<Glass>(specularWhiteGlass)  ));
+    traceables.add( std::make_shared<Sphere>(Vector{ 00.,-1001.0,-10.}, 1001.0, std::make_shared<Metal>(diffusiveLightGreen) ));
     
     LightList lights{};
-    lights.add( std::make_shared<LightSpot>(Vector{2.,2.,2.},Vector{1.,1.,1.},40.,Vector{-0.9,-0.2,-2.},0.05 ) );
-    //lights.add( std::make_shared<LightSpot>(Vector{0.,22.,0.},Vector{1.,1.,1.},22.,Vector{0.,-1.,0.},0.8,false ) );
+    lights.add( std::make_shared<LightSpot>(Vector{2.,2.,2.},Vector{1.,1.,1.},135.,Vector{-1.0,-0.4,-1.},0.2 ) );
+    lights.add( std::make_shared<LightSpot>(Vector{0.0,10.,-5.0},Vector{0.5,0.7,1.},127.,Vector{0.,-1.,0.},0.2,false ) );
 
     Camera cam({0.,1.0,1.},{0.,-0.1,-1.}, 5.333333333, 3.0, 9.5, 0.025 );
 
     Vector colour;
     for( Int a = 0; a < antiAliasing; ++a ) {
         Real xPos, yPos;
-        LightList dynamicLights = ztrace::createAmbientLights( lights, traceables, 100, 4, 0.05 );
+        LightList dynamicLights = ztrace::createAmbientLights( lights, traceables, numberDynamicLights, 6, 0.05 );
         std::cout << "Number of lights: " << dynamicLights.size() << std::endl;
         for( Int y = 0; y < height; ++y ){
             for( Int x = 0; x < width; ++x ){

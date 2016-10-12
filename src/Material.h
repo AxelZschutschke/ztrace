@@ -31,7 +31,6 @@ namespace ztrace {
         virtual bool scatterLight( ShadowRay const & rayLightIn, TraceData const & traceData, Vector & attenuation ) const {
             return gloss_.intensity( rayLightIn, traceData, attenuation );
         }
-        virtual Vector const & albedo() const { return gloss_.albedo(); }
         virtual Real fuzz() const { return gloss_.fuzz(); }
     private:
         Gloss const & gloss_;
@@ -46,7 +45,7 @@ namespace ztrace {
 
         virtual bool scatterView( Ray const & rayIn __attribute__((unused)), TraceData const & traceData, Vector & attenuation, Ray & scattered ) const {
             scattered = Ray{ traceData.point, randomScatter( ) + traceData.normal };
-            attenuation = albedo();
+            attenuation = getGloss().albedo();
             return true;
         }
     };
@@ -54,21 +53,15 @@ namespace ztrace {
     class Metal : public Material
     {
     public:
-        Metal( Gloss const & gloss, Real fuzz = 0. )
+        Metal( Gloss const & gloss )
             : Material( gloss )
-            , fuzz_(fuzz)
-        {
-           fuzz_ = fuzz_ < 0. ? 0. : fuzz_;
-           fuzz_ = fuzz_ > 1. ? 1. : fuzz_;
-        }
+        { }
 
         bool scatterView( Ray const & rayIn __attribute__((unused)), TraceData const & traceData, Vector & attenuation, Ray & scattered ) const {
-            scattered = Ray{ traceData.point, traceData.reflection + fuzz_ * randomScatter( ) };
-            attenuation = albedo();
+            scattered = Ray{ traceData.point, traceData.reflection + getGloss().fuzz() * randomScatter( ) };
+            attenuation = getGloss().reflectivity();
             return dot( scattered.direction(), traceData.normal ) > 0.;
         }
-    private:
-        Real   fuzz_;   // How much scattering
     };
 
     class Glass : public Material
@@ -118,10 +111,10 @@ namespace ztrace {
             {
                 Vector reflected = reflect( rayIn.direction(), traceData.normal );
                 scattered = Ray( traceData.point, reflected );
-                attenuation = Vector{ 1., 1., 1. };
+                attenuation = getGloss().reflectivity();
             }else{
                 scattered = Ray( traceData.point, refracted );
-                attenuation = albedo();
+                attenuation = getGloss().transmissivity();
             }
             return true;
         }

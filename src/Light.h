@@ -15,7 +15,8 @@ namespace ztrace {
 
         virtual bool getShadowRay( Vector const & targetSpatialPosition, Colour & gainOut, ShadowRay & shadowRayOut ) const = 0;
         virtual bool emitForwardRay( Ray & shadowRayOut ) const = 0;
-        virtual Real const & intensity() const = 0;
+        virtual Real intensityOverDistance( Real distance ) const = 0;
+        virtual Real const & intensity( ) const = 0;
     };
 
     class LightPointSource : public Light
@@ -28,7 +29,10 @@ namespace ztrace {
             , intensity_()
             , specular_(true)
         {}
-        LightPointSource( Vector const & position, Colour const & colour, Real intesity, bool specular = true)
+        LightPointSource( Vector const & position, 
+                Colour const & colour, 
+                Real const & intesity, 
+                bool specular = true)
             : Light()
             , position_(position)
             , colour_(colour)
@@ -74,7 +78,7 @@ namespace ztrace {
         {}
         LightSpot( Vector const & position, 
                 Colour const & colour, 
-                Real intesity, 
+                Real const & intesity, 
                 Vector const & direction,
                 Real const & size,
                 bool specular = true)
@@ -95,8 +99,11 @@ namespace ztrace {
             shadowRayOut = ShadowRay{ position_, direction, specular_ };
             direction /= distance;
 
-            if( dot( direction_, direction ) > 1. - size_ ) { //angle via dot is 1 for zero size and 0 for size = 1
-                gainOut = colour_ * intensityOverDistance( distance );
+            Real angle = dot( direction_, direction );
+            angle *= angle;
+            Real minimum = 1. - size_ * size_ * 0.8 * 0.8;
+            if( angle >= minimum ) { //angle via dot is 1 for zero size and 0 for size = 1
+                gainOut = ( angle - minimum ) / (1. - minimum) * colour_ * intensityOverDistance( distance );
                 return true;
             }
             return false;
@@ -128,7 +135,10 @@ namespace ztrace {
             : LightPointSource()
             , offset_()
         {}
-        LightChildPointSource( Vector const & position, Colour const & colour, Real intesity, Real const & offset )
+        LightChildPointSource( Vector const & position, 
+                Colour const & colour, 
+                Real const & intesity, 
+                Real const & offset )
             : LightPointSource( position, colour, intesity, false )
             , offset_(offset)
         {}
@@ -149,7 +159,12 @@ namespace ztrace {
             : LightSpot()
             , offset_()
         {}
-        LightChildSpot( Vector const & position, Colour const & colour, Real intesity, Vector const & direction, Real const & size, Real const & offset )
+        LightChildSpot( Vector const & position, 
+                Colour const & colour, 
+                Real const & intesity, 
+                Vector const & direction, 
+                Real const & size, 
+                Real const & offset )
             : LightSpot( position, colour, intesity, direction, size, false)
             , offset_(offset)
         {}

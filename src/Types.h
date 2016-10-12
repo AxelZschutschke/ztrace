@@ -9,7 +9,7 @@
 
 namespace ztrace
 {
-    using Real = double;
+    using Real = float;
     using Int  = long;
     using Size = size_t;
     using String = std::string;

@@ -8,14 +8,18 @@
 namespace ztrace {
     class Gloss {
     public:
-        Gloss( bool diffusive, bool specular, bool transmission, Vector const & diffusiveColour = {0.,0.,0.}, Vector const & specularColour = {0.,0.,0.}, Real const & specularHardness = 1., Vector const & transmissiveColour = {0.,0.,0.} )
+        Gloss( bool diffusive, bool specular, bool transmission, 
+                Vector const & diffusiveColour = {0.,0.,0.}, 
+                Real const & specularHardness = 1., 
+                Vector const & specularColour = {0.,0.,0.}, 
+                Vector const & transmissivity = {0.,0.,0.} )
             : diffusive_(diffusive)
             , specular_(specular)
             , transmission_(transmission)
             , diffusiveColour_(diffusiveColour)
             , specularColour_(specularColour)
             , specularHardness_(specularHardness)
-            , transmissiveColour_(transmissiveColour)
+            , transmissiveColour_(transmissivity)
         {}
 
         bool intensity( ShadowRay rayLightIn, TraceData const & traceData, Vector & attenuation ) const {
@@ -40,8 +44,12 @@ namespace ztrace {
         bool hasDiffusive() const { return diffusive_; }
         bool hasSpecular() const { return specular_; }
         bool hasTransmission() const { return transmission_; }
+        
+        Real fuzz() const { return 1. / specularHardness_; }
+
         Vector const & albedo( ) const { return diffusiveColour_; }
-        Real fuzz() const { return 1. - specularHardness_; }
+        Vector const & transmissivity() const { return transmissiveColour_; }
+        Vector const & reflectivity() const { return specularColour_; }
 
     private:
         bool   diffusive_;
