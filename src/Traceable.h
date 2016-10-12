@@ -17,6 +17,7 @@ namespace ztrace {
         Real positionOnRay;
         Vector point;
         Vector normal;
+        Vector reflection;
         MaterialPtr material;
     };
 

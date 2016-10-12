@@ -2,102 +2,82 @@
 // Created by Axel Zschutschke on 10/9/16.
 //
 
-#ifndef ZTRACER_MATERIAL_H
-#define ZTRACER_MATERIAL_H
+#ifndef ZTRACE_MATERIAL_H
+#define ZTRACE_MATERIAL_H
 
+#ifndef ZTRACE_TESTING
+#include <stdlib.h>
+#endif
+
+#include <cmath>
+#include "Types.h"
 #include "Vector.h"
 #include "Ray.h"
 #include "Traceable.h"
+#include "Utils.h"
+#include "Gloss.h"
 
 namespace ztrace {
 
     class Material {
     public:
-        Vector const randomScatter( Vector const & normal ) const {
-          Vector result;
-          Vector unit{1.,1.,1.};
-          do {
-              result = 2. * Vector{drand48(), drand48(), drand48()} - unit;
-          } while( result.len() > 1. );
+        Material( Gloss const & gloss )
+            : gloss_(gloss)
+        {}
 
-          return Vector{ normal + result };
-        }
-        Vector const reflect( Vector const & normal, Vector const & rayIn ) const {
-            return Vector{ rayIn - 2 * dot( rayIn, normal ) * normal };
-        }
+        Gloss const & getGloss() const { return gloss_; }
 
         virtual bool scatterView( Ray const & rayIn, TraceData const & traceData, Vector & attenuation, Ray & scattered ) const = 0;
-        virtual bool scatterLight( Ray const & viewRayIn, Ray const & lightRayIn, TraceData const & traceData, Vector & attenuation ) const = 0;
+        virtual bool scatterLight( ShadowRay const & rayLightIn, TraceData const & traceData, Vector & attenuation ) const {
+            return gloss_.intensity( rayLightIn, traceData, attenuation );
+        }
+        virtual Vector const & albedo() const { return gloss_.albedo(); }
+        virtual Real fuzz() const { return gloss_.fuzz(); }
+    private:
+        Gloss const & gloss_;
     };
 
     class Lambertian : public Material
     {
     public:
-        Lambertian( ) 
-            : albedo_()
-        {}
-        Lambertian( Vector const & albedo )
-            : albedo_( albedo )
+        Lambertian( Gloss const & gloss )
+            : Material( gloss )
         {}
 
         virtual bool scatterView( Ray const & rayIn __attribute__((unused)), TraceData const & traceData, Vector & attenuation, Ray & scattered ) const {
-            scattered = Ray{ traceData.point, randomScatter( traceData.normal ) };
-            attenuation = albedo_;
+            scattered = Ray{ traceData.point, randomScatter( ) + traceData.normal };
+            attenuation = albedo();
             return true;
         }
-        virtual bool scatterLight( Ray const & viewRayIn, Ray const & lightRayIn, TraceData const & traceData, Vector & attenuation ) const {
-            attenuation = albedo_;
-            return true;
-        }
-    private:
-        Vector albedo_; // Colour
     };
 
     class Metal : public Material
     {
     public:
-        Metal( ) 
-            : albedo_(1.,1.,1.)
-            , fuzz_(0.)
-        {}
-        Metal( Vector const & albedo, Real fuzz = 0. )
-            : albedo_( albedo )
+        Metal( Gloss const & gloss, Real fuzz = 0. )
+            : Material( gloss )
             , fuzz_(fuzz)
         {
            fuzz_ = fuzz_ < 0. ? 0. : fuzz_;
            fuzz_ = fuzz_ > 1. ? 1. : fuzz_;
         }
 
-        bool scatterView( Ray const & rayIn, TraceData const & traceData, Vector & attenuation, Ray & scattered ) const {
-            scattered = Ray{ traceData.point, reflect( traceData.normal, rayIn.direction() ) + fuzz_ * randomScatter( traceData.normal ) };
-            attenuation = albedo_;
+        bool scatterView( Ray const & rayIn __attribute__((unused)), TraceData const & traceData, Vector & attenuation, Ray & scattered ) const {
+            scattered = Ray{ traceData.point, traceData.reflection + fuzz_ * randomScatter( ) };
+            attenuation = albedo();
             return dot( scattered.direction(), traceData.normal ) > 0.;
         }
-        bool scatterLight( Ray const & viewRayIn, Ray const & lightRayIn, TraceData const & traceData, Vector & attenuation ) const {
-            attenuation = albedo_;
-            return true;
-        }
     private:
-        Vector albedo_; // Colour
         Real   fuzz_;   // How much scattering
     };
 
     class Glass : public Material
     {
     public:
-        Glass( ) 
-            : albedo_(1.,1.,1.)
-            , fuzz_(0.)
-            , refractIndex_( 1.5 )
-        {}
-        Glass( Vector const & albedo, Real const & refractIndex = 1.5, Real const & fuzz = 0. )
-            : albedo_( albedo )
-            , fuzz_(fuzz)
+        Glass( Gloss const & gloss, Real const & refractIndex = 1.5 )
+            : Material( gloss )
             , refractIndex_( refractIndex )
-        {
-           fuzz_ = fuzz_ < 0. ? 0. : fuzz_;
-           fuzz_ = fuzz_ > 1. ? 1. : fuzz_;
-        }
+        { }
 
         bool refract( Vector direction, Vector const & normal, Real const & refractIndex, Vector & refracted ) const {
             direction.makeUnitVector();
@@ -141,16 +121,11 @@ namespace ztrace {
                 attenuation = Vector{ 1., 1., 1. };
             }else{
                 scattered = Ray( traceData.point, refracted );
-                attenuation = albedo_;
+                attenuation = albedo();
             }
             return true;
         }
-        virtual bool scatterLight( Ray const & viewRayIn, Ray const & lightRayIn, TraceData const & traceData, Vector & attenuation ) const {
-            return false;
-        }
     private:
-        Vector albedo_; // Colour
-        Real   fuzz_;   // How much scattering
         Real   refractIndex_; // Refracting index
     };
 }

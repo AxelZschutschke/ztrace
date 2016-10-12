@@ -14,7 +14,7 @@ namespace ztrace {
     class LightList {
     public:
         using SharedLight = std::shared_ptr<Light>;
-        using Vector = std::vector<SharedLight>;
+        using LightListType = std::vector<SharedLight>;
 
         LightList()
                 : lights_()
@@ -24,11 +24,12 @@ namespace ztrace {
             lights_.push_back( newItem );
         }
 
-        Vector::const_iterator begin() const { return lights_.begin(); }
-        Vector::const_iterator end() const { return lights_.end(); }
+        LightListType::const_iterator begin() const { return lights_.begin(); }
+        LightListType::const_iterator end() const { return lights_.end(); }
+        Size size() { return lights_.size(); }
 
     private:
-        Vector lights_;
+        LightListType lights_;
     };
 }
 

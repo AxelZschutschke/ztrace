@@ -1,8 +1,11 @@
 #ifndef ZTRACE_LIGHT_H
 #define ZTRACE_LIGHT_H
 
+#include "Types.h"
 #include "Vector.h"
+#include "Utils.h"
 #include "Ray.h"
+#include "Sphere.h"
 
 namespace ztrace {
 
@@ -10,9 +13,10 @@ namespace ztrace {
     public:
         using Colour = ztrace::Vector;
 
-        virtual bool getShadowRay( Vector const & targetSpatialPosition, Colour & gainOut, Ray & shadowRayOut ) const = 0;
+        virtual bool getShadowRay( Vector const & targetSpatialPosition, Colour & gainOut, ShadowRay & shadowRayOut ) const = 0;
+        virtual bool emitForwardRay( Ray & shadowRayOut ) const = 0;
+        virtual Real const & intensity() const = 0;
     };
-
 
     class LightPointSource : public Light
     {
@@ -22,30 +26,142 @@ namespace ztrace {
             , position_()
             , colour_()
             , intensity_()
+            , specular_(true)
         {}
-        LightPointSource( Vector const & position, Colour const & colour, Real intesity )
+        LightPointSource( Vector const & position, Colour const & colour, Real intesity, bool specular = true)
             : Light()
             , position_(position)
             , colour_(colour)
             , intensity_(intesity)
+            , specular_(specular)
         {}
 
-        bool getShadowRay( Vector const & targetSpatialPosition, Colour & gainOut, Ray & shadowRayOut ) const {
+        bool getShadowRay( Vector const & targetSpatialPosition, Colour & gainOut, ShadowRay & shadowRayOut ) const {
             Vector direction = targetSpatialPosition - position_;
             Real   distance = direction.len();
-            shadowRayOut = Ray{ position_, direction };
-            gainOut = colour_ * intensityOverDistance( shadowRayOut.direction(), distance );
+            shadowRayOut = ShadowRay{ position_, direction, specular_ };
+            gainOut = colour_ * intensityOverDistance( distance );
             return true;
         }
-
-    private:
-        Real intensityOverDistance( Vector const & direction __attribute__((unused)), Real const & distance ) const {
-            return intensity_ / distance / distance;
+        bool emitForwardRay( Ray & shadowRayOut ) const {
+            shadowRayOut = Ray{position_, randomScatter() };
+            return true;
         }
+        virtual Real intensityOverDistance( Real distance ) const {
+            distance /= intensity_;
+            distance += 1.;
+            return 1. / distance / distance;
+        }
+        virtual Real const & intensity() const { return intensity_; }
+    private:
 
         Vector position_;
         Colour colour_;
         Real   intensity_;
+        bool   specular_;
+    };
+
+    class LightSpot: public Light
+    {
+    public:
+        LightSpot()
+            : Light()
+            , position_()
+            , colour_()
+            , intensity_()
+            , direction_()
+            , specular_(true)
+        {}
+        LightSpot( Vector const & position, 
+                Colour const & colour, 
+                Real intesity, 
+                Vector const & direction,
+                Real const & size,
+                bool specular = true)
+            : Light()
+            , position_(position)
+            , colour_(colour)
+            , intensity_(intesity)
+            , direction_( direction )
+            , size_(size)
+            , specular_(specular)
+        {
+            direction_.makeUnitVector();
+        }
+
+        bool getShadowRay( Vector const & targetSpatialPosition, Colour & gainOut, ShadowRay & shadowRayOut ) const {
+            Vector direction = targetSpatialPosition - position_;
+            Real   distance = direction.len();
+            shadowRayOut = ShadowRay{ position_, direction, specular_ };
+            direction /= distance;
+
+            if( dot( direction_, direction ) > 1. - size_ ) { //angle via dot is 1 for zero size and 0 for size = 1
+                gainOut = colour_ * intensityOverDistance( distance );
+                return true;
+            }
+            return false;
+        }
+        bool emitForwardRay( Ray & shadowRayOut ) const {
+            shadowRayOut = Ray{position_, (direction_ + size_ * randomScatter()).makeUnitVector() };
+            return true;
+        }
+        virtual Real intensityOverDistance( Real distance ) const {
+            distance /= intensity_;
+            distance += 1.;
+            return 1. / distance / distance;
+        }
+        virtual Real const & intensity() const { return intensity_; }
+
+    private:
+        Vector position_;
+        Colour colour_;
+        Real   intensity_;
+        Vector direction_;
+        Real   size_;
+        bool   specular_;
+    };
+
+    class LightChildPointSource : public LightPointSource
+    {
+    public:
+        LightChildPointSource()
+            : LightPointSource()
+            , offset_()
+        {}
+        LightChildPointSource( Vector const & position, Colour const & colour, Real intesity, Real const & offset )
+            : LightPointSource( position, colour, intesity, false )
+            , offset_(offset)
+        {}
+
+        virtual Real intensityOverDistance( Real distance ) const {
+            distance += offset_;
+            distance /= intensity();
+            distance += 1.;
+            return 1. / distance / distance;
+        }
+    private:
+        Real   offset_;
+    };
+    class LightChildSpot: public LightSpot
+    {
+    public:
+        LightChildSpot()
+            : LightSpot()
+            , offset_()
+        {}
+        LightChildSpot( Vector const & position, Colour const & colour, Real intesity, Vector const & direction, Real const & size, Real const & offset )
+            : LightSpot( position, colour, intesity, direction, size, false)
+            , offset_(offset)
+        {}
+
+        virtual Real intensityOverDistance( Real distance ) const {
+            distance += offset_;
+            distance /= intensity();
+            distance += 1.;
+            return 1. / distance / distance;
+        }
+    private:
+        Real   offset_;
     };
 }
 

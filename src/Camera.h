@@ -34,7 +34,6 @@ namespace ztrace {
                 , focalLength_(focalLength)
                 , aperture_(aperture)
         {
-            std::cout << aperture_ << std::endl;
             updateState();
         }
 

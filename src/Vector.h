@@ -71,6 +71,16 @@ namespace ztrace {
         Real sum() const { return x_ + y_ + z_; }
         Real lenSquared() const { return x_ * x_ + y_ * y_ + z_ * z_; }
         Vector const & makeUnitVector( ) { operator/=( len() ); return *this; }
+        void limitMax( Real const & limit = 1. ) {
+            x_ = x_ > limit ? limit : x_;
+            y_ = y_ > limit ? limit : y_;
+            z_ = z_ > limit ? limit : z_;
+        }
+        void limitMin( Real const & limit = 0. ) {
+            x_ = x_ < limit ? limit : x_;
+            y_ = y_ < limit ? limit : y_;
+            z_ = z_ < limit ? limit : z_;
+        }
 
     private:
         Real x_;
@@ -78,7 +88,7 @@ namespace ztrace {
         Real z_;
     };
 
-    Real const dot( Vector const & a, Vector const & b ){
+    Real dot( Vector const & a, Vector const & b ){
         return ( a * b ).sum();
     }
     Vector const cross( Vector const & a, Vector const & b ){
@@ -89,6 +99,9 @@ namespace ztrace {
     Vector const operator*( Real const & lhs, Vector const & rhs ){ return rhs * lhs; }
     Vector const operator-( Real const & lhs, Vector const & rhs ){ return rhs - lhs; }
     Vector const operator/( Real const & lhs, Vector const & rhs ){ return rhs / lhs; }
+
+    static Vector const unit{1.,1.,1.};
+    static Vector const zero{0.,0.,0.};
 }
 
 
