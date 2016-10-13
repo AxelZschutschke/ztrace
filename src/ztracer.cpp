@@ -63,18 +63,32 @@ Vector const rayColour( Ray const & ray, TraceableList & traceable, LightList & 
     Vector colour{0.,0.,0.};
     TraceData traceData;
     if ( traceable.hit( ray, tolerance, 100., traceData ) ){
-        Vector attenuation;
-        Ray scatteredRay;
-        if( depth < maxDepth and traceData.material->scatterView( ray, traceData, attenuation, scatteredRay )){
-            colour += attenuation * rayColour( scatteredRay, traceable, lights, ++depth );
-            colour += lightIntensity( lights, traceable, traceData );
+        if( depth < 2 ) {
+            // first time we hit something, we get two rays back -> faster convergence for mirror/glass
+            Vector attenuation1;
+            Ray scatteredRay1;
+            Vector attenuation2;
+            Ray scatteredRay2;
+            Real weight1;
+            if( traceData.material->scatterView( ray, traceData, attenuation1, scatteredRay1, attenuation2, scatteredRay2, weight1 )){
+                colour += weight1 * attenuation1 * rayColour( scatteredRay1, traceable, lights, depth+1 );
+                colour += (1. - weight1 ) * attenuation2 * rayColour( scatteredRay2, traceable, lights, depth+1 );
+                colour += lightIntensity( lights, traceable, traceData );
+            }
+        } else if( depth < maxDepth ) {
+            Vector attenuation;
+            Ray scatteredRay;
+            if( traceData.material->scatterView( ray, traceData, attenuation, scatteredRay )){
+                colour += attenuation * rayColour( scatteredRay, traceable, lights, ++depth );
+                colour += lightIntensity( lights, traceable, traceData );
+            }
         } // else colour = black (which it is already)
     } else {
         Vector unit_direction = ray.direction();
         unit_direction.makeUnitVector();
 
         Real t = 0.5 * (unit_direction.y() + 1.0);
-        colour = (1.0 - t) * Vector(0.5,0.5,0.6) + t * Vector(0.15, 0.25, 0.5);
+        colour = (1.0 - t) * Vector(0.8,0.8,1.0) + t * Vector(0.15, 0.25, 0.5);
     }
     return colour;
 }
@@ -83,26 +97,41 @@ Real jitter( Int const & x, Int const & screenWidth ) {
     return ((Real) x + (drand48() - 0.5) ) / ((Real) screenWidth);
 }
 
+void writeSample( String const & basename, 
+        Real const & progress, 
+        ImageType const & instantImageData,
+        String extension = ".ppm" ) 
+{
+    ImageType sample( instantImageData.width(), instantImageData.height() );
+    std::transform( instantImageData.begin(), instantImageData.end(), sample.begin(), 
+            [=]( Vector const & instantValue ){ return instantValue / progress; } );
+
+    PPMWriter<ImageType> writer;
+    writer( basename + std::to_string(progress) + extension, sample );
+}
+
 int main()
 {
     srand48(  185922891234523452 );
 
-    //Int width  = 1778;
-    //Int height = 1000;
-    //Int antiAliasing = 20;
+    String basename = "raySplit";
+    String extension = ".ppm";
 
-    Int width  = 711;
-    Int height = 400;
-    Int antiAliasing = 2;
-    Int numberDynamicLights = 50; // maximum forward rays per source-light
+    Int width  = 1778;
+    Int height = 1000;
+    Int antiAliasing = 4;
+    Int numberDynamicLights = 400; // maximum forward rays per source-light
 
-    ImageType image( width, height );
+    //Int width  = 71;
+    //Int height = 40;
+    //Int antiAliasing = 4;
+    //Int numberDynamicLights = 10; // maximum forward rays per source-light
 
     Gloss diffusiveLightRed( true, false, false, {0.9,0.1,0.5}, 90. );
     Gloss diffusiveLightGreen( true, false, false, {0.1,0.9,0.5}, 50. );
     Gloss diffusiveLightBlue( true, false, false, {0.1,0.5,0.9}, 1. );
     Gloss specularMetalGrey( true, true, false, {0.4,0.4,0.4}, 100., {0.9,0.9,0.9} );
-    Gloss specularWhiteGlass( false, true, true, {0.9,0.9,0.9}, 90., {1.,1.,1.}, {0.7,0.7,0.7});
+    Gloss specularWhiteGlass( false, true, true, {0.9,0.9,0.9}, 100., {1.,1.,1.}, {0.7,0.7,0.7});
 
     TraceableList traceables{};
     traceables.add( std::make_shared<Sphere>(Vector{-0.5,  0.69,-14.0},   0.7, std::make_shared<Metal>(diffusiveLightBlue )  ));
@@ -117,16 +146,20 @@ int main()
     traceables.add( std::make_shared<Sphere>(Vector{-1.0,  0.75, -8.5},  -0.7, std::make_shared<Glass>(specularWhiteGlass)  ));
     traceables.add( std::make_shared<Sphere>(Vector{ 00.,-1001.0,-10.}, 1001.0, std::make_shared<Metal>(diffusiveLightGreen) ));
     
-    LightList lights{};
-    lights.add( std::make_shared<LightSpot>(Vector{2.,2.,2.},Vector{1.,1.,1.},135.,Vector{-1.0,-0.4,-1.},0.2 ) );
-    lights.add( std::make_shared<LightSpot>(Vector{0.0,10.,-5.0},Vector{0.5,0.7,1.},127.,Vector{0.,-1.,0.},0.2,false ) );
+    LightList lightsReceivingDynamicPath{};
+    lightsReceivingDynamicPath.add( std::make_shared<LightSpot>(Vector{2.,2.,2.},Vector{1.,1.,1.},15.,Vector{-0.5,-0.4,-2.},0.2 ) );
+    LightList lightsNotReceivingDynamicPath{};
+    lightsNotReceivingDynamicPath.add( std::make_shared<LightSpot>(Vector{0.0,30.,5.0},Vector{0.5,0.7,1.},27.,Vector{0.,-1.,-0.5},0.4,false ) );
 
     Camera cam({0.,1.0,1.},{0.,-0.1,-1.}, 5.333333333, 3.0, 9.5, 0.025 );
 
     Vector colour;
+    ImageType image( width, height );
+
     for( Int a = 0; a < antiAliasing; ++a ) {
         Real xPos, yPos;
-        LightList dynamicLights = ztrace::createAmbientLights( lights, traceables, numberDynamicLights, 6, 0.05 );
+        LightList dynamicLights = ztrace::createAmbientLights( lightsReceivingDynamicPath, traceables, numberDynamicLights, 6, 0.05 );
+        dynamicLights.add( lightsNotReceivingDynamicPath );
         std::cout << "Number of lights: " << dynamicLights.size() << std::endl;
         for( Int y = 0; y < height; ++y ){
             for( Int x = 0; x < width; ++x ){
@@ -138,10 +171,12 @@ int main()
                 image.setPixel( x, y, colour);
             }
         }
-        std::cout << std::setprecision(3) << (Real) ( a + 1 ) / (Real) antiAliasing * 100. << " %" << std::endl;
+        Real progress = (Real) ( a + 1 ) / (Real) antiAliasing;
+        writeSample( basename, progress, image );
+        std::cout << std::setprecision(3) << progress * 100. << " %" << std::endl;
     }
 
     PPMWriter<ImageType> writer;
-    writer( "sample.ppm", image );
+    writer( basename + extension, image );
     return 0;
 }

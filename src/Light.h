@@ -90,6 +90,7 @@ namespace ztrace {
             , size_(size)
             , specular_(specular)
         {
+            size_ = size_ > 1. ? 1. : size_;
             direction_.makeUnitVector();
         }
 
@@ -101,9 +102,9 @@ namespace ztrace {
 
             Real angle = dot( direction_, direction );
             angle *= angle;
-            Real minimum = 1. - size_ * size_ * 0.8 * 0.8;
+            Real minimum = 1. - size_ * size_ * 0.78 * 0.78;
             if( angle >= minimum ) { //angle via dot is 1 for zero size and 0 for size = 1
-                gainOut = ( angle - minimum ) / (1. - minimum) * colour_ * intensityOverDistance( distance );
+                gainOut = /*( angle - minimum ) / (1. - minimum) **/ colour_ * intensityOverDistance( distance );
                 return true;
             }
             return false;

@@ -23,6 +23,11 @@ namespace ztrace {
         void add( SharedLight const & newItem ) {
             lights_.push_back( newItem );
         }
+        void add( LightList const & newItems ) {
+            for( auto item: newItems ) {
+                lights_.push_back( item );
+            }
+        }
 
         LightListType::const_iterator begin() const { return lights_.begin(); }
         LightListType::const_iterator end() const { return lights_.end(); }

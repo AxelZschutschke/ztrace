@@ -100,10 +100,10 @@ namespace ztrace {
                     if( traceData.material->scatterView( forwardRay, traceData, attenuation, scatteredRay ) ) {
                         std::shared_ptr<Light> newLight;
                         newLight = std::make_shared<LightChildSpot>( scatteredRay.origin(), 
-                                attenuation * intensity, 
+                                attenuation, 
                                 current.intensity( ), 
                                 scatteredRay.direction(),
-                                traceData.material->fuzz(),
+                                traceData.material->fuzz() * 10., // fuzz increased for light-rays -> important to see some effect!
                                 traceData.positionOnRay
                                 );
                         list.add( newLight );
@@ -130,11 +130,12 @@ namespace ztrace {
             for( Size i = 0; i < numberPerLight; i++ )
             {
                 Size counter = 0;
+                static Size const counterMax = 2500; // try to find "interesting" objects
                 while( ! addSpotToList( newLights, current, world, maxDepth, minIntensity ) 
-                        and counter < 5 ){
+                        and counter < counterMax ){
                     ++counter;
                 }
-                if( counter == 5 ) {
+                if( counter == counterMax ) {
                     addFurtherLightsToList( newLights, current, world, maxDepth, minIntensity );
                 }
             }

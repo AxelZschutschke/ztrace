@@ -28,6 +28,7 @@ namespace ztrace {
         Gloss const & getGloss() const { return gloss_; }
 
         virtual bool scatterView( Ray const & rayIn, TraceData const & traceData, Vector & attenuation, Ray & scattered ) const = 0;
+        virtual bool scatterView( Ray const & rayIn, TraceData const & traceData, Vector & attenuation1, Ray & scattered1, Vector & attenuation2, Ray & scattered2, Real & weight1 ) const = 0;
         virtual bool scatterLight( ShadowRay const & rayLightIn, TraceData const & traceData, Vector & attenuation ) const {
             return gloss_.intensity( rayLightIn, traceData, attenuation );
         }
@@ -43,6 +44,13 @@ namespace ztrace {
             : Material( gloss )
         {}
 
+        virtual bool scatterView( Ray const & rayIn, TraceData const & traceData, Vector & attenuation1, Ray & scattered1, Vector & attenuation2, Ray & scattered2, Real & weight1 ) const {
+            // both rays are equally weighted
+            scatterView( rayIn, traceData, attenuation1, scattered1 );
+            scatterView( rayIn, traceData, attenuation2, scattered2 );
+            weight1 = 0.5;
+            return true;
+        }
         virtual bool scatterView( Ray const & rayIn __attribute__((unused)), TraceData const & traceData, Vector & attenuation, Ray & scattered ) const {
             scattered = Ray{ traceData.point, randomScatter( ) + traceData.normal };
             attenuation = getGloss().albedo();
@@ -57,6 +65,13 @@ namespace ztrace {
             : Material( gloss )
         { }
 
+        virtual bool scatterView( Ray const & rayIn, TraceData const & traceData, Vector & attenuation1, Ray & scattered1, Vector & attenuation2, Ray & scattered2, Real & weight1 ) const {
+            // both rays are equally weighted
+            scatterView( rayIn, traceData, attenuation1, scattered1 );
+            scatterView( rayIn, traceData, attenuation2, scattered2 );
+            weight1 = 0.5;
+            return true;
+        }
         bool scatterView( Ray const & rayIn __attribute__((unused)), TraceData const & traceData, Vector & attenuation, Ray & scattered ) const {
             scattered = Ray{ traceData.point, traceData.reflection + getGloss().fuzz() * randomScatter( ) };
             attenuation = getGloss().reflectivity();
@@ -116,6 +131,36 @@ namespace ztrace {
                 scattered = Ray( traceData.point, refracted );
                 attenuation = getGloss().transmissivity();
             }
+            return true;
+        }
+        virtual bool scatterView( Ray const & rayIn, TraceData const & traceData, Vector & attenuation1, Ray & scattered1, Vector & attenuation2, Ray & scattered2, Real & weight1 ) const {
+            Vector outward_normal;
+            Real refractIndex;
+            Real reflectionProbability;
+            Real cosine;
+            Vector refracted;
+            if( dot( rayIn.direction(), traceData.normal ) > 0. ) { 
+                outward_normal = -traceData.normal;
+                refractIndex = refractIndex_;
+                cosine = refractIndex * dot( rayIn.direction(), traceData.normal ) / rayIn.direction().len();
+            }else{
+                outward_normal = traceData.normal;
+                refractIndex = 1. / refractIndex_;
+                cosine = -dot( rayIn.direction(), traceData.normal ) / rayIn.direction().len();
+            }
+            if( refract( rayIn.direction(), outward_normal, refractIndex, refracted ) ) {
+                reflectionProbability = schlick( cosine, refractIndex );
+            }else{
+                reflectionProbability = 1.0;
+            }
+            Vector reflected = reflect( rayIn.direction(), traceData.normal );
+            scattered1 = Ray( traceData.point, reflected );
+            attenuation1 = getGloss().reflectivity();
+
+            scattered2 = Ray( traceData.point, refracted );
+            attenuation2 = getGloss().transmissivity();
+
+            weight1 = reflectionProbability;
             return true;
         }
     private:

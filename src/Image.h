@@ -16,7 +16,10 @@ namespace ztrace {
 
     template<class Vector,class Colour>
     class Image {
+    public:
         using ColourVector = std::vector<Vector>;
+        using Iterator = typename ColourVector::iterator;
+        using IteratorConst = typename ColourVector::const_iterator;
     public:
         Image(Size width, Size height)
                 : width_(width)
@@ -34,6 +37,11 @@ namespace ztrace {
         Size height() const { return  height_; }
         Size size() const { return imageData_.size(); }
         static Int getRange() { return Colour::range(); }
+
+        Iterator begin() { return imageData_.begin(); }
+        Iterator end() { return imageData_.end(); }
+        IteratorConst begin() const { return imageData_.begin(); }
+        IteratorConst end() const { return imageData_.end(); }
 
         friend std::ostream & operator<<( std::ostream & out, Image const & image ) {
             Size counter = 0;
