@@ -47,22 +47,34 @@ namespace ztrace {
             pointingNormalY_.makeUnitVector();
         }
 
-        Ray const emitRay( Real const & screenX, Real const & screenY ) const {
-            Vector offset_ = randomOffsetAperture();
-            Vector target_ = pointingDirection_ * focalLength_; 
-            target_ += pointingNormalX_ * width_ * (screenX - 0.5 );
-            target_ += pointingNormalY_ * height_ * (0.5 - screenY );
-            return Ray{ position_ + offset_, target_ - offset_ };
+        void emitRaySingle( Real const & screenX, Real const & screenY, Ray & emittedRayOut ) const {
+            Vector offset = offsetAparture( randomCylinderCoordinate() ); 
+            Vector target = pointingDirection_ * focalLength_; 
+            target += pointingNormalX_ * width_ * (screenX - 0.5 );
+            target += pointingNormalY_ * height_ * (0.5 - screenY );
+            emittedRayOut = Ray{ position_ + offset, target - offset };
+        }
+        void emitRayPair( Real const & screenX, Real const & screenY, Ray & emittedRayOut1, Ray & emittedRayOut2 ) const {
+            Vector cylinderCoordinates = randomCylinderCoordinate();
+            Vector target = pointingDirection_ * focalLength_; 
+            target += pointingNormalX_ * width_ * (screenX - 0.5 );
+            target += pointingNormalY_ * height_ * (0.5 - screenY );
+            Vector offset;
+            offset = offsetAparture( cylinderCoordinates ); 
+            emittedRayOut1 = Ray{ position_ + offset, target - offset };
+            offset = offsetAparture( cylinderCoordinates + Vector{ 0., M_PI, 0. }); // radius x, angle y
+            emittedRayOut2 = Ray{ position_ + offset, target - offset };
         }
 
     private:
-        Vector const randomOffsetAperture( ) const {
-            Vector offset_;
-            static Vector unit(1.,1.,1.);
-            do {
-                offset_ = 2. * ( drand48() * pointingNormalX_ + drand48() * pointingNormalY_ ) - pointingNormalX_ - pointingNormalY_;
-            } while( offset_.len() > 1. );
-            return offset_ * aperture_;
+        // radius x, angle y
+        Vector const offsetAparture( Vector const & cylinderCoordinatesRAH ) const {
+            return cylinderCoordinatesRAH.x() * aperture_ * ( 
+                    cos( cylinderCoordinatesRAH.y() ) * pointingNormalX_ + 
+                    sin( cylinderCoordinatesRAH.y() ) * pointingNormalY_ );
+        }
+        Vector const randomCylinderCoordinate( ) const {
+            return Vector{ drand48(), drand48() * M_PI, 0.0 };
         }
 
         Vector position_;

@@ -117,13 +117,13 @@ int main()
     String basename = "raySplit";
     String extension = ".ppm";
 
-    Int width  = 1778;
-    Int height = 1000;
+    Int width  = 711;
+    Int height = 400;
+    //Int width  = 1778;
+    //Int height = 1000;
     Int antiAliasing = 4;
     Int numberDynamicLights = 400; // maximum forward rays per source-light
 
-    //Int width  = 71;
-    //Int height = 40;
     //Int antiAliasing = 4;
     //Int numberDynamicLights = 10; // maximum forward rays per source-light
 
@@ -166,8 +166,11 @@ int main()
                 colour = image.getPixel( x, y );
                 xPos = jitter( x, width );
                 yPos = jitter( y, height);
-                Ray    ray = cam.emitRay( xPos, yPos );
-                colour += rayColour(ray, traceables, dynamicLights ) / (Real) antiAliasing;
+                Ray    ray1;
+                Ray    ray2;
+                cam.emitRayPair( xPos, yPos, ray1, ray2 );
+                colour += 0.5 * rayColour(ray1, traceables, dynamicLights ) / (Real) antiAliasing;
+                colour += 0.5 * rayColour(ray2, traceables, dynamicLights ) / (Real) antiAliasing;
                 image.setPixel( x, y, colour);
             }
         }

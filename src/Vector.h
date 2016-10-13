@@ -46,6 +46,9 @@ namespace ztrace {
         Real const & x() const { return x_; }
         Real const & y() const { return y_; }
         Real const & z() const { return z_; }
+        Real & x() { return x_; }
+        Real & y() { return y_; }
+        Real & z() { return z_; }
 
         Vector const operator+( ) const { return *this; }
         Vector operator-( ) const { Vector result( *this ); result.x_ = -result.x_; result.y_ = -result.y_; result.z_ = -result.z_; return result; }
