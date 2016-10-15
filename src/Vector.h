@@ -64,6 +64,10 @@ namespace ztrace {
         Vector operator*( Vector const & rhs ) const { Vector result( *this ); result *= rhs; return result; }
         Vector operator-( Vector const & rhs ) const { Vector result( *this ); result -= rhs; return result; }
         Vector operator/( Vector const & rhs ) const { Vector result( *this ); result /= rhs; return result; }
+        Vector operator+( Vector && rhs ) const { rhs += *this; return rhs; }
+        Vector operator*( Vector && rhs ) const { rhs *= *this; return rhs; }
+        Vector operator-( Vector && rhs ) const { rhs.x_ = x_ - rhs.x_; rhs.y_ = y_ - rhs.y_; rhs.z_ = z_ - rhs.z_; return rhs; }
+        Vector operator/( Vector && rhs ) const { rhs.x_ = x_ / rhs.x_; rhs.y_ = y_ / rhs.y_; rhs.z_ = z_ / rhs.z_; return rhs; }
         Vector operator+( Real const & rhs ) const { Vector result( *this ); result += rhs; return result; }
         Vector operator*( Real const & rhs ) const { Vector result( *this ); result *= rhs; return result; }
         Vector operator-( Real const & rhs ) const { Vector result( *this ); result -= rhs; return result; }
@@ -91,9 +95,9 @@ namespace ztrace {
         Real z_;
     };
 
-    Real dot( Vector const & a, Vector const & b ){
-        return ( a * b ).sum();
-    }
+    Real dot( Vector const & a, Vector const & b ){ return ( a * b ).sum(); }
+    Real dot( Vector const & a, Vector && b ){ return ( b *= a ).sum(); }
+    Real dot( Vector && a, Vector const & b ){ return ( a *= b ).sum(); }
     Vector const cross( Vector const & a, Vector const & b ){
         return Vector{ a.y() * b.z() - a.z() * b.y(), a.z() * b.x() - a.x() * b.z(), a.x() * b.y() - a.y() * b.z() };
     }
@@ -102,6 +106,10 @@ namespace ztrace {
     Vector const operator*( Real const & lhs, Vector const & rhs ){ return rhs * lhs; }
     Vector const operator-( Real const & lhs, Vector const & rhs ){ return rhs - lhs; }
     Vector const operator/( Real const & lhs, Vector const & rhs ){ return rhs / lhs; }
+    Vector const & operator+( Real const & lhs, Vector && rhs ){ return rhs += lhs; }
+    Vector const & operator*( Real const & lhs, Vector && rhs ){ return rhs *= lhs; }
+    Vector const & operator-( Real const & lhs, Vector && rhs ){ rhs.x() = lhs - rhs.x(); rhs.y() = lhs - rhs.y(); rhs.z() = lhs - rhs.z(); return rhs; }
+    Vector const & operator/( Real const & lhs, Vector && rhs ){ rhs.x() = lhs / rhs.x(); rhs.y() = lhs / rhs.y(); rhs.z() = lhs / rhs.z(); return rhs; }
 
     static Vector const unit{1.,1.,1.};
     static Vector const zero{0.,0.,0.};

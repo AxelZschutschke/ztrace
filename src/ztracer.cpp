@@ -121,11 +121,9 @@ int main()
     Int height = 400;
     //Int width  = 1778;
     //Int height = 1000;
-    Int antiAliasing = 4;
-    Int numberDynamicLights = 400; // maximum forward rays per source-light
+    Int antiAliasing = 1;
+    Int numberDynamicLights = 100; // maximum forward rays per source-light
 
-    //Int antiAliasing = 4;
-    //Int numberDynamicLights = 10; // maximum forward rays per source-light
 
     Gloss diffusiveLightRed( true, false, false, {0.9,0.1,0.5}, 90. );
     Gloss diffusiveLightGreen( true, false, false, {0.1,0.9,0.5}, 50. );

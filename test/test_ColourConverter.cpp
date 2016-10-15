@@ -15,7 +15,7 @@ using ColourConverter = ztrace::ColourConverter<colourRange>;
 TEST( Colour_test, constructor_real )
 {
     ColourConverter<128> test{ };
-    test.setRGB( 0.5, 1.5, -0.5 );
+    test.setRGB( (Real) 0.5, (Real) 1.5, (Real) -0.5 );
     EXPECT_EQ( test.red(), 64 );
     EXPECT_EQ( test.green(), 128 );
     EXPECT_EQ( test.blue(), 0 );
@@ -24,7 +24,7 @@ TEST( Colour_test, constructor_real )
 TEST( Colour_test, toStdout )
 {
     ColourConverter<64> test{ };
-    test.setRGB( 0.25, 0.5, 0.75 );
+    test.setRGB( (Real) 0.25, (Real) 0.5, (Real) 0.75 );
     testing::internal::CaptureStdout();
     std::cout << test;
     std::string output = testing::internal::GetCapturedStdout();
