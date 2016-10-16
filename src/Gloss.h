@@ -60,6 +60,8 @@ namespace ztrace {
         Real   specularHardness_;
         Vector transmissiveColour_;
     };
+
+    static Gloss const perfectBlack( true, false, false );
 }
 
 #endif

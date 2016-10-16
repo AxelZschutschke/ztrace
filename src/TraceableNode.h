@@ -1,6 +1,7 @@
 #ifndef ZTRACE_TRACEABLE_NODE_H
 #define ZTRACE_TRACEABLE_NODE_H
 
+#include "Random.h"
 #include "AABB.h"
 #include "Traceable.h"
 
@@ -32,7 +33,7 @@ class TraceableNode : public Traceable {
        : refLeft_()
        , refRight_()
        , box_() {
-      const Int randomAxis = Int(3. * drand48());
+      const Int randomAxis = Int(3. * random());
       Size size = references.size();
       Comparator comparator(randomAxis);
       //std::sort(references.begin(), references.end(), comparator);

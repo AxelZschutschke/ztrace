@@ -5,6 +5,7 @@
 #ifndef ZTRACER_CAMERA_H
 #define ZTRACER_CAMERA_H
 
+#include "Random.h"
 #include "Ray.h"
 #include "Vector.h"
 
@@ -79,7 +80,7 @@ class Camera {
                 + sin(cylinderCoordinatesRAH.y()) * pointingNormalY_);
    }
    Vector const randomCylinderCoordinate() const {
-      return Vector{drand48(), drand48() * M_PI, 0.0};
+      return Vector{random(), random() * M_PI, 0.0};
    }
 
    Vector position_;

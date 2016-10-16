@@ -5,10 +5,7 @@
 #ifndef ZTRACE_MATERIAL_H
 #define ZTRACE_MATERIAL_H
 
-#ifndef ZTRACE_TESTING
-#include <stdlib.h>
-#endif
-
+#include "Random.h"
 #include "Gloss.h"
 #include "Ray.h"
 #include "Traceable.h"
@@ -21,10 +18,10 @@ namespace ztrace {
 
 class Material {
    public:
-   Material(Gloss const& gloss)
+   Material(Gloss const& gloss = perfectBlack )
        : gloss_(gloss) {}
 
-   Gloss const& getGloss() const { return gloss_; }
+   Gloss const& gloss() const { return gloss_; }
 
    virtual bool scatterView(Ray const& rayIn, TraceData const& traceData,
                             Vector& attenuation, Ray& scattered) const = 0;
@@ -59,7 +56,7 @@ class Lambertian : public Material {
                             TraceData const& traceData, Vector& attenuation,
                             Ray& scattered) const {
       scattered = Ray{traceData.point, randomScatter() + traceData.normal};
-      attenuation = getGloss().albedo();
+      attenuation = gloss().albedo();
       return true;
    }
 };
@@ -81,8 +78,8 @@ class Metal : public Material {
    bool scatterView(Ray const& rayIn __attribute__((unused)), TraceData const& traceData,
                     Vector& attenuation, Ray& scattered) const {
       scattered = Ray{traceData.point,
-                      traceData.reflection + getGloss().fuzz() * randomScatter()};
-      attenuation = getGloss().reflectivity();
+                      traceData.reflection + gloss().fuzz() * randomScatter()};
+      attenuation = gloss().reflectivity();
       return dot(scattered.direction(), traceData.normal) > 0.;
    }
 };
@@ -133,13 +130,13 @@ class Glass : public Material {
       } else {
          reflectionProbability = 1.0;
       }
-      if(drand48() < reflectionProbability) {
+      if(random() < reflectionProbability) {
          Vector reflected = reflect(rayIn.direction(), traceData.normal);
          scattered = Ray(traceData.point, reflected);
-         attenuation = getGloss().reflectivity();
+         attenuation = gloss().reflectivity();
       } else {
          scattered = Ray(traceData.point, refracted);
-         attenuation = getGloss().transmissivity();
+         attenuation = gloss().transmissivity();
       }
       return true;
    }
@@ -168,10 +165,10 @@ class Glass : public Material {
       }
       Vector reflected = reflect(rayIn.direction(), traceData.normal);
       scattered1 = Ray(traceData.point, reflected);
-      attenuation1 = getGloss().reflectivity();
+      attenuation1 = gloss().reflectivity();
 
       scattered2 = Ray(traceData.point, refracted);
-      attenuation2 = getGloss().transmissivity();
+      attenuation2 = gloss().transmissivity();
 
       weight1 = reflectionProbability;
       return true;

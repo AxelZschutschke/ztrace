@@ -1,7 +1,7 @@
 #include <iomanip>
 #include <iostream>
-#include <stdlib.h>
 
+#include "Random.h"
 #include "Camera.h"
 #include "ColourConverter.h"
 #include "CreateAmbientLights.h"
@@ -39,10 +39,10 @@ Vector const lightIntensity(LightList const& lights, Traceable const& traceable,
             ShadowRay retryShadowRay = shadowRay;
             while(hit and (traceDataShadow.point - traceData.point).len() > tolerance
                   and traceDataShadow.material != nullptr
-                  and traceDataShadow.material->getGloss().hasTransmission()) {
+                  and traceDataShadow.material->gloss().hasTransmission()) {
                retryShadowRay.origin() = traceDataShadow.point;
                lightIntensitySingle *=
-                   traceDataShadow.material->getGloss().transmissivity();
+                   traceDataShadow.material->gloss().transmissivity();
                hit = traceable.hit(retryShadowRay, tolerance, 1000., traceDataShadow);
             }
          }
@@ -99,7 +99,7 @@ Vector const rayColour(Ray const& ray, Traceable& traceable, LightList& lights,
 }
 
 Real jitter(Int const& x, Int const& screenWidth) {
-   return ((Real) x + (drand48() - 0.5)) / ((Real) screenWidth);
+   return ((Real) x + (ztrace::random() - 0.5)) / ((Real) screenWidth);
 }
 
 void writeSample(String const& basename, Real const& progress,

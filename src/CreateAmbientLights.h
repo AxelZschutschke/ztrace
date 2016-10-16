@@ -2,10 +2,11 @@
 #define ZTRACE_CREATE_AMBIENT_LIGHTS_H
 
 #include "Types.h"
+#include "Ray.h"
+#include "Material.h"
 #include "TraceableList.h"
 #include "Light.h"
 #include "LightList.h"
-#include "Ray.h"
 
 namespace ztrace {
 
@@ -54,8 +55,8 @@ namespace ztrace {
                     and checkIntensity( intensity, minIntensity ) ){
                 Vector attenuation;
                 Ray    scatteredRay;
-                if( ( traceData.material->getGloss().hasSpecular() 
-                            or traceData.material->getGloss().hasTransmission() ) ) {
+                if( ( traceData.material->gloss().hasSpecular() 
+                            or traceData.material->gloss().hasTransmission() ) ) {
                     if( traceData.material->scatterView( forwardRay, traceData, attenuation, scatteredRay ) ) {
                         std::shared_ptr<Light> newLight;
                         newLight = std::make_shared<LightChildSpot>( scatteredRay.origin(), 
@@ -69,10 +70,10 @@ namespace ztrace {
                         addFurtherLightsToList( list, *newLight, world, maxDepth-1, minIntensity );
                     }
                 } 
-                if( traceData.material->getGloss().hasDiffusive() ) {
+                if( traceData.material->gloss().hasDiffusive() ) {
                     std::shared_ptr<Light> newLight;
                     newLight = std::make_shared<LightChildPointSource>( traceData.point, 
-                            traceData.material->getGloss().albedo() * intensity / 2. / 3.1415, 
+                            traceData.material->gloss().albedo() * intensity / 2. / 3.1415, 
                             current.intensity( ) / 2. / 3.1416, 
                             traceData.positionOnRay );
                     list.add( newLight );
@@ -95,8 +96,8 @@ namespace ztrace {
                     and checkIntensity( intensity, minIntensity ) ){
                 Vector attenuation;
                 Ray    scatteredRay;
-                if( ( traceData.material->getGloss().hasSpecular() 
-                            or traceData.material->getGloss().hasTransmission() ) ) {
+                if( ( traceData.material->gloss().hasSpecular() 
+                            or traceData.material->gloss().hasTransmission() ) ) {
                     if( traceData.material->scatterView( forwardRay, traceData, attenuation, scatteredRay ) ) {
                         std::shared_ptr<Light> newLight;
                         newLight = std::make_shared<LightChildSpot>( scatteredRay.origin(), 

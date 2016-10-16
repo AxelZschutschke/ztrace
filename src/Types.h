@@ -11,7 +11,7 @@ namespace ztrace
 {
     using Real = float;
     using Int  = long;
-    using Size = size_t;
+    using Size = ::size_t;
     using String = std::string;
 
     template<typename Target, typename Source>

@@ -43,6 +43,8 @@ enable_testing()
 include( CTest )
 
 set( TESTS
+    Gloss
+    Material
     ColourConverter
     Image
     Vector
