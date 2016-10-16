@@ -207,10 +207,12 @@ Vector const operator*(Real const& lhs, Vector const& rhs) {
    return rhs * lhs;
 }
 Vector const operator-(Real const& lhs, Vector const& rhs) {
-   return rhs - lhs;
+   Vector result{lhs,lhs,lhs};
+   return result -= rhs;
 }
 Vector const operator/(Real const& lhs, Vector const& rhs) {
-   return rhs / lhs;
+   Vector result{lhs,lhs,lhs};
+   return result /= rhs;
 }
 Vector const& operator+(Real const& lhs, Vector&& rhs) {
    return rhs += lhs;

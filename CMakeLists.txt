@@ -46,6 +46,9 @@ set( TESTS
     ColourConverter
     Image
     Vector
+    Vector_Op_VecVec
+    Vector_Op_VecReal
+    Vector_Op_RealVec
     Ray
     Sphere
     TraceableList
