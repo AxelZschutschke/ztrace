@@ -16,8 +16,6 @@ namespace ztrace
     template<Int colourRange>
     class ColourConverter
     {
-        using ColourVector = std::vector<Int>;
-
     public:
         ColourConverter()
             : red_()

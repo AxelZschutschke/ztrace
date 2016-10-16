@@ -49,6 +49,7 @@ set( TESTS
     Ray
     Sphere
     TraceableList
+    TraceableNode 
     )
 
 foreach( TEST ${TESTS} )

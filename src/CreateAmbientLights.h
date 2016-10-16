@@ -127,7 +127,7 @@ namespace ztrace {
         for( auto light: oldLights ) {
             newLights.add( light );
             Light & current = *light;
-            for( Size i = 0; i < numberPerLight; i++ )
+            for( Size i = 0; i < numberPerLight; ++i )
             {
                 Size counter = 0;
                 static Size const counterMax = 2500; // try to find "interesting" objects

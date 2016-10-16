@@ -5,51 +5,56 @@
 #ifndef ZTRACER_TRACEABLELIST_H
 #define ZTRACER_TRACEABLELIST_H
 
+#include "Traceable.h"
 #include <memory>
 #include <vector>
-#include "Traceable.h"
 
 namespace ztrace {
 
-    class TraceableList : public Traceable {
-    public:
-        using SharedTraceable = std::shared_ptr<Traceable>;
-        using Vector = std::vector<SharedTraceable>;
+class TraceableList : public Traceable {
+   public:
+   TraceableList()
+       : traceables_() {}
 
-        TraceableList()
-                : traceables_()
-        {}
+   void add(SharedTraceable const& newItem) { traceables_.push_back(newItem); }
 
-        void add( SharedTraceable const & newItem ) {
-            traceables_.push_back( newItem );
-        }
+   SharedTraceableVector::iterator begin() { return traceables_.begin(); }
+   SharedTraceableVector::iterator end() { return traceables_.end(); }
 
-        Vector::iterator begin() { return traceables_.begin(); }
-        Vector::iterator end() { return traceables_.end(); }
-
-        bool hit( Ray const & ray, Real const & lowerLimit, Real const & upperLimit, TraceData & traceData ) const {
-            bool hitSomething = false;
-            TraceData traceData_temporary;
-            for( auto&& item: traceables_ ) {
-                bool hit_item = item->hit( ray, lowerLimit, upperLimit, traceData_temporary );
-                // decide whether this is the nearest hit
-                if( hit_item ) {
-                    if( ! hitSomething ) {
-                        hitSomething = true;
-                        traceData = traceData_temporary;
-                    } else {
-                        if( traceData_temporary.positionOnRay < traceData.positionOnRay ) {
-                            traceData = traceData_temporary;
-                        }
-                    }
-                }
+   bool hit(Ray const& ray, Real const& lowerLimit, Real const& upperLimit,
+            TraceData& traceData) const {
+      bool hitSomething = false;
+      TraceData traceData_temporary;
+      for(auto&& item : traceables_) {
+         // decide whether this is the nearest hit
+         if(item->hit(ray, lowerLimit, upperLimit, traceData_temporary)) {
+            if(!hitSomething) {
+               hitSomething = true;
+               traceData = traceData_temporary;
+            } else {
+               if(traceData_temporary.positionOnRay < traceData.positionOnRay) {
+                  traceData = traceData_temporary;
+               }
             }
-            return  hitSomething;
-        }
+         }
+      }
+      return hitSomething;
+   }
 
-    private:
-        Vector traceables_;
-    };
+   AABB boundingBox() const {
+      throw(std::out_of_range(
+          "TraceableList is empty and therefore cannot return a boundingBox!"));
+      AABB result;
+      result = traceables_[0]->boundingBox();
+      for(auto& item : traceables_) {
+         result += item->boundingBox();
+      }
+      return result;
+   }
+
+   private:
+   SharedTraceableVector traceables_;
+};
 }
 
-#endif //ZTRACER_TRACEABLELIST_H
+#endif // ZTRACER_TRACEABLELIST_H
