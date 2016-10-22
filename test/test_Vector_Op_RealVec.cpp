@@ -1,6 +1,10 @@
-//
-// Created by Axel Zschutschke on 10/8/16.
-//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//// (c) 2016, Axel Zschutschke
+////
+//// This software is provided under the terms of the BSD-3 license, see LICENSE.md
+////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "Vector.h"
 #include <iostream>
@@ -12,40 +16,41 @@ using Vector = ztrace::Vector;
 
 static Real const tol = 0.001;
 
-TEST( Vector_test, operatorAdd )
+TEST(Vector_test, operatorAdd)
 {
-    Vector a{ 1.0, 2.0, 3.0 };
+    Vector a{1.0, 2.0, 3.0};
     Vector c = 2.5 + a;
-    EXPECT_NEAR(  c.x(), 3.5 , tol );
-    EXPECT_NEAR(  c.y(), 4.5 , tol );
-    EXPECT_NEAR(  c.z(), 5.5 , tol );
+    EXPECT_NEAR(c.x(), 3.5, tol);
+    EXPECT_NEAR(c.y(), 4.5, tol);
+    EXPECT_NEAR(c.z(), 5.5, tol);
 }
-TEST( Vector_test, operatorSub )
+TEST(Vector_test, operatorSub)
 {
-    Vector a{ 1.0, 2.0, 3.0 };
+    Vector a{1.0, 2.0, 3.0};
     Vector c = 2. - a;
-    EXPECT_NEAR(  c.x(),  1.0 , tol );
-    EXPECT_NEAR(  c.y(),  0.0 , tol );
-    EXPECT_NEAR(  c.z(), -1.0 , tol );
+    EXPECT_NEAR(c.x(), 1.0, tol);
+    EXPECT_NEAR(c.y(), 0.0, tol);
+    EXPECT_NEAR(c.z(), -1.0, tol);
 }
-TEST( Vector_test, operatorMul )
+TEST(Vector_test, operatorMul)
 {
-    Vector a{ 1.0, -2.0, 3.0 };
+    Vector a{1.0, -2.0, 3.0};
     Vector c = 0.5 * a;
-    EXPECT_NEAR(  c.x(),  0.5 , tol );
-    EXPECT_NEAR(  c.y(), -1.0 , tol );
-    EXPECT_NEAR(  c.z(),  1.5 , tol );
+    EXPECT_NEAR(c.x(), 0.5, tol);
+    EXPECT_NEAR(c.y(), -1.0, tol);
+    EXPECT_NEAR(c.z(), 1.5, tol);
 }
-TEST( Vector_test, operatorDiv )
+TEST(Vector_test, operatorDiv)
 {
-    Vector a{ 1.0, 2.0, -5.0 };
+    Vector a{1.0, 2.0, -5.0};
     Vector c = 5. / a;
-    EXPECT_NEAR(  c.x(),  5.0, tol );
-    EXPECT_NEAR(  c.y(),  2.5 , tol );
-    EXPECT_NEAR(  c.z(), -1.0 , tol );
+    EXPECT_NEAR(c.x(), 5.0, tol);
+    EXPECT_NEAR(c.y(), 2.5, tol);
+    EXPECT_NEAR(c.z(), -1.0, tol);
 }
 
-GTEST_API_ int main( int argc, char ** argv ) {
-    ::testing::InitGoogleTest( &argc, argv );
+GTEST_API_ int main(int argc, char** argv)
+{
+    ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }

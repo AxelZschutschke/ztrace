@@ -1,3 +1,12 @@
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//// (c) 2016, Axel Zschutschke
+////
+//// This software is provided under the terms of the BSD-3 license, see LICENSE.md
+////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 #define ZTRACE_TESTING
 
 #include "Random.h"
@@ -13,28 +22,37 @@ using ztrace::Real;
 
 namespace ztrace
 {
-    class MaterialTestImpl : public Material
+class MaterialTestImpl : public Material
+{
+public:
+    MaterialTestImpl()
+        : Material()
     {
-        public:
-        MaterialTestImpl() : Material() {}
-        bool scatterView( Ray const & rayIn __attribute__((unused)), 
-                TraceData const & traceData __attribute__((unused)), 
-                Vector & attenuation __attribute__((unused)), 
-                Ray & scattered __attribute__((unused)) ) const  
-        { return true; }
-        bool scatterView( Ray const & rayIn __attribute__((unused)), 
-                TraceData const & traceData __attribute__((unused)), 
-                Vector & attenuation1 __attribute__((unused)), 
-                Ray & scattered1 __attribute__((unused)),  
-                Vector & attenuation2 __attribute__((unused)), 
-                Ray & scattered2 __attribute__((unused)), Real & weight1 ) const  
-        { return true; }
-        bool scatterLight( Ray const & viewRayIn __attribute__((unused)), 
-                Ray const & lightRayIn __attribute__((unused)), 
-                TraceData const & traceData __attribute__((unused)), 
-                Vector & attenuation  __attribute__((unused))) const
-        { return true; } 
-    };
+    }
+    bool scatterView(Ray const& rayIn __attribute__((unused)),
+                     TraceData const& traceData __attribute__((unused)),
+                     Vector& attenuation __attribute__((unused)),
+                     Ray& scattered __attribute__((unused))) const
+    {
+        return true;
+    }
+    bool scatterView(Ray const& rayIn __attribute__((unused)),
+                     TraceData const& traceData __attribute__((unused)),
+                     Vector& attenuation1 __attribute__((unused)),
+                     Ray& scattered1 __attribute__((unused)),
+                     Vector& attenuation2 __attribute__((unused)),
+                     Ray& scattered2 __attribute__((unused)), Real& weight1) const
+    {
+        return true;
+    }
+    bool scatterLight(Ray const& viewRayIn __attribute__((unused)),
+                      Ray const& lightRayIn __attribute__((unused)),
+                      TraceData const& traceData __attribute__((unused)),
+                      Vector& attenuation __attribute__((unused))) const
+    {
+        return true;
+    }
+};
 }
 
 using Ray = ztrace::Ray;
@@ -42,18 +60,13 @@ using Vector = ztrace::Vector;
 using Material = ztrace::MaterialTestImpl;
 using TraceData = ztrace::TraceData;
 
-TEST( Material_test, dummyConstructor)
+TEST(Material_test, dummyConstructor) { Material test{}; }
+
+TEST(Material_test, reflect_n) { Material test{}; }
+
+
+GTEST_API_ int main(int argc, char** argv)
 {
-    Material test{ };
-}
-
-TEST( Material_test, reflect_n)
-{
-    Material test{};
-}
-
-
-GTEST_API_ int main( int argc, char ** argv ) {
-    ::testing::InitGoogleTest( &argc, argv );
+    ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
