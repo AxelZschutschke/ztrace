@@ -17,6 +17,13 @@
 
 namespace ztrace
 {
+
+/*! \brief Used to transform Vector type colour information to Integer type reduced values
+ *
+ *  ColourConverter transforms an ztrace::Vector to a reduced values vector, the vector is
+ *  interpreted as tuple of R:G:B values (the vector's x:y:z coordinates), while the valid
+ *  range would be [0,1]. The values are cropped to the valid range upon setting them.
+ */
 template <Int colourRange>
 class ColourConverter
 {

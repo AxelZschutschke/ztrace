@@ -13,5 +13,6 @@
 #include "Vector.h"
 #include "Ray.h"
 #include "ShadowRay.h"
+#include "ColourConverter.h"
 
 #endif
