@@ -52,6 +52,7 @@ set( TESTS
     Vector_Op_VecReal
     Vector_Op_RealVec
     Ray
+    ShadowRay
     Sphere
     TraceableList
     TraceableNode 
