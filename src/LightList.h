@@ -13,33 +13,35 @@
 #include <vector>
 #include "Light.h"
 
-namespace ztrace {
+namespace ztrace
+{
 
-    class LightList {
-    public:
-        using SharedLight = std::shared_ptr<Light>;
-        using LightListType = std::vector<SharedLight>;
+class LightList
+{
+public:
+    using SharedLight = std::shared_ptr<Light>;
+    using LightListType = std::vector<SharedLight>;
 
-        LightList()
-                : lights_()
-        {}
+    LightList()
+        : lights_()
+    {
+    }
 
-        void add( SharedLight const & newItem ) {
-            lights_.push_back( newItem );
+    void add(SharedLight const& newItem) { lights_.push_back(newItem); }
+    void add(LightList const& newItems)
+    {
+        for (auto item : newItems) {
+            lights_.push_back(item);
         }
-        void add( LightList const & newItems ) {
-            for( auto item: newItems ) {
-                lights_.push_back( item );
-            }
-        }
+    }
 
-        LightListType::const_iterator begin() const { return lights_.begin(); }
-        LightListType::const_iterator end() const { return lights_.end(); }
-        Size size() { return lights_.size(); }
+    LightListType::const_iterator begin() const { return lights_.begin(); }
+    LightListType::const_iterator end() const { return lights_.end(); }
+    Size size() { return lights_.size(); }
 
-    private:
-        LightListType lights_;
-    };
+private:
+    LightListType lights_;
+};
 }
 
-#endif //ZTRACE_TRACEABLELIST_H
+#endif // ZTRACE_TRACEABLELIST_H

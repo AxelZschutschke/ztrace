@@ -27,112 +27,113 @@ using SpherePtr = std::shared_ptr<Sphere>;
 
 static Real const tol = 0.001;
 
-TEST( TraceableList_test, constructor_dummy )
+TEST(TraceableList_test, constructor_dummy)
 {
-    TraceableList test{ };
-    EXPECT_EQ( test.begin(), test.end() );
+    TraceableList test{};
+    EXPECT_EQ(test.begin(), test.end());
 }
 
-TEST( TraceableList_test, add )
+TEST(TraceableList_test, add)
 {
-    TraceableList test{ };
-    test.add( std::make_shared<Sphere>(Vector{0.5, 0.75, 0.85 }, 1. ) );
-    SpherePtr mySphere = std::dynamic_pointer_cast<Sphere,Traceable>( *(test.begin()) );
-    EXPECT_NEAR(  mySphere->center().x(), 0.5 , tol );
-    EXPECT_NEAR(  mySphere->center().y(), 0.75 , tol );
-    EXPECT_NEAR(  mySphere->center().z(), 0.85 , tol );
-    EXPECT_NEAR(  mySphere->radius(), 1.0 , tol );
+    TraceableList test{};
+    test.add(std::make_shared<Sphere>(Vector{0.5, 0.75, 0.85}, 1.));
+    SpherePtr mySphere = std::dynamic_pointer_cast<Sphere, Traceable>(*(test.begin()));
+    EXPECT_NEAR(mySphere->center().x(), 0.5, tol);
+    EXPECT_NEAR(mySphere->center().y(), 0.75, tol);
+    EXPECT_NEAR(mySphere->center().z(), 0.85, tol);
+    EXPECT_NEAR(mySphere->radius(), 1.0, tol);
 }
 
-TEST( TraceableList_test, hit )
+TEST(TraceableList_test, hit)
 {
-    TraceableList test{ };
-    test.add( std::make_shared<Sphere>(Vector{0.5, 0.5, 1.5 }, 1. ) );
-    Ray ray( {0.5,0.5,0.}, {0.,0.,1.} );
+    TraceableList test{};
+    test.add(std::make_shared<Sphere>(Vector{0.5, 0.5, 1.5}, 1.));
+    Ray ray({0.5, 0.5, 0.}, {0., 0., 1.});
     TraceData traceData{};
 
-    bool gotHit = test.hit( ray, 0., 100., traceData );
+    bool gotHit = test.hit(ray, 0., 100., traceData);
 
-    EXPECT_EQ( gotHit,  true );
+    EXPECT_EQ(gotHit, true);
     // trace data filled with info about hit position
-    EXPECT_EQ( traceData.positionOnRay, 0.5 );
-    EXPECT_EQ( traceData.point.x(), 0.5 );
-    EXPECT_EQ( traceData.point.y(), 0.5 );
-    EXPECT_EQ( traceData.point.z(), 0.5 );
+    EXPECT_EQ(traceData.positionOnRay, 0.5);
+    EXPECT_EQ(traceData.point.x(), 0.5);
+    EXPECT_EQ(traceData.point.y(), 0.5);
+    EXPECT_EQ(traceData.point.z(), 0.5);
 }
 
-TEST( TraceableList_test, noHit )
+TEST(TraceableList_test, noHit)
 {
-    TraceableList test{ };
-    test.add( std::make_shared<Sphere>(Vector{0.5, 0.5, 1.5 }, 1. ) );
-    Ray ray( {1.5,1.5,0.}, {0.,0.,1.} );
+    TraceableList test{};
+    test.add(std::make_shared<Sphere>(Vector{0.5, 0.5, 1.5}, 1.));
+    Ray ray({1.5, 1.5, 0.}, {0., 0., 1.});
     TraceData traceData{};
 
-    bool gotHit = test.hit( ray, 0., 100., traceData );
+    bool gotHit = test.hit(ray, 0., 100., traceData);
 
-    EXPECT_EQ( gotHit,  false );
+    EXPECT_EQ(gotHit, false);
     // trace data filled with info about hit position
-    EXPECT_EQ( traceData.positionOnRay, 0.0 );
-    EXPECT_EQ( traceData.point.x(), 0.0 );
-    EXPECT_EQ( traceData.point.y(), 0.0 );
-    EXPECT_EQ( traceData.point.z(), 0.0 );
+    EXPECT_EQ(traceData.positionOnRay, 0.0);
+    EXPECT_EQ(traceData.point.x(), 0.0);
+    EXPECT_EQ(traceData.point.y(), 0.0);
+    EXPECT_EQ(traceData.point.z(), 0.0);
 }
 
-TEST( TraceableList_test, twoObjects_firstHit )
+TEST(TraceableList_test, twoObjects_firstHit)
 {
-    TraceableList test{ };
-    test.add( std::make_shared<Sphere>(Vector{0.5, 0.5, 1.5 }, 1. ) );
-    test.add( std::make_shared<Sphere>(Vector{0.5, 0.5, 3.5 }, 1. ) );
-    Ray ray( {0.5,0.5,0.}, {0.,0.,1.} );
+    TraceableList test{};
+    test.add(std::make_shared<Sphere>(Vector{0.5, 0.5, 1.5}, 1.));
+    test.add(std::make_shared<Sphere>(Vector{0.5, 0.5, 3.5}, 1.));
+    Ray ray({0.5, 0.5, 0.}, {0., 0., 1.});
     TraceData traceData{};
 
-    bool gotHit = test.hit( ray, 0., 100., traceData );
+    bool gotHit = test.hit(ray, 0., 100., traceData);
 
-    EXPECT_EQ( gotHit,  true );
+    EXPECT_EQ(gotHit, true);
     // trace data filled with info about hit position
-    EXPECT_EQ( traceData.positionOnRay, 0.5 );
-    EXPECT_EQ( traceData.point.x(), 0.5 );
-    EXPECT_EQ( traceData.point.y(), 0.5 );
-    EXPECT_EQ( traceData.point.z(), 0.5 );
+    EXPECT_EQ(traceData.positionOnRay, 0.5);
+    EXPECT_EQ(traceData.point.x(), 0.5);
+    EXPECT_EQ(traceData.point.y(), 0.5);
+    EXPECT_EQ(traceData.point.z(), 0.5);
 }
 
-TEST( TraceableList_test, twoObjects_noneHit )
+TEST(TraceableList_test, twoObjects_noneHit)
 {
-    TraceableList test{ };
-    test.add( std::make_shared<Sphere>(Vector{0.5, 0.5, 1.5 }, 1. ) );
-    test.add( std::make_shared<Sphere>(Vector{0.5, 0.5, 3.5 }, 1. ) );
-    Ray ray( {1.5,1.5,0.}, {0.,0.,1.} );
+    TraceableList test{};
+    test.add(std::make_shared<Sphere>(Vector{0.5, 0.5, 1.5}, 1.));
+    test.add(std::make_shared<Sphere>(Vector{0.5, 0.5, 3.5}, 1.));
+    Ray ray({1.5, 1.5, 0.}, {0., 0., 1.});
     TraceData traceData{};
 
-    bool gotHit = test.hit( ray, 0., 100., traceData );
+    bool gotHit = test.hit(ray, 0., 100., traceData);
 
-    EXPECT_EQ( gotHit,  false );
+    EXPECT_EQ(gotHit, false);
     // trace data filled with info about hit position
-    EXPECT_EQ( traceData.positionOnRay, 0.0 );
-    EXPECT_EQ( traceData.point.x(), 0.0 );
-    EXPECT_EQ( traceData.point.y(), 0.0 );
-    EXPECT_EQ( traceData.point.z(), 0.0 );
+    EXPECT_EQ(traceData.positionOnRay, 0.0);
+    EXPECT_EQ(traceData.point.x(), 0.0);
+    EXPECT_EQ(traceData.point.y(), 0.0);
+    EXPECT_EQ(traceData.point.z(), 0.0);
 }
 
-TEST( TraceableList_test, twoObjects_secondHit )
+TEST(TraceableList_test, twoObjects_secondHit)
 {
-    TraceableList test{ };
-    test.add( std::make_shared<Sphere>(Vector{0.5, 0.5, 1.5 }, 1. ) );
-    test.add( std::make_shared<Sphere>(Vector{1.5, 1.5, 3.5 }, 1. ) );
-    Ray ray( {1.5,1.5,0.}, {0.,0.,1.} );
+    TraceableList test{};
+    test.add(std::make_shared<Sphere>(Vector{0.5, 0.5, 1.5}, 1.));
+    test.add(std::make_shared<Sphere>(Vector{1.5, 1.5, 3.5}, 1.));
+    Ray ray({1.5, 1.5, 0.}, {0., 0., 1.});
     TraceData traceData{};
 
-    bool gotHit = test.hit( ray, 0., 100., traceData );
+    bool gotHit = test.hit(ray, 0., 100., traceData);
 
-    EXPECT_EQ( gotHit,  true );
+    EXPECT_EQ(gotHit, true);
     // trace data filled with info about hit position
-    EXPECT_EQ( traceData.positionOnRay, 2.5 );
-    EXPECT_EQ( traceData.point.x(), 1.5 );
-    EXPECT_EQ( traceData.point.y(), 1.5 );
-    EXPECT_EQ( traceData.point.z(), 2.5 );
+    EXPECT_EQ(traceData.positionOnRay, 2.5);
+    EXPECT_EQ(traceData.point.x(), 1.5);
+    EXPECT_EQ(traceData.point.y(), 1.5);
+    EXPECT_EQ(traceData.point.z(), 2.5);
 }
 
-GTEST_API_ int main( int argc, char ** argv ) {
-    ::testing::InitGoogleTest( &argc, argv );
+GTEST_API_ int main(int argc, char** argv)
+{
+    ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }

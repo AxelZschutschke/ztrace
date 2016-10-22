@@ -13,13 +13,13 @@
 
 namespace ztrace
 {
-    using Real = float;
-    using Int  = long;
-    using Size = ::size_t;
-    using String = std::string;
+using Real = float;
+using Int = long;
+using Size = ::size_t;
+using String = std::string;
 
-    template<typename Target, typename Source>
-    Target convert( Source const & s );
+template <typename Target, typename Source>
+Target convert(Source const& s);
 }
 
-#endif //ZTRACE_TYPES_H
+#endif // ZTRACE_TYPES_H

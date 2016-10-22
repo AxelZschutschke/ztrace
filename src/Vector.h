@@ -44,7 +44,8 @@ public:
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     //// vector modification functions
     //
-    Vector const& makeUnitVector(); //!< change this vector to length = 1 while keeping direction
+    Vector const&
+    makeUnitVector(); //!< change this vector to length = 1 while keeping direction
     Vector const& limitMax(Real const& limit = 1.); //!< limit maximum value of vector
     Vector const& limitMin(Real const& limit = 0.); //!< limit minimum value of vector
 

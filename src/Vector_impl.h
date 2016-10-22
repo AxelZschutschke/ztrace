@@ -244,8 +244,14 @@ ztrace::Real ztrace::dot(ztrace::Vector const& a, ztrace::Vector const& b)
 {
     return (a * b).sum();
 }
-ztrace::Real ztrace::dot(ztrace::Vector const& a, ztrace::Vector&& b) { return (b *= a).sum(); }
-ztrace::Real ztrace::dot(ztrace::Vector&& a, ztrace::Vector const& b) { return (a *= b).sum(); }
+ztrace::Real ztrace::dot(ztrace::Vector const& a, ztrace::Vector&& b)
+{
+    return (b *= a).sum();
+}
+ztrace::Real ztrace::dot(ztrace::Vector&& a, ztrace::Vector const& b)
+{
+    return (a *= b).sum();
+}
 ztrace::Vector const ztrace::cross(ztrace::Vector const& a, ztrace::Vector const& b)
 {
     return ztrace::Vector{a.y() * b.z() - a.z() * b.y(), a.z() * b.x() - a.x() * b.z(),
