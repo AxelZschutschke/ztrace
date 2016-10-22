@@ -1,251 +1,148 @@
-//
-// Created by Axel Zschutschke on 10/8/16.
-//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//// (c) 2016, Axel Zschutschke
+////
+//// This software is provided under the terms of the BSD-3 license, see LICENSE.md
+////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef ZTRACER_VECTOR_H
-#define ZTRACER_VECTOR_H
+#ifndef ZTRACE_VECTOR_H
+#define ZTRACE_VECTOR_H
 
-#include "Types.h"
-#include <array>
-#include <cmath>
-#include <ostream>
+#include <array>   // std::array<>
+#include <ostream> // operator<<
+#include "Types.h" // Real, Int, Size
 
-namespace ztrace {
+namespace ztrace
+{
 
-class Vector {
-   using ostream = std::ostream;
-   using VectorType = std::array<Real,3>;
+/*! \brief 3D Vector class
+ *
+ * ztrace::Vector is an extension of std::array<Real,3> plus math operators!
+ */
+class Vector
+{
+    using VectorType = std::array<Real, 3>;
 
-   public:
-   Vector()
-       : vec_{{0., 0., 0.}} {}
+public:
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //// contructors/destructors
+    //// most are left unimplemented -> compiler does a better job than me
+    //// also automatically makes vector an atomic
+    //
+    Vector();
+    Vector(Real const& x, Real const& y, Real const& z);
 
-   Vector(Real const& x, Real const& y, Real const& z)
-       : vec_{{x, y, z}} {}
-   //Vector(Vector const& rhs)
-   //    : vec_{rhs.vec_} {}
-   //Vector(Vector&& rhs)
-   //    : vec_{std::move(rhs.vec_)} {}
-   //~Vector() {}
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //// external vector algebra helper functions
+    //
+    Vector abs() const;      //!< absolute values for each vector element
+    Real len() const;        //!< length of vector
+    Real sum() const;        //!< sum over all vector elements
+    Real lenSquared() const; //!< squared length of vector
 
-   //Vector const& operator=(Vector const& rhs) {
-   //   vec_ = rhs.vec_;
-   //   return *this;
-   //}
-   //Vector const& operator=(Vector&& rhs) {
-   //   vec_ = std::move(rhs.vec_);
-   //   return *this;
-   //}
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //// vector modification functions
+    //
+    Vector const& makeUnitVector(); //!< change this vector to length = 1 while keeping direction
+    Vector const& limitMax(Real const& limit = 1.); //!< limit maximum value of vector
+    Vector const& limitMin(Real const& limit = 0.); //!< limit minimum value of vector
 
-   friend ostream& operator<<(ostream& out, Vector const& vector) {
-      out << vector.x() << " " << vector.y() << " " << vector.z();
-      return out;
-   }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //// element-wise access operators
+    //
+    Real const& x() const { return vec_[0]; }
+    Real const& y() const { return vec_[1]; }
+    Real const& z() const { return vec_[2]; }
+    Real& x() { return vec_[0]; }
+    Real& y() { return vec_[1]; }
+    Real& z() { return vec_[2]; }
 
-   Real const& x() const { return vec_[0]; }
-   Real const& y() const { return vec_[1]; }
-   Real const& z() const { return vec_[2]; }
-   Real& x() { return vec_[0]; }
-   Real& y() { return vec_[1]; }
-   Real& z() { return vec_[2]; }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //// global access operators
+    //
+    VectorType::const_iterator begin() const;
+    VectorType::iterator begin();
+    VectorType::const_iterator end() const;
+    VectorType::iterator end();
 
-   Vector const operator+() const { return *this; }
-   Vector const operator-() const {
-      Vector result;
-      std::transform(vec_.begin(), vec_.end(), result.vec_.begin(),
-                     [](Real const& v) { return -v; });
-      return result;
-   }
-   Vector const& operator+=(Vector const& rhs) {
-      std::transform(vec_.begin(), vec_.end(), rhs.vec_.begin(), vec_.begin(),
-                     std::plus<Real>());
-      return *this;
-   }
-   Vector const& operator*=(Vector const& rhs) {
-      std::transform(vec_.begin(), vec_.end(), rhs.vec_.begin(), vec_.begin(),
-                     std::multiplies<Real>());
-      return *this;
-   }
-   Vector const& operator-=(Vector const& rhs) {
-      std::transform(vec_.begin(), vec_.end(), rhs.vec_.begin(), vec_.begin(),
-                     std::minus<Real>());
-      return *this;
-   }
-   Vector const& operator/=(Vector const& rhs) {
-      std::transform(vec_.begin(), vec_.end(), rhs.vec_.begin(), vec_.begin(),
-                     std::divides<Real>());
-      return *this;
-   }
-   Vector const& operator+=(Real const& rhs) {
-      std::transform(vec_.begin(), vec_.end(), vec_.begin(),
-                     [rhs](Real const& lhs) { return lhs + rhs; });
-      return *this;
-   }
-   Vector const& operator*=(Real const& rhs) {
-      std::transform(vec_.begin(), vec_.end(), vec_.begin(),
-                     [rhs](Real const& lhs) { return lhs * rhs; });
-      return *this;
-   }
-   Vector const& operator-=(Real const& rhs) {
-      std::transform(vec_.begin(), vec_.end(), vec_.begin(),
-                     [rhs](Real const& lhs) { return lhs - rhs; });
-      return *this;
-   }
-   Vector const& operator/=(Real const& rhs) {
-      std::transform(vec_.begin(), vec_.end(), vec_.begin(),
-                     [rhs](Real const& lhs) { return lhs / rhs; });
-      return *this;
-   }
-   Vector operator+(Vector const& rhs) const {
-      Vector result(*this);
-      result += rhs;
-      return result;
-   }
-   Vector operator*(Vector const& rhs) const {
-      Vector result(*this);
-      result *= rhs;
-      return result;
-   }
-   Vector operator-(Vector const& rhs) const {
-      Vector result(*this);
-      result -= rhs;
-      return result;
-   }
-   Vector operator/(Vector const& rhs) const {
-      Vector result(*this);
-      result /= rhs;
-      return result;
-   }
-   Vector operator+(Vector&& rhs) const {
-      rhs += *this;
-      return rhs;
-   }
-   Vector operator*(Vector&& rhs) const {
-      rhs *= *this;
-      return rhs;
-   }
-   Vector operator-(Vector&& rhs) const {
-      std::transform(vec_.begin(), vec_.end(), rhs.vec_.begin(), rhs.vec_.begin(),
-                     [](Real const& lhs, Real const& rhs) { return lhs - rhs; });
-      return rhs;
-   }
-   Vector operator/(Vector&& rhs) const {
-      std::transform(vec_.begin(), vec_.end(), rhs.vec_.begin(), rhs.vec_.begin(),
-                     [](Real const& lhs, Real const& rhs) { return lhs / rhs; });
-      return rhs;
-   }
-   Vector operator+(Real const& rhs) const {
-      Vector result(*this);
-      result += rhs;
-      return result;
-   }
-   Vector operator*(Real const& rhs) const {
-      Vector result(*this);
-      result *= rhs;
-      return result;
-   }
-   Vector operator-(Real const& rhs) const {
-      Vector result(*this);
-      result -= rhs;
-      return result;
-   }
-   Vector operator/(Real const& rhs) const {
-      Vector result(*this);
-      result /= rhs;
-      return result;
-   }
-   Real const & operator[](Size const& idx) const {
-      return vec_[idx];
-   }
-   Real & operator[](Size const& idx) {
-      return vec_[idx];
-   }
+    Real const& operator[](Size const& idx) const;
+    Real& operator[](Size const& idx);
 
-   Vector abs() const {
-      Vector result;
-      std::transform(vec_.begin(), vec_.end(), result.vec_.begin(),
-                     [](Real const& lhs) { return lhs > 0. ? lhs : -lhs; });
-      return result;
-   }
-   Real len() const { return sqrt(lenSquared()); }
-   Real sum() const { return vec_[0] + vec_[1] + vec_[2]; }
-   Real lenSquared() const {
-      return vec_[0] * vec_[0] + vec_[1] * vec_[1] + vec_[2] * vec_[2];
-   }
-   Vector const& makeUnitVector() {
-      operator/=(len());
-      return *this;
-   }
-   void limitMax(Real const& limit = 1.) {
-      std::transform(vec_.begin(), vec_.end(), vec_.begin(),
-                     [limit](Real const& lhs) { return lhs > limit ? limit : lhs; });
-   }
-   void limitMin(Real const& limit = 0.) {
-      std::transform(vec_.begin(), vec_.end(), vec_.begin(),
-                     [limit](Real const& lhs) { return lhs < limit ? limit : lhs; });
-   }
-   VectorType::const_iterator begin() const { return vec_.begin(); }
-   VectorType::iterator begin() { return vec_.begin(); }
-   VectorType::const_iterator end() const { return vec_.end(); }
-   VectorType::iterator end() { return vec_.end(); }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //// unary operators
+    //
+    Vector const operator+() const;
+    Vector const operator-() const;
 
-   private:
-   VectorType vec_;
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //// operation/assignment operators
+    //
+    Vector const& operator+=(Vector const& rhs);
+    Vector const& operator*=(Vector const& rhs);
+    Vector const& operator-=(Vector const& rhs);
+    Vector const& operator/=(Vector const& rhs);
+    Vector const& operator+=(Real const& rhs);
+    Vector const& operator*=(Real const& rhs);
+    Vector const& operator-=(Real const& rhs);
+    Vector const& operator/=(Real const& rhs);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //// internal/external calculus operators
+    //
+    Vector operator+(Vector const& rhs) const;
+    Vector operator*(Vector const& rhs) const;
+    Vector operator-(Vector const& rhs) const;
+    Vector operator/(Vector const& rhs) const;
+    Vector operator+(Vector&& rhs) const;
+    Vector operator*(Vector&& rhs) const;
+    Vector operator-(Vector&& rhs) const;
+    Vector operator/(Vector&& rhs) const;
+    Vector operator+(Real const& rhs) const;
+    Vector operator*(Real const& rhs) const;
+    Vector operator-(Real const& rhs) const;
+    Vector operator/(Real const& rhs) const;
+
+private:
+    VectorType vec_;
 };
 
-////////////////////////////////////////////////////////////////
-//// external operators
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//// stream put operator<< - not a friend!
+//
+std::ostream& operator<<(std::ostream& out, Vector const& vector);
 
-Real dot(Vector const& a, Vector const& b) {
-   return (a * b).sum();
-}
-Real dot(Vector const& a, Vector&& b) {
-   return (b *= a).sum();
-}
-Real dot(Vector&& a, Vector const& b) {
-   return (a *= b).sum();
-}
-Vector const cross(Vector const& a, Vector const& b) {
-   return Vector{a.y() * b.z() - a.z() * b.y(), a.z() * b.x() - a.x() * b.z(),
-                 a.x() * b.y() - a.y() * b.z()};
-}
 
-Vector const operator+(Real const& lhs, Vector const& rhs) {
-   return rhs + lhs;
-}
-Vector const operator*(Real const& lhs, Vector const& rhs) {
-   return rhs * lhs;
-}
-Vector const operator-(Real const& lhs, Vector const& rhs) {
-   Vector result{lhs,lhs,lhs};
-   return result -= rhs;
-}
-Vector const operator/(Real const& lhs, Vector const& rhs) {
-   Vector result{lhs,lhs,lhs};
-   return result /= rhs;
-}
-Vector const& operator+(Real const& lhs, Vector&& rhs) {
-   return rhs += lhs;
-}
-Vector const& operator*(Real const& lhs, Vector&& rhs) {
-   return rhs *= lhs;
-}
-Vector const& operator-(Real const& lhs, Vector&& rhs) {
-   rhs.x() = lhs - rhs.x();
-   rhs.y() = lhs - rhs.y();
-   rhs.z() = lhs - rhs.z();
-   return rhs;
-}
-Vector const& operator/(Real const& lhs, Vector&& rhs) {
-   rhs.x() = lhs / rhs.x();
-   rhs.y() = lhs / rhs.y();
-   rhs.z() = lhs / rhs.z();
-   return rhs;
-}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//// vector algebra external
+//
+Real dot(Vector const& a, Vector const& b); //!< dot product, reference version
+Real dot(Vector const& a, Vector&& b);      //!< dot product, destructive version
+Real dot(Vector&& a, Vector const& b);      //!< dot product, destructive version
+Vector const cross(Vector const& a, Vector const& b); //!< cross product
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//// vector external calculus operators
+//
+Vector const operator+(Real const& lhs, Vector const& rhs);
+Vector const operator*(Real const& lhs, Vector const& rhs);
+Vector const operator-(Real const& lhs, Vector const& rhs);
+Vector const operator/(Real const& lhs, Vector const& rhs);
+Vector const& operator+(Real const& lhs, Vector&& rhs);
+Vector const& operator*(Real const& lhs, Vector&& rhs);
+Vector const& operator-(Real const& lhs, Vector&& rhs);
+Vector const& operator/(Real const& lhs, Vector&& rhs);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//// default vectors supplied by library
+//
 static Vector const unit{1., 1., 1.};
 static Vector const zero{0., 0., 0.};
-}
 
+} // namespace ztrace
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// including the actual implementation
+#include "Vector_impl.h"
 
 #endif // ZTRACER_VECTOR_H
