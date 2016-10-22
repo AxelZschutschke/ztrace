@@ -50,6 +50,7 @@ class TraceableNode : public Traceable {
       } else {
          throw(std::logic_error("TraceableNode: invalid size of input data!"));
       }
+      std::cout << "size: " << nObjects << " " << box_.min() << " / " << box_.max() << std::endl;
    }
 
    AABB boundingBox() const { return box_; }
@@ -59,7 +60,7 @@ class TraceableNode : public Traceable {
       if(!box_.hit(ray, lowerLimit, upperLimit)) {
          return false;
       }
-      TraceData dataLeft, dataRight;
+      TraceData dataLeft;
 
       bool hitLeft = refLeft_->hit(ray, lowerLimit, upperLimit, dataLeft);
       if(refRight_ == nullptr) {
@@ -70,6 +71,7 @@ class TraceableNode : public Traceable {
          return false;
       }
 
+      TraceData dataRight;
       bool hitRight = refRight_->hit(ray, lowerLimit, upperLimit, dataRight);
       if(hitLeft && hitRight) {
          if(dataLeft.positionOnRay < dataRight.positionOnRay) {

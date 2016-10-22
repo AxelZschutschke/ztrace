@@ -14,6 +14,7 @@ namespace ztrace {
 
 class Vector {
    using ostream = std::ostream;
+   using VectorType = std::array<Real,3>;
 
    public:
    Vector()
@@ -21,18 +22,20 @@ class Vector {
 
    Vector(Real const& x, Real const& y, Real const& z)
        : vec_{{x, y, z}} {}
-   Vector(Vector const& rhs)
-       : vec_{rhs.vec_} {}
-   Vector(Vector&& rhs)
-       : vec_{std::move(rhs.vec_)} {}
-   Vector const& operator=(Vector const& rhs) {
-      vec_ = rhs.vec_;
-      return *this;
-   }
-   Vector const& operator=(Vector&& rhs) {
-      vec_ = std::move(rhs.vec_);
-      return *this;
-   }
+   //Vector(Vector const& rhs)
+   //    : vec_{rhs.vec_} {}
+   //Vector(Vector&& rhs)
+   //    : vec_{std::move(rhs.vec_)} {}
+   //~Vector() {}
+
+   //Vector const& operator=(Vector const& rhs) {
+   //   vec_ = rhs.vec_;
+   //   return *this;
+   //}
+   //Vector const& operator=(Vector&& rhs) {
+   //   vec_ = std::move(rhs.vec_);
+   //   return *this;
+   //}
 
    friend ostream& operator<<(ostream& out, Vector const& vector) {
       out << vector.x() << " " << vector.y() << " " << vector.z();
@@ -181,10 +184,17 @@ class Vector {
       std::transform(vec_.begin(), vec_.end(), vec_.begin(),
                      [limit](Real const& lhs) { return lhs < limit ? limit : lhs; });
    }
+   VectorType::const_iterator begin() const { return vec_.begin(); }
+   VectorType::iterator begin() { return vec_.begin(); }
+   VectorType::const_iterator end() const { return vec_.end(); }
+   VectorType::iterator end() { return vec_.end(); }
 
    private:
-   std::array<Real, 3> vec_;
+   VectorType vec_;
 };
+
+////////////////////////////////////////////////////////////////
+//// external operators
 
 Real dot(Vector const& a, Vector const& b) {
    return (a * b).sum();
