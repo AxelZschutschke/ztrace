@@ -6,8 +6,8 @@
 ////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef ZTRACER_TYPES_H
-#define ZTRACER_TYPES_H
+#ifndef ZTRACE_TYPES_H
+#define ZTRACE_TYPES_H
 
 #include <string>
 
@@ -22,4 +22,4 @@ namespace ztrace
     Target convert( Source const & s );
 }
 
-#endif //ZTRACER_TYPES_H
+#endif //ZTRACE_TYPES_H

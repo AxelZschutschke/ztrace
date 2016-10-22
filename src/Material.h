@@ -183,4 +183,4 @@ class Glass : public Material {
 };
 }
 
-#endif // ZTRACER_MATERIAL_H
+#endif // ZTRACE_MATERIAL_H

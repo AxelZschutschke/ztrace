@@ -6,8 +6,8 @@
 ////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef ZTRACER_TRACEABLE_H
-#define ZTRACER_TRACEABLE_H
+#ifndef ZTRACE_TRACEABLE_H
+#define ZTRACE_TRACEABLE_H
 
 #include "axisAlignedBoundingBox.h"
 #include "Ray.h"
@@ -39,4 +39,4 @@ class Traceable {
 };
 }
 
-#endif // ZTRACER_TRACEABLE_H
+#endif // ZTRACE_TRACEABLE_H

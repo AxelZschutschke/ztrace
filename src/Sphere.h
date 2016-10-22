@@ -6,8 +6,8 @@
 ////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef ZTRACER_SPHERE_H
-#define ZTRACER_SPHERE_H
+#ifndef ZTRACE_SPHERE_H
+#define ZTRACE_SPHERE_H
 
 #include <cmath> // sqrt
 
@@ -75,4 +75,4 @@ class Sphere : public Traceable {
 };
 }
 
-#endif // ZTRACER_SPHERE_H
+#endif // ZTRACE_SPHERE_H

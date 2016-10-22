@@ -6,8 +6,8 @@
 ////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef ZTRACER_PPMWRITER_H
-#define ZTRACER_PPMWRITER_H
+#ifndef ZTRACE_PPMWRITER_H
+#define ZTRACE_PPMWRITER_H
 
 #include <string>
 #include <fstream>
@@ -39,4 +39,4 @@ namespace ztrace {
         }
     };
 }
-#endif //ZTRACER_PPMWRITER_H
+#endif //ZTRACE_PPMWRITER_H

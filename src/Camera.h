@@ -6,8 +6,8 @@
 ////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef ZTRACER_CAMERA_H
-#define ZTRACER_CAMERA_H
+#ifndef ZTRACE_CAMERA_H
+#define ZTRACE_CAMERA_H
 
 #include <cmath> // M_PI
 
@@ -100,4 +100,4 @@ class Camera {
 };
 }
 
-#endif // ZTRACER_CAMERA_H
+#endif // ZTRACE_CAMERA_H

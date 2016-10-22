@@ -6,8 +6,8 @@
 ////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef ZTRACER_TRACEABLELIST_H
-#define ZTRACER_TRACEABLELIST_H
+#ifndef ZTRACE_TRACEABLELIST_H
+#define ZTRACE_TRACEABLELIST_H
 
 #include "Traceable.h"
 #include <memory>
@@ -61,4 +61,4 @@ class TraceableList : public Traceable {
 };
 }
 
-#endif // ZTRACER_TRACEABLELIST_H
+#endif // ZTRACE_TRACEABLELIST_H

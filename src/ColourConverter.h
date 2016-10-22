@@ -6,8 +6,8 @@
 ////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef ZTRACER_COLOURCONVERTER_H
-#define ZTRACER_COLOURCONVERTER_H
+#ifndef ZTRACE_COLOURCONVERTER_H
+#define ZTRACE_COLOURCONVERTER_H
 
 #include <ostream>
 #include <utility>
@@ -125,4 +125,4 @@ namespace ztrace
 }
 
 
-#endif //ZTRACER_COLOURCONVERTER_H
+#endif //ZTRACE_COLOURCONVERTER_H

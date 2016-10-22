@@ -145,4 +145,4 @@ static Vector const zero{0., 0., 0.};
 // including the actual implementation
 #include "Vector_impl.h"
 
-#endif // ZTRACER_VECTOR_H
+#endif // ZTRACE_VECTOR_H

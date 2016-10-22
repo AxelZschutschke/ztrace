@@ -6,8 +6,8 @@
 ////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef ZTRACER_LIGHTLIST_H
-#define ZTRACER_LIGHTLIST_H
+#ifndef ZTRACE_LIGHTLIST_H
+#define ZTRACE_LIGHTLIST_H
 
 #include <memory>
 #include <vector>
@@ -42,4 +42,4 @@ namespace ztrace {
     };
 }
 
-#endif //ZTRACER_TRACEABLELIST_H
+#endif //ZTRACE_TRACEABLELIST_H

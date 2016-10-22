@@ -6,8 +6,8 @@
 ////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef ZTRACER_IMAGE_H
-#define ZTRACER_IMAGE_H
+#ifndef ZTRACE_IMAGE_H
+#define ZTRACE_IMAGE_H
 
 #include <vector>
 #include <iostream>
@@ -66,4 +66,4 @@ namespace ztrace {
     };
 }
 
-#endif //ZTRACER_IMAGE_H
+#endif //ZTRACE_IMAGE_H
