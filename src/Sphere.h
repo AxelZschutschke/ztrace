@@ -5,6 +5,8 @@
 #ifndef ZTRACER_SPHERE_H
 #define ZTRACER_SPHERE_H
 
+#include <cmath> // sqrt
+
 #include "Traceable.h"
 #include "Types.h"
 #include "Utils.h"
@@ -53,8 +55,8 @@ class Sphere : public Traceable {
       traceData.material = material_;
       return true;
    }
-   AABB boundingBox() const {
-      return AABB{center_ - Vector{radius_, radius_, radius_},
+   axisAlignedBoundingBox boundingBox() const {
+      return axisAlignedBoundingBox{center_ - Vector{radius_, radius_, radius_},
                  center_ + Vector{radius_, radius_, radius_}};
    }
 

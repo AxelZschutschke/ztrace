@@ -1,7 +1,7 @@
 #ifndef ZTRACE_TRACEABLE_NODE_H
 #define ZTRACE_TRACEABLE_NODE_H
 
-#include "AABB.h"
+#include "axisAlignedBoundingBox.h"
 #include "Random.h"
 #include "Traceable.h"
 
@@ -15,8 +15,8 @@ class TraceableNode : public Traceable {
 
       bool operator()(Traceable::SharedTraceable const& left,
                      Traceable::SharedTraceable const& right) {
-         AABB boxLeft = left->boundingBox();
-         AABB boxRight = right->boundingBox();
+         axisAlignedBoundingBox boxLeft = left->boundingBox();
+         axisAlignedBoundingBox boxRight = right->boundingBox();
          return boxLeft.min()[axis_] > boxRight.max()[axis_];
       }
       private:
@@ -53,7 +53,7 @@ class TraceableNode : public Traceable {
       std::cout << "size: " << nObjects << " " << box_.min() << " / " << box_.max() << std::endl;
    }
 
-   AABB boundingBox() const { return box_; }
+   axisAlignedBoundingBox boundingBox() const { return box_; }
 
    bool hit(Ray const& ray, Real const& lowerLimit, Real const& upperLimit,
             TraceData& traceDataOut) const {
@@ -92,7 +92,7 @@ class TraceableNode : public Traceable {
    private:
    SharedTraceable refLeft_;
    SharedTraceable refRight_;
-   AABB box_;
+   axisAlignedBoundingBox box_;
 };
 }
 

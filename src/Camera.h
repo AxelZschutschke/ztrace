@@ -5,6 +5,8 @@
 #ifndef ZTRACER_CAMERA_H
 #define ZTRACER_CAMERA_H
 
+#include <cmath> // M_PI
+
 #include "Random.h"
 #include "Ray.h"
 #include "Vector.h"

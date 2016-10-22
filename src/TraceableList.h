@@ -41,10 +41,10 @@ class TraceableList : public Traceable {
       return hitSomething;
    }
 
-   AABB boundingBox() const {
+   axisAlignedBoundingBox boundingBox() const {
       throw(std::out_of_range(
           "TraceableList is empty and therefore cannot return a boundingBox!"));
-      AABB result;
+      axisAlignedBoundingBox result;
       result = traceables_[0]->boundingBox();
       for(auto& item : traceables_) {
          result += item->boundingBox();

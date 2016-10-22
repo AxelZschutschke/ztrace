@@ -10,21 +10,21 @@ namespace ztrace {
    Real ffmin( Real const & a, Real const & b ) { return a < b ? a : b; }
    Real ffmax( Real const & a, Real const & b ) { return a > b ? a : b; }
 
-   class AABB {
+   class axisAlignedBoundingBox {
       public:
-          AABB() : min_(), max_() {}
-          AABB( Vector const & min, Vector const & max ) : min_(min), max_(max) {}
-          AABB( Vector && min, Vector && max ) : min_(std::move( min )), max_(std::move( max )) {}
+          axisAlignedBoundingBox() : min_(), max_() {}
+          axisAlignedBoundingBox( Vector const & min, Vector const & max ) : min_(min), max_(max) {}
+          axisAlignedBoundingBox( Vector && min, Vector && max ) : min_(std::move( min )), max_(std::move( max )) {}
 
-          AABB & operator+=( AABB const & rhs ) {
+          axisAlignedBoundingBox & operator+=( axisAlignedBoundingBox const & rhs ) {
               for( Size i = 0; i < 3; i++ ) {
                   min_[i] = ffmin( min_[i], rhs.min_[i] );
                   max_[i] = ffmax( max_[i], rhs.max_[i] );
               }
               return *this;
           }
-          AABB operator+( AABB const & rhs ) {
-              AABB result = rhs;
+          axisAlignedBoundingBox operator+( axisAlignedBoundingBox const & rhs ) {
+              axisAlignedBoundingBox result = rhs;
               for( Size i = 0; i < 3; i++ ) {
                   result.min_[i] = ffmin( min_[i], result.min_[i] );
                   result.max_[i] = ffmax( max_[i], result.max_[i] );

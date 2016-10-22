@@ -5,7 +5,7 @@
 #ifndef ZTRACER_TRACEABLE_H
 #define ZTRACER_TRACEABLE_H
 
-#include "AABB.h"
+#include "axisAlignedBoundingBox.h"
 #include "Ray.h"
 #include <vector>
 
@@ -31,7 +31,7 @@ class Traceable {
    virtual bool hit(Ray const& ray, Real const& intervalLower, Real const& intervalUpper,
                     TraceData& traceData) const = 0;
    // create bounding box object of respective
-   virtual AABB boundingBox() const = 0;
+   virtual axisAlignedBoundingBox boundingBox() const = 0;
 };
 }
 
