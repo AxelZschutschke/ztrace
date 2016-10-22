@@ -17,7 +17,7 @@ TEST( Ray_test, constructor_dummy )
     Ray test{ };
     EXPECT_EQ( test.origin().len(), 0. );
     EXPECT_EQ( test.direction().len(), 0. );
-    EXPECT_EQ( test.positionLength( 1.0 ).len(), 0. );
+    EXPECT_EQ( test.positionAtLength( 1.0 ).len(), 0. );
 }
 
 TEST( Ray_test, constructor_full )
@@ -27,7 +27,7 @@ TEST( Ray_test, constructor_full )
     Ray test{ a, b };
     EXPECT_EQ( test.origin().len(), 2. );
     EXPECT_EQ( test.direction().len(), 1. );
-    EXPECT_EQ( test.positionLength( 1.0 ).len(), 3. );
+    EXPECT_EQ( test.positionAtLength( 1.0 ).len(), 3. );
 }
 
 TEST( Ray_test, positionLength )
@@ -35,7 +35,7 @@ TEST( Ray_test, positionLength )
     Vector a( 2., 0., 0. );
     Vector b( 1., -1., 0. );
     Ray test{ a, b };
-    Vector c = test.positionLength( 2. );
+    Vector c = test.positionAtLength( 2. );
     EXPECT_EQ( c.x(),  4. );
     EXPECT_EQ( c.y(), -2. );
     EXPECT_EQ( c.z(),  0. );

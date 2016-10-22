@@ -51,7 +51,7 @@ class Sphere : public Traceable {
       }
 
       traceData.positionOnRay = positionOnRay;
-      traceData.point = ray.positionLength(traceData.positionOnRay);
+      traceData.point = ray.positionAtLength(traceData.positionOnRay);
       traceData.normal = traceData.point - center_;
       traceData.normal.makeUnitVector();
       traceData.reflection = reflect(ray.direction(), traceData.normal);

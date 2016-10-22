@@ -11,5 +11,7 @@
 
 #include "Types.h"
 #include "Vector.h"
+#include "Ray.h"
+#include "ShadowRay.h"
 
 #endif

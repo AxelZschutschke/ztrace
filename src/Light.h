@@ -13,6 +13,7 @@
 #include "Vector.h"
 #include "Utils.h"
 #include "Ray.h"
+#include "ShadowRay.h"
 #include "Sphere.h"
 
 namespace ztrace {

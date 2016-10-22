@@ -10,7 +10,7 @@
 #define ZTRACE_GLOSS_H
 
 #include "Vector.h"
-#include "Ray.h"
+#include "ShadowRay.h"
 #include "Traceable.h"
 
 namespace ztrace
