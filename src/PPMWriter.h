@@ -55,7 +55,7 @@ public:
         out << "P3" << std::endl;
         out << image.width() << std::endl;
         out << image.height() << std::endl;
-        out << image.getRange() << std::endl;
+        out << image.getColourRange() << std::endl;
         out << image << std::endl;
         return out;
     }
