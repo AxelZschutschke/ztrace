@@ -69,7 +69,7 @@ public:
                              TraceData const& traceData, Vector& attenuation,
                              Ray& scattered) const
     {
-        scattered = Ray{traceData.point, randomScatter() + traceData.normal};
+        scattered = Ray{traceData.point, randomScatterUnitSphere() + traceData.normal};
         attenuation = gloss().albedo();
         return true;
     }
@@ -97,7 +97,7 @@ public:
                      Vector& attenuation, Ray& scattered) const
     {
         scattered =
-            Ray{traceData.point, traceData.reflection + gloss().fuzz() * randomScatter()};
+            Ray{traceData.point, traceData.reflection + gloss().fuzz() * randomScatterUnitSphere()};
         attenuation = gloss().reflectivity();
         return dot(scattered.direction(), traceData.normal) > 0.;
     }

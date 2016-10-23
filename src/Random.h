@@ -13,10 +13,11 @@
 // "interfaces" to stdlib::drand48
 
 #ifdef ZTRACE_TESTING
+#define ZTRACE_TESTING_RAND 0.5
 #include "Types.h"
 namespace ztrace
 {
-Real random() { return 0.5; }
+Real random() { return ZTRACE_TESTING_RAND; }
 }
 #else
 #include <cstdlib>

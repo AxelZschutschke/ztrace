@@ -75,6 +75,6 @@ private:
     Size height_;
     ColourVector imageData_;
 };
-}
+} // namespace ztrace
 
 #endif // ZTRACE_IMAGE_H

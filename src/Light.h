@@ -63,7 +63,7 @@ public:
     }
     bool emitForwardRay(Ray& shadowRayOut) const
     {
-        shadowRayOut = Ray{position_, randomScatter()};
+        shadowRayOut = Ray{position_, randomScatterUnitSphere()};
         return true;
     }
     virtual Real intensityOverDistance(Real distance) const
@@ -127,7 +127,7 @@ public:
     bool emitForwardRay(Ray& shadowRayOut) const
     {
         shadowRayOut =
-            Ray{position_, (direction_ + size_ * randomScatter()).makeUnitVector()};
+            Ray{position_, (direction_ + size_ * randomScatterUnitSphere()).makeUnitVector()};
         return true;
     }
     virtual Real intensityOverDistance(Real distance) const

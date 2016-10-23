@@ -15,19 +15,52 @@
 
 namespace ztrace
 {
-Vector const randomScatter()
+/*! \brief returns a direction vector around (0,0,0) randomly scattered in unit-sphere
+ *
+ *  its length, by definition, is 0 < len < 1 and random
+ *  \returns random direction vector
+ */
+
+Vector const randomScatterUnitSphere();
+/*! \brief returns a direction vector around (0,0,0) randomly scattered in unit-circle
+ *
+ *  its length, by definition, is 0 < len < 1 and random
+ *  the vector is returned in cylinder coordinates [R,phi,0.0]
+ *  \returns random direction vector
+ */
+Vector const randomScatterCylinderCoordinate();
+
+/*! \brief returns the direction after reflection on surface
+ *
+ *  length of reflected vector equals the inbound vector
+ *  \param[in] in inbound vector to be reflected
+ *  \param[in] normal surface normal at position of reflection
+ *  \returns reflected vector
+ */
+Vector const reflect(Vector const& in, Vector const& normal);
+
+} // namespace ztrace
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//// Implementation
+//
+ztrace::Vector const ztrace::randomScatterUnitSphere()
 {
     Vector result;
     do {
         result = 2. * Vector{random(), random(), random()} - unit;
     } while (result.len() > 1.);
-
-    return Vector{result};
+    return result;
 }
-Vector const reflect(Vector const& in, Vector const& normal)
+
+ztrace::Vector const ztrace::randomScatterCylinderCoordinate()
 {
-    return Vector{in - 2 * dot(in, normal) * normal};
-}
+    return Vector{random(), random() * 2. * M_PI, 0.0};
 }
 
-#endif
+ztrace::Vector const ztrace::reflect(Vector const& in, Vector const& normal)
+{
+    return Vector{in - 2. * dot(in, normal) * normal};
+}
+
+#endif // ZTRACE_UTILS_H
