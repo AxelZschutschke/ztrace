@@ -56,6 +56,7 @@ set( TESTS
     Sphere
     TraceableList
     TraceableNode 
+    Utils
     )
 
 foreach( TEST ${TESTS} )
