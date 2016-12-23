@@ -9,6 +9,10 @@
 #ifndef ZTRACE_UTILS_H
 #define ZTRACE_UTILS_H
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 #include "Random.h"
 #include "Types.h"
 #include "Vector.h"
@@ -55,12 +59,12 @@ ztrace::Vector const ztrace::randomScatterUnitSphere()
 
 ztrace::Vector const ztrace::randomScatterCylinderCoordinate()
 {
-    return Vector{random(), random() * 2. * M_PI, 0.0};
+    return Vector{random(), random() * (Real) 2. * (Real) M_PI, 0.0};
 }
 
 ztrace::Vector const ztrace::reflect(Vector const& in, Vector const& normal)
 {
-    return Vector{in - 2. * dot(in, normal) * normal};
+    return Vector{in - (Real) 2. * dot(in, normal) * normal};
 }
 
 #endif // ZTRACE_UTILS_H

@@ -64,7 +64,7 @@ public:
     bool hit(Ray const& rayIn, Real intervalMin, Real intervalMax) const
     {
         for (Size i = 0; i < 3; ++i) {
-            Real invD = 1.0 / rayIn.direction()[i];
+            Real invD = (Real) 1.0 / rayIn.direction()[i];
             Real t0 = (min_[i] - rayIn.origin()[i]) * invD;
             Real t1 = (max_[i] - rayIn.origin()[i]) * invD;
             if (invD < 0.0)

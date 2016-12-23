@@ -130,7 +130,7 @@ ztrace::ColourConverter<colourRange>::ColourConverter(Real const& red, Real cons
     : red_()
     , green_()
     , blue_()
-    , alpha_(alpha)
+    , alpha_()
 {
     Vector temp(red, green, blue);
     setRGB(temp, alpha);

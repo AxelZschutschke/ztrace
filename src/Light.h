@@ -70,7 +70,7 @@ public:
     {
         distance /= intensity_;
         distance += 1.;
-        return 1. / distance / distance;
+        return (Real) 1. / distance / distance;
     }
     virtual Real const& intensity() const { return intensity_; }
 private:
@@ -102,7 +102,7 @@ public:
         , size_(size)
         , specular_(specular)
     {
-        size_ = size_ > 1. ? 1. : size_;
+        size_ = size_ > (Real) 1. ? (Real) 1. : size_;
         direction_.makeUnitVector();
     }
 
@@ -116,7 +116,7 @@ public:
 
         Real angle = dot(direction_, direction);
         angle *= angle;
-        Real minimum = 1. - size_ * size_ * 0.78 * 0.78;
+        Real minimum = (Real) 1. - size_ * size_ * (Real) 0.78 * (Real) 0.78;
         if (angle >= minimum) { // angle via dot is 1 for zero size and 0 for size = 1
             gainOut = /*( angle - minimum ) / (1. - minimum) **/ colour_ *
                       intensityOverDistance(distance);
@@ -134,7 +134,7 @@ public:
     {
         distance /= intensity_;
         distance += 1.;
-        return 1. / distance / distance;
+        return (Real) 1. / distance / distance;
     }
     virtual Real const& intensity() const { return intensity_; }
 
@@ -167,7 +167,7 @@ public:
         distance += offset_;
         distance /= intensity();
         distance += 1.;
-        return 1. / distance / distance;
+        return (Real) 1. / distance / distance;
     }
 
 private:
@@ -193,7 +193,7 @@ public:
         distance += offset_;
         distance /= intensity();
         distance += 1.;
-        return 1. / distance / distance;
+        return (Real) 1. / distance / distance;
     }
 
 private:

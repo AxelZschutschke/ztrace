@@ -42,9 +42,9 @@ public:
      */
     void setPixel(Size const& xPos, Size const& yPos, Vector const& color)
     {
-        if (xPos < 0 or xPos >= width_)
+        if (xPos < 0 || xPos >= width_)
             throw std::range_error("ztrace::Image::setPixel xPos outside valid range");
-        if (yPos < 0 or yPos >= height_)
+        if (yPos < 0 || yPos >= height_)
             throw std::range_error("ztrace::Image::setPixel yPos outside valid range");
         imageData_[yPos * width_ + xPos] = color;
     }
@@ -56,9 +56,9 @@ public:
      */
     Vector const& getPixel(Size const& xPos, Size const& yPos) const
     {
-        if (xPos < 0 or xPos >= width_)
+        if (xPos < 0 || xPos >= width_)
             throw std::range_error("ztrace::Image::getPixel xPos outside valid range");
-        if (yPos < 0 or yPos >= height_)
+        if (yPos < 0 || yPos >= height_)
             throw std::range_error("ztrace::Image::getPixel yPos outside valid range");
         return imageData_[yPos * width_ + xPos];
     }

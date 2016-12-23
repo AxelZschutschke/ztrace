@@ -29,7 +29,7 @@ bool getNewLightPosition(Light const& current, Traceable const& world,
     do {
         current.emitForwardRay(rayOut);
         ++counter;
-    } while (!world.hit(rayOut, 0.01, current.intensity(), traceData) and counter < 20);
+    } while (!world.hit(rayOut, (Real) 0.01, current.intensity(), traceData) && counter < 20);
     if (counter < 20) {
         return true;
     }
@@ -57,14 +57,13 @@ bool addFurtherLightsToList(LightList& list, Light const& current, Traceable con
 {
     TraceData traceData;
     Vector intensity;
-    Real distance;
     Ray forwardRay;
     if (getNewLightPosition(current, world, traceData, forwardRay)) {
-        if (getIntensity(current, traceData, intensity) and
+        if (getIntensity(current, traceData, intensity) &&
             checkIntensity(intensity, minIntensity)) {
             Vector attenuation;
             Ray scatteredRay;
-            if ((traceData.material->gloss().hasSpecular() or
+            if ((traceData.material->gloss().hasSpecular() ||
                  traceData.material->gloss().hasTransmission())) {
                 if (traceData.material->scatterView(forwardRay, traceData, attenuation,
                                                     scatteredRay)) {
@@ -82,8 +81,8 @@ bool addFurtherLightsToList(LightList& list, Light const& current, Traceable con
                 std::shared_ptr<Light> newLight;
                 newLight = std::make_shared<LightChildPointSource>(
                     traceData.point,
-                    traceData.material->gloss().albedo() * intensity / 2. / 3.1415,
-                    current.intensity() / 2. / 3.1416, traceData.positionOnRay);
+                    traceData.material->gloss().albedo() * intensity / (Real) 2. / (Real) 3.1415,
+                    current.intensity() / (Real) 2. / (Real) 3.1416, traceData.positionOnRay);
                 list.add(newLight);
             }
         }
@@ -95,14 +94,13 @@ bool addSpotToList(LightList& list, Light const& current, Traceable const& world
 {
     TraceData traceData;
     Vector intensity;
-    Real distance;
     Ray forwardRay;
     if (getNewLightPosition(current, world, traceData, forwardRay)) {
-        if (getIntensity(current, traceData, intensity) and
+        if (getIntensity(current, traceData, intensity) &&
             checkIntensity(intensity, minIntensity)) {
             Vector attenuation;
             Ray scatteredRay;
-            if ((traceData.material->gloss().hasSpecular() or
+            if ((traceData.material->gloss().hasSpecular() ||
                  traceData.material->gloss().hasTransmission())) {
                 if (traceData.material->scatterView(forwardRay, traceData, attenuation,
                                                     scatteredRay)) {
@@ -137,7 +135,7 @@ LightList createAmbientLights(LightList const& oldLights, Traceable const& world
         for (Size i = 0; i < numberPerLight; ++i) {
             Size counter = 0;
             static Size const counterMax = 2500; // try to find "interesting" objects
-            while (!addSpotToList(newLights, current, world, maxDepth, minIntensity) and
+            while (!addSpotToList(newLights, current, world, maxDepth, minIntensity) &&
                    counter < counterMax) {
                 ++counter;
             }

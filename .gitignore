@@ -1,2 +1,19 @@
 build/
 *.swp
+# visual studio
+.vs/
+x86/
+x64/
+vs_*/
+*.filters
+*.vcxproj*
+ztracer.VC.db
+ztracer.sln
+# cmake
+CMakeCache.txt
+CMakeFiles/
+CMakeSettings.json
+CTestTestfile.cmake
+DartConfiguration.tcl
+cmake_install.cmake
+

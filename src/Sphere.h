@@ -34,7 +34,7 @@ public:
     static bool checkHitInterval(Real const& positionOnRay, Real const& intervalLower,
                                  Real const& intervalUpper)
     {
-        if (positionOnRay < intervalLower or positionOnRay > intervalUpper) {
+        if (positionOnRay < intervalLower || positionOnRay > intervalUpper) {
             return false;
         }
         return true;
@@ -44,14 +44,14 @@ public:
     {
         Vector oc = ray.origin() - center_;
         Real a = dot(ray.direction(), ray.direction());
-        Real b = 2.0 * dot(oc, ray.direction());
+        Real b = (Real) 2.0 * dot(oc, ray.direction());
         Real c = dot(oc, oc) - radius_ * radius_;
-        Real discriminant = (b * b - 4. * a * c);
+        Real discriminant = (b * b - (Real) 4. * a * c);
         if (discriminant <= 0.) {
             return false;
         }
 
-        Real positionOnRay = (-b - sqrt(discriminant)) / (2.0 * a);
+        Real positionOnRay = (-b - sqrt(discriminant)) / ((Real)2.0 * a);
         if (!checkHitInterval(positionOnRay, intervalLower, intervalUpper)) {
             return false;
         }

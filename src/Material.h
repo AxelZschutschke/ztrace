@@ -9,6 +9,7 @@
 #ifndef ZTRACE_MATERIAL_H
 #define ZTRACE_MATERIAL_H
 
+#include "CompilerAttributes.h"
 #include "Random.h"
 #include "Gloss.h"
 #include "Ray.h"
@@ -65,7 +66,7 @@ public:
         weight1 = 0.5;
         return true;
     }
-    virtual bool scatterView(Ray const& rayIn __attribute__((unused)),
+    virtual bool scatterView(Ray const& rayIn ATT_UNUSED,
                              TraceData const& traceData, Vector& attenuation,
                              Ray& scattered) const
     {
@@ -93,7 +94,7 @@ public:
         weight1 = 0.5;
         return true;
     }
-    bool scatterView(Ray const& rayIn __attribute__((unused)), TraceData const& traceData,
+    bool scatterView(Ray const& rayIn ATT_UNUSED, TraceData const& traceData,
                      Vector& attenuation, Ray& scattered) const
     {
         scattered =
@@ -118,7 +119,7 @@ public:
         direction.makeUnitVector();
         Real steepness = dot(direction, normal);
         Real discriminant =
-            1.0 - refractIndex * refractIndex * (1. - steepness * steepness);
+            (Real) 1.0 - refractIndex * refractIndex * ((Real) 1. - steepness * steepness);
         if (discriminant > 0.) {
             refracted = refractIndex * (direction - normal * steepness) -
                         normal * sqrt(discriminant);
@@ -128,9 +129,9 @@ public:
     }
     Real schlick(Real const& cosine, Real const& refractIndex) const
     {
-        Real r0 = (1. - refractIndex) / (1. + refractIndex);
+        Real r0 = ((Real) 1. - refractIndex) / ((Real) 1. + refractIndex);
         r0 = r0 * r0;
-        return r0 + (1. - r0) * pow((1. - cosine), 5);
+        return r0 + ((Real) 1. - r0) * pow(((Real) 1. - cosine), 5);
     }
     bool scatterView(Ray const& rayIn, TraceData const& traceData, Vector& attenuation,
                      Ray& scattered) const
@@ -147,7 +148,7 @@ public:
                      rayIn.direction().len();
         } else {
             outward_normal = traceData.normal;
-            refractIndex = 1. / refractIndex_;
+            refractIndex = (Real) 1. / refractIndex_;
             cosine = -dot(rayIn.direction(), traceData.normal) / rayIn.direction().len();
         }
         if (refract(rayIn.direction(), outward_normal, refractIndex, refracted)) {
@@ -181,7 +182,7 @@ public:
             cosine = refractIndex * dotNormal / rayIn.direction().len();
         } else {
             outward_normal = traceData.normal;
-            refractIndex = 1. / refractIndex_;
+            refractIndex = (Real) 1. / refractIndex_;
             cosine = -dotNormal / rayIn.direction().len();
         }
         if (refract(rayIn.direction(), outward_normal, refractIndex, refracted)) {

@@ -25,10 +25,10 @@ public:
         , pointingDirection_(0., 0., -1.)
         , pointingNormalX_(1., 0., 0.)
         , pointingNormalY_(0., 1., 0.)
-        , width_(1.6)
-        , height_(0.9)
-        , focalLength_(1.0)
-        , aperture_(0.01)
+        , width_((Real)1.6)
+        , height_((Real)0.9)
+        , focalLength_((Real)1.0)
+        , aperture_((Real)0.01)
     {
     }
 
@@ -62,8 +62,8 @@ public:
     {
         Vector offset = offsetAparture(randomCylinderCoordinate());
         Vector target = pointingDirection_ * focalLength_;
-        target += pointingNormalX_ * width_ * (screenX - 0.5);
-        target += pointingNormalY_ * height_ * (0.5 - screenY);
+        target += pointingNormalX_ * width_ * (screenX - (Real) 0.5);
+        target += pointingNormalY_ * height_ * ((Real) 0.5 - screenY);
         emittedRayOut = Ray{position_ + offset, target - offset};
     }
     void emitRayPair(Real const& screenX, Real const& screenY, Ray& emittedRayOut1,
@@ -77,7 +77,7 @@ public:
         offset = offsetAparture(cylinderCoordinates);
         emittedRayOut1 = Ray{position_ + offset, target - offset};
         offset = offsetAparture(cylinderCoordinates +
-                                Vector{0., M_PI, 0.}); // radius x, angle y
+                                Vector{(Real) 0., (Real) M_PI, (Real) 0.}); // radius x, angle y
         emittedRayOut2 = Ray{position_ + offset, target - offset};
     }
 
@@ -86,8 +86,8 @@ private:
     Vector const& moveToCoordinate(Vector&& target, Real const& screenX,
                                    Real const& screenY) const
     {
-        target += pointingNormalX_ * width_ * (screenX - 0.5);
-        target += pointingNormalY_ * height_ * (0.5 - screenY);
+        target += pointingNormalX_ * width_ * (screenX - (Real) 0.5);
+        target += pointingNormalY_ * height_ * ((Real) 0.5 - screenY);
         return target;
     }
     Vector const offsetAparture(Vector const& cylinderCoordinatesRAH) const
@@ -98,7 +98,7 @@ private:
     }
     Vector const randomCylinderCoordinate() const
     {
-        return Vector{random(), random() * M_PI, 0.0};
+        return Vector{random(), random() * (Real) M_PI, (Real) 0.0};
     }
 
     Vector position_;

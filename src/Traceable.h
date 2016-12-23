@@ -12,6 +12,7 @@
 #include "axisAlignedBoundingBox.h"
 #include "Ray.h"
 #include <vector>
+#include <memory>
 
 namespace ztrace
 {

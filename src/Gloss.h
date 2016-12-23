@@ -40,12 +40,12 @@ public:
         attenuation = zero;
         if (diffusive_) {
             Real angle = dot(lightIn, traceData.normal);
-            angle = angle < 0. ? 0. : angle;
+            angle = angle < (Real) 0. ? (Real) 0. : angle;
             attenuation += angle * diffusiveColour_;
         }
         if (specular_ && rayLightIn.specular()) {
             Real angle = dot(lightIn, traceData.reflection);
-            angle = angle < 0. ? 0. : angle;
+            angle = angle < (Real) 0. ? (Real) 0. : angle;
             attenuation += pow(angle, specularHardness_) * specularColour_;
         }
         attenuation.limitMax();
@@ -56,7 +56,7 @@ public:
     bool hasSpecular() const { return specular_; }
     bool hasTransmission() const { return transmission_; }
 
-    Real fuzz() const { return 1. / specularHardness_; }
+    Real fuzz() const { return (Real) 1. / specularHardness_; }
 
     Vector const& albedo() const { return diffusiveColour_; }
     Vector const& transmissivity() const { return transmissiveColour_; }
