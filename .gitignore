@@ -9,6 +9,11 @@ vs_*/
 *.vcxproj*
 ztracer.VC.db
 ztracer.sln
+Debug/
+Win32/
+test_Ray.x.dir/
+ztracer.VC.VC.opendb
+ztracer.x.dir/
 # cmake
 CMakeCache.txt
 CMakeFiles/

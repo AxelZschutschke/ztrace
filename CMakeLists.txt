@@ -24,6 +24,9 @@ else()
   set(CMAKE_EXE_LINKER_FLAGS "-Wl,--no-as-needed -Wl,--add-needed") 
 endif()
 
+include_directories( "${CMAKE_CURRENT_SOURCE_DIR}/../googletest/googletest/include/" )
+link_directories( "${CMAKE_CURRENT_SOURCE_DIR}/../googletest/googletest/msvc/x64/Release/" )
+
 set (ztracer_VERSION_MAJOR 0)
 set (ztracer_VERSION_MINOR 1)
 
