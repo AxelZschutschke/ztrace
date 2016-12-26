@@ -126,12 +126,12 @@ int main()
     String basename = "raySplit";
     String extension = ".ppm";
 
-    Int width  = 150;
-    Int height = 100;
-    //Int width  = 1778;
-    //Int height = 1000;
-    Int antiAliasing = 1;
-    Int numberDynamicLights = 10; // maximum forward rays per source-light
+    //Int width  = 150;
+    //Int height = 100;
+    Int width  = 1778;
+    Int height = 1000;
+    Int antiAliasing = 4;
+    Int numberDynamicLights = 20; // maximum forward rays per source-light
 
 
     Gloss diffusiveLightRed( true, false, false, {(Real)0.9,(Real)0.1,(Real)0.5}, (Real)90. );

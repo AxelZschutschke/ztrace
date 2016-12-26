@@ -104,10 +104,10 @@ ztrace::ColourConverter<colourRange>::ColourConverter()
 
 template <ztrace::Int colourRange>
 ztrace::ColourConverter<colourRange>::ColourConverter(Real const& gray, Real const& alpha)
-    : red_(gray)
-    , green_(gray)
-    , blue_(gray)
-    , alpha_(alpha)
+    : red_()
+    , green_()
+    , blue_()
+    , alpha_()
 {
     Vector temp(gray, gray, gray);
     setRGB(temp, alpha);
@@ -142,7 +142,7 @@ ztrace::ColourConverter<colourRange>::ColourConverter(Vector const& colourRepres
     : red_()
     , green_()
     , blue_()
-    , alpha_(alpha)
+    , alpha_()
 {
     setRGB(colourRepresentation, alpha);
 }

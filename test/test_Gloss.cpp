@@ -23,7 +23,7 @@ using Vector = ztrace::Vector;
 using TraceData = ztrace::TraceData;
 using Gloss = ztrace::Gloss;
 
-static Real const tol = 0.001;
+static Real const tol = (Real) 0.001;
 
 TEST(Gloss_test, constructor_simplified)
 {

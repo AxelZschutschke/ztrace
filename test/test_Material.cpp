@@ -29,26 +29,26 @@ public:
         : Material()
     {
     }
-    bool scatterView(Ray const& rayIn __attribute__((unused)),
-                     TraceData const& traceData __attribute__((unused)),
-                     Vector& attenuation __attribute__((unused)),
-                     Ray& scattered __attribute__((unused))) const
+    bool scatterView(Ray const& rayIn ATT_UNUSED,
+                     TraceData const& traceData ATT_UNUSED,
+                     Vector& attenuation ATT_UNUSED,
+                     Ray& scattered ATT_UNUSED) const
     {
         return true;
     }
-    bool scatterView(Ray const& rayIn __attribute__((unused)),
-                     TraceData const& traceData __attribute__((unused)),
-                     Vector& attenuation1 __attribute__((unused)),
-                     Ray& scattered1 __attribute__((unused)),
-                     Vector& attenuation2 __attribute__((unused)),
-                     Ray& scattered2 __attribute__((unused)), Real& weight1) const
+    bool scatterView(Ray const& rayIn ATT_UNUSED,
+                     TraceData const& traceData ATT_UNUSED,
+                     Vector& attenuation1 ATT_UNUSED,
+                     Ray& scattered1 ATT_UNUSED,
+                     Vector& attenuation2 ATT_UNUSED,
+                     Ray& scattered2 ATT_UNUSED, Real& weight1) const
     {
         return true;
     }
-    bool scatterLight(Ray const& viewRayIn __attribute__((unused)),
-                      Ray const& lightRayIn __attribute__((unused)),
-                      TraceData const& traceData __attribute__((unused)),
-                      Vector& attenuation __attribute__((unused))) const
+    bool scatterLight(Ray const& viewRayIn ATT_UNUSED,
+                      Ray const& lightRayIn ATT_UNUSED,
+                      TraceData const& traceData ATT_UNUSED,
+                      Vector& attenuation ATT_UNUSED) const
     {
         return true;
     }

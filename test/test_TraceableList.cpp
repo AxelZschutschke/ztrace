@@ -25,7 +25,7 @@ using TraceableList = ztrace::TraceableList;
 
 using SpherePtr = std::shared_ptr<Sphere>;
 
-static Real const tol = 0.001;
+static Real const tol = (Real) 0.001;
 
 TEST(TraceableList_test, constructor_dummy)
 {
@@ -36,7 +36,7 @@ TEST(TraceableList_test, constructor_dummy)
 TEST(TraceableList_test, add)
 {
     TraceableList test{};
-    test.add(std::make_shared<Sphere>(Vector{0.5, 0.75, 0.85}, 1.));
+    test.add(std::make_shared<Sphere>(Vector{(Real) 0.5, (Real) 0.75, (Real) 0.85}, (Real) 1.));
     SpherePtr mySphere = std::dynamic_pointer_cast<Sphere, Traceable>(*(test.begin()));
     EXPECT_NEAR(mySphere->center().x(), 0.5, tol);
     EXPECT_NEAR(mySphere->center().y(), 0.75, tol);

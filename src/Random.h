@@ -22,10 +22,14 @@ Real random() { return ZTRACE_TESTING_RAND; }
 }
 #else
 #if defined(_WIN16) || defined(_WIN32) || defined(_WIN64)
+#include <stdlib.h>
 namespace ztrace
 {
-	Real random() { return (Real) 0.5; }
-	void randomInit(__int64 seed ATT_UNUSED) {}
+	Real random() 
+	{ 
+		return (Real) rand() / ((Real) RAND_MAX + (Real) 1. ); 
+	}
+	void randomInit(unsigned int seed) { srand(seed);  }
 }
 #else
 #include <cstdlib>

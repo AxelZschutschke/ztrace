@@ -15,7 +15,7 @@ using ztrace::Real;
 
 using Vector = ztrace::Vector;
 
-static Real const tol = 0.001;
+static Real const tol = (Real) 0.001;
 
 TEST(Vector_test, constructor_dummy)
 {

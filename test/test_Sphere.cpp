@@ -79,7 +79,7 @@ TEST(Sphere_test, hitOutOfLimits)
     Ray ray({0., 0., 0.}, {0., 0., 1.});
     TraceData traceData{};
 
-    bool gotHit = sphere.hit(ray, 0.0, 0.1, traceData);
+    bool gotHit = sphere.hit(ray, (Real) 0.0, (Real) 0.1, traceData);
 
     EXPECT_EQ(gotHit, false);
     // trace data still unchanged (0)

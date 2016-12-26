@@ -15,7 +15,7 @@ using ztrace::Real;
 
 using Vector = ztrace::Vector;
 
-static Real const tol = 0.001;
+static Real const tol = (Real) 0.001;
 
 TEST(Vector_test, operatorAddAssign)
 {
@@ -60,26 +60,26 @@ TEST(Vector_test, operatorAdd)
 TEST(Vector_test, operatorSub)
 {
     Vector a{1.0, 2.0, 3.0};
-    Vector c = a - 1.3;
-    EXPECT_NEAR(c.x(), -0.3, tol);
-    EXPECT_NEAR(c.y(), 0.7, tol);
-    EXPECT_NEAR(c.z(), 1.7, tol);
+    Vector c = a - (Real) 1.3;
+    EXPECT_NEAR(c.x(), (Real)-0.3, tol);
+    EXPECT_NEAR(c.y(), (Real) 0.7, tol);
+    EXPECT_NEAR(c.z(), (Real) 1.7, tol);
 }
 TEST(Vector_test, operatorMul)
 {
     Vector a{1.0, 2.0, 3.0};
-    Vector c = a * -2.;
-    EXPECT_NEAR(c.x(), -2.0, tol);
-    EXPECT_NEAR(c.y(), -4.0, tol);
-    EXPECT_NEAR(c.z(), -6.0, tol);
+    Vector c = a * (Real) -2.;
+    EXPECT_NEAR(c.x(), (Real)-2.0, tol);
+    EXPECT_NEAR(c.y(), (Real)-4.0, tol);
+    EXPECT_NEAR(c.z(), (Real)-6.0, tol);
 }
 TEST(Vector_test, operatorDiv)
 {
     Vector a{1.0, 2.0, 3.0};
-    Vector c = a / -0.1;
-    EXPECT_NEAR(c.x(), -10.0, tol);
-    EXPECT_NEAR(c.y(), -20.0, tol);
-    EXPECT_NEAR(c.z(), -30.0, tol);
+    Vector c = a / (Real)-0.1;
+    EXPECT_NEAR(c.x(), (Real)-10.0, tol);
+    EXPECT_NEAR(c.y(), (Real)-20.0, tol);
+    EXPECT_NEAR(c.z(), (Real)-30.0, tol);
 }
 
 GTEST_API_ int main(int argc, char** argv)
