@@ -22,11 +22,17 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
   cmake_policy(SET CMP0037 OLD)
   cmake_policy(SET CMP0038 OLD)
   cmake_policy(SET CMP0022 OLD)
+  set(GOOGLE_TEST_INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/../googletest/googletest/include/" CACHE FILEPATH 
+	"Location of googletest include directory" )
+  set(GOOGLE_TEST_LIB "${CMAKE_CURRENT_SOURCE_DIR}/../googletest/googletest/msvc/x64/Release/" CACHE FILEPATH 
+	"Location of googletest library" )
+  include_directories( ${GOOGLE_TEST_INCLUDE} )
+  link_directories( ${GOOGLE_TEST_LIB} )
   set(EXE_FILE_EXTENSION ".x" )
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-  set(GOOGLE_TEST_INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/../googletest/googletest/include/" CACHE STRING 
+  set(GOOGLE_TEST_INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/../googletest/googletest/include/" CACHE FILEPATH 
 	"Location of googletest include directory" )
-  set(GOOGLE_TEST_LIB "${CMAKE_CURRENT_SOURCE_DIR}/../googletest/googletest/msvc/x64/Release/" CACHE STRING 
+  set(GOOGLE_TEST_LIB "${CMAKE_CURRENT_SOURCE_DIR}/../googletest/googletest/msvc/x64/Release/" CACHE FILEPATH 
 	"Location of googletest library" )
   include_directories( ${GOOGLE_TEST_INCLUDE} )
   link_directories( ${GOOGLE_TEST_LIB} )

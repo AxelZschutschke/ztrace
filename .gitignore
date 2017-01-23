@@ -21,4 +21,5 @@ CMakeSettings.json
 CTestTestfile.cmake
 DartConfiguration.tcl
 cmake_install.cmake
+*.pyc
 

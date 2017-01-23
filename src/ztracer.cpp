@@ -103,7 +103,7 @@ Vector const rayColour( Ray const & ray, TraceableList & traceable, LightList & 
 }
 
 Real jitter( Int const & x, Int const & screenWidth ) {
-    return ((Real) x + (random() - (Real)0.5) ) / ((Real) screenWidth);
+    return ((Real) x + (ztrace::random() - (Real)0.5) ) / ((Real) screenWidth);
 }
 
 void writeSample( String const & basename, 
