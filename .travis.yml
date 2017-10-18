@@ -18,14 +18,20 @@ matrix:
       addons:
         brew:
           packages:
-            - cmake
-            - libgtest-dev
-            - gcc-5
+
     
 before_install:
     # Combine global build options with OS/compiler-dependent options
     - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
     - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
+    - |
+      git clone https://github.com/google/googletest
+      cd googletest
+      mkdir build
+      cd build
+      cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ ..
+      make
+      make install
 
 install:
     #- if [ "$CXX" = "clang++" ] && [ "$TRAVIS_OS_NAME" = "linux" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
