@@ -22,7 +22,6 @@ matrix:
     
 before_install:
     # Combine global build options with OS/compiler-dependent options
-    - brew install pyenv
     - eval "$(pyenv init -)"
     - pyenv install 2.7.6
     - pyenv global 2.7.6
